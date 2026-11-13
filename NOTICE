@@ -1,0 +1,23 @@
+motion-imitation-improved
+Copyright 2026 the repository authors
+
+This repository vendors, unmodified, the reference implementation of
+
+    Learning Agile Robotic Locomotion Skills by Imitating Animals
+    Xue Bin Peng, Erwin Coumans, Tingnan Zhang, Tsang-Wei Lee, Jie Tan, Sergey Levine
+    Robotics: Science and Systems (RSS) 2020
+    https://xbpeng.github.io/projects/Robotic_Imitation/index.html
+
+as `third_party/motion_imitation/`, taken from
+
+    https://github.com/erwincoumans/motion_imitation  (commit 2f206ab)
+
+That code, together with the motion clips (`data/motions/*.txt`) and the
+pretrained policies (`data/policies/*.zip`) shipped with it, is licensed under
+the Apache License 2.0 (see `LICENSE.txt`). All modifications, additions and
+the analysis in `src/`, `docs/`, `tests/` and `scripts/` are released under the
+same license.
+
+Nothing in `third_party/` has been edited: every behavioural change of this
+repository is applied at run time by `src/env_patch.py`, so the reference
+implementation can always be used as a bit-exact baseline.

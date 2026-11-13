@@ -1,0 +1,23 @@
+# 实验配置：评估协议（对应 docs/IMPROVEMENTS.md 中的报告数字）
+
+evaluation:
+  max_steps: 600          # 20 s @ 30 Hz
+  episodes: 3
+  seeds: 3
+  random_phase: true      # 论文式：每回合从参考片段随机相位起步
+  start_phases: null      # 若要相位栅格，改成 "0,0.25,0.5,0.75"
+  deterministic_start:    # 上游 eval_pretrained.py 的口径，用于对照
+    episodes: 1
+    seeds: 1
+    random_phase: false
+
+metrics:
+  primary: mean_reward            # 每步奖励均值（权重和为 1 时为归一化回报）
+  window_mean_seconds: 5.0
+  drift_fit: least_squares_slope_of_yaw_error
+
+variants:
+  baseline: []
+  heading_anchor: ["--yaw-anchor"]
+  velocity_v2: ["--reward-v2"]
+  full: ["--yaw-anchor", "--reward-v2", "--random-phase"]

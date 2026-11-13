@@ -1,0 +1,22 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  unit-tests:
+    # Only the numpy-only metric/patch contracts run in CI: tensorflow 1.14 and
+    # pybullet are not installable on hosted runners, so environment-level
+    # checks live in docs/REPRODUCTION.md and are run locally.
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.11"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install numpy
+      - run: python -m unittest discover -s tests -v

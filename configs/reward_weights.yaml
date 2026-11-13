@@ -1,0 +1,29 @@
+# 奖励权重与速度项尺度：上游 v1 与本仓库 v2 的完整定义
+#
+# 参考配置：这些数值是 src/env_patch.py 中 REWARD_WEIGHTS_V1 / REWARD_WEIGHTS_V2 /
+# VELOCITY_ERR_SCALE_V1 / VELOCITY_ERR_SCALE_V2 的说明性镜像，实际生效的值以代码为准
+# （权重和必须为 1，apply_velocity_reward_v2 会断言这一点）。
+
+reward_v1:                # 上游/论文原始定义
+  pose: 0.50
+  velocity: 0.05
+  end_effector: 0.20
+  root_pose: 0.15
+  root_velocity: 0.10
+  velocity_term: "exp(-0.1 * sum_j (dq_ref - dq_sim)^2)"
+  # 实测（dog_pace 官方策略）：sum 均值 57.5，该项均值 0.0157、p90 1.5e-4 -> 饱和
+
+reward_v2:                # 本仓库改进 2
+  pose: 0.45
+  velocity: 0.10
+  end_effector: 0.20
+  root_pose: 0.15
+  root_velocity: 0.10
+  velocity_term: "exp(-0.25 * mean_j (dq_ref - dq_sim)^2)"
+  # 实测：该项均值 0.3376、p10 0.161、p90 0.530 -> 尺度可用
+
+error_scales:             # 其余四项与论文一致，未改动
+  pose: 5.0
+  end_effector: 40.0
+  root_pose: 20.0
+  root_velocity: 2.0

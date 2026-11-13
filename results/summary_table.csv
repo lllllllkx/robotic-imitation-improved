@@ -1,0 +1,6 @@
+skill,variant,episodes,mean_reward,std_reward,pose_err_rad,root_err_m,yaw_err_rad,yaw_drift_rad_s,speed_mps,survival_pct
+dog_pace,randphase,9,0.7481,0.0026,0.0651,0.0261,0.0751,-0.0006,1.0739,100
+dog_pace,rewardv2+randphase,9,0.7222,0.0027,0.0651,0.0261,0.0751,-0.0006,1.0739,100
+dog_pace,yawanchor+randphase,9,0.7521,0.0008,0.0649,0.0239,0.0286,-0.0008,1.0792,100
+dog_spin,randphase,9,0.6980,0.0074,0.0502,0.0679,0.2510,0.0038,0.1601,100
+dog_spin,yawanchor+randphase,9,0.7602,0.0014,0.0475,0.0660,0.0473,-0.0007,0.1526,100

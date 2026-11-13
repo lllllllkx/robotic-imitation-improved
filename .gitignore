@@ -1,0 +1,18 @@
+# ---- python ----
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+.venv/
+
+# ---- experiment artefacts (regenerate with the CLIs) ----
+logs/
+results/_*/
+results/**/frames/
+*.egg-info/
+
+# ---- editors / OS ----
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
