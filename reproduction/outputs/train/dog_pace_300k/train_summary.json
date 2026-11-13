@@ -1,0 +1,10 @@
+{
+  "motion_file": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_repro\\code\\motion_imitation\\data\\motions\\dog_pace.txt",
+  "total_timesteps": 300000,
+  "seed": 0,
+  "num_procs": 8,
+  "timesteps_per_actorbatch": 512,
+  "wall_time_s": 4249.134063243866,
+  "steps_per_sec_total": 70.60262056570052,
+  "num_episodes_rank0": 2358
+}

@@ -22,6 +22,19 @@
 随机相位起点、观测噪声与域随机化，属于评估口径差异，不是实现错误（详见
 `docs/REPRODUCTION.md`）。
 
+## 复现产物（报告 / 视频 / 原始数据）
+
+复现阶段的完整交付放在 **[reproduction/](reproduction/)**，可离线浏览：
+
+- `reproduction/report/复现报告.html` —— 自包含 HTML 报告（8 章 / 8 表 / 8 图），
+  内含两段回放视频（相对路径引用，需保持目录结构）；
+- `reproduction/outputs/eval/dog_pace.mp4`、`dog_spin.mp4` —— 各 20 s、640×480、30 fps，
+  另有对应的关键帧拼图；
+- `reproduction/outputs/eval/*/summary.json` 与 `steps.csv` —— 逐回合汇总与逐帧原始数据；
+- `reproduction/outputs/reference/*.csv` —— 10 段参考动作的逐帧关节/根状态；
+- `reproduction/outputs/train/dog_pace_300k/` —— 30 万步 PPO 的 `episodes.csv`、训练摘要与最终策略；
+- `reproduction/scripts/` —— 产出以上内容的脚本；用法见 `reproduction/README.md`。
+
 ## 三处改进
 
 | # | 改进 | 一句话 | 量化结果（3 seeds × 3 回合，随机相位） |
@@ -82,6 +95,7 @@ configs/                        报告所用实验配置的镜像（评估协议
 docs/IMPROVEMENTS.md            改进的动机 / 实现 / 数字 / 边界
 docs/REPRODUCTION.md            环境、命令、核对清单
 scripts/run_protocol.ps1        完整对比矩阵的顺序执行脚本
+reproduction/                   复现产物：HTML 报告、回放视频、原始数据与脚本
 ```
 
 ## 结果表（本仓库实测，可重跑）

@@ -1,0 +1,51 @@
+{
+  "tag": "trained_dog_pace",
+  "motion_file": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_repro\\code\\motion_imitation\\data\\motions\\dog_pace.txt",
+  "model_file": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_repro\\outputs\\train\\dog_pace_300k\\final_model.zip",
+  "env_time_step": 0.033,
+  "num_motors": 12,
+  "episodes": [
+    {
+      "tag": "trained_dog_pace",
+      "episode": 0,
+      "steps": 32,
+      "episode_seconds": 1.056,
+      "sum_reward": 2.640876471024716,
+      "mean_reward": 0.08252738971952238,
+      "mean_pose_err_rad": 0.6122230023349744,
+      "mean_root_err_m": 0.1428167568114298,
+      "max_root_err_m": 0.4354698764975902,
+      "mean_speed_mps": 0.9654986544044583,
+      "mean_sim_z": 0.38541889003747554,
+      "mean_term_pose_reward": 0.021886406968753068,
+      "mean_term_velocity_reward": 0.00018168748698880162,
+      "mean_term_end_effector_reward": 0.022624816646940837,
+      "mean_term_root_pose_reward": 0.3640831119770367,
+      "mean_term_root_velocity_reward": 0.15402130021380742,
+      "wall_time_s": 0.4425315856933594,
+      "steps_per_sec": 72.31122259863629,
+      "terminated_early": true
+    },
+    {
+      "tag": "trained_dog_pace",
+      "episode": 1,
+      "steps": 32,
+      "episode_seconds": 1.056,
+      "sum_reward": 2.6407447491774527,
+      "mean_reward": 0.0825232734117954,
+      "mean_pose_err_rad": 0.6122230023349744,
+      "mean_root_err_m": 0.1428167568114298,
+      "max_root_err_m": 0.4354698764975902,
+      "mean_speed_mps": 0.9654986544044583,
+      "mean_sim_z": 0.38541889003747554,
+      "mean_term_pose_reward": 0.021886406968753068,
+      "mean_term_velocity_reward": 0.00018168748698880162,
+      "mean_term_end_effector_reward": 0.022624816646940837,
+      "mean_term_root_pose_reward": 0.3640831119770367,
+      "mean_term_root_velocity_reward": 0.15402130021380742,
+      "wall_time_s": 0.41815876960754395,
+      "steps_per_sec": 76.52595694700622,
+      "terminated_early": true
+    }
+  ]
+}

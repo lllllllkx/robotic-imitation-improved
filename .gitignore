@@ -16,3 +16,6 @@ results/**/frames/
 Thumbs.db
 .vscode/
 .idea/
+
+# ---- reproduction frames (regenerable, ~200 MB) ----
+reproduction/outputs/**/frames/

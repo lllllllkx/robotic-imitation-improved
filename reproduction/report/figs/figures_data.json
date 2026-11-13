@@ -1,0 +1,188 @@
+{
+  "reward_terms": {
+    "dog_pace": [
+      0.6581723928942628,
+      0.01572088608157429,
+      0.48306516120443177,
+      0.9306061477196753,
+      0.852521802387914
+    ],
+    "dog_spin": [
+      0.7906058462459303,
+      0.11442982062023219,
+      0.6748018814624186,
+      0.02962508515421821,
+      0.6304265506925253
+    ]
+  },
+  "vs_paper": {
+    "paper": {
+      "dog_pace": {
+        "No Rand": 0.839,
+        "Robust": 0.82,
+        "Adaptive": 0.812
+      },
+      "dog_spin": {
+        "No Rand": 0.859,
+        "Robust": 0.839,
+        "Adaptive": 0.839
+      }
+    },
+    "ours": {
+      "dog_pace": 0.7496240472463993,
+      "dog_spin": 0.6377690640776384
+    }
+  },
+  "learning": {
+    "episodes": 2358,
+    "final_window_return": 1.4584969994580352,
+    "first_window_return": 1.2234135369804138,
+    "max_return": 3.3283597459380814,
+    "final_window_len": 17.0,
+    "first_window_len": 17.266666666666666
+  },
+  "eval": {
+    "dog_pace": {
+      "mean_reward_per_step": 0.7496240472463993,
+      "mean_pose_err_rad": 0.065079776402519,
+      "mean_root_err_m": 0.024121412515154247,
+      "max_root_err_m": 0.07826977524844231,
+      "mean_speed_mps": 1.074419662956147,
+      "episodes": 5,
+      "steps_per_episode": 600,
+      "env_time_step": 0.033
+    },
+    "dog_spin": {
+      "mean_reward_per_step": 0.6377690640776384,
+      "mean_pose_err_rad": 0.04954082235991014,
+      "mean_root_err_m": 0.0913058602146647,
+      "max_root_err_m": 0.15276857112371234,
+      "mean_speed_mps": 0.1748102347768454,
+      "episodes": 5,
+      "steps_per_episode": 600,
+      "env_time_step": 0.033
+    }
+  },
+  "reference": [
+    {
+      "motion_file": "dog_backwards_pace.txt",
+      "num_frames": 39,
+      "frame_duration_s": 0.01667,
+      "duration_s": 0.63346,
+      "cycles": null,
+      "mean_speed_mps": 1.0942651369220922,
+      "root_height_mean": 0.44278256410256406,
+      "root_height_min": 0.43543,
+      "root_height_max": 0.45301,
+      "num_joints": 12
+    },
+    {
+      "motion_file": "dog_backwards_trot.txt",
+      "num_frames": 33,
+      "frame_duration_s": 0.01667,
+      "duration_s": 0.53344,
+      "cycles": null,
+      "mean_speed_mps": 1.7896300503856206,
+      "root_height_mean": 0.43360303030303027,
+      "root_height_min": 0.41387,
+      "root_height_max": 0.45625,
+      "num_joints": 12
+    },
+    {
+      "motion_file": "dog_pace.txt",
+      "num_frames": 39,
+      "frame_duration_s": 0.01667,
+      "duration_s": 0.63346,
+      "cycles": null,
+      "mean_speed_mps": 1.0942651369220924,
+      "root_height_mean": 0.44278256410256406,
+      "root_height_min": 0.43543,
+      "root_height_max": 0.45301,
+      "num_joints": 12
+    },
+    {
+      "motion_file": "dog_spin.txt",
+      "num_frames": 46,
+      "frame_duration_s": 0.01667,
+      "duration_s": 0.75015,
+      "cycles": null,
+      "mean_speed_mps": 0.2240408757162489,
+      "root_height_mean": 0.44713869565217396,
+      "root_height_min": 0.43273,
+      "root_height_max": 0.45689,
+      "num_joints": 12
+    },
+    {
+      "motion_file": "dog_trot.txt",
+      "num_frames": 33,
+      "frame_duration_s": 0.01667,
+      "duration_s": 0.53344,
+      "cycles": null,
+      "mean_speed_mps": 1.7896300503856206,
+      "root_height_mean": 0.43360303030303027,
+      "root_height_min": 0.41387,
+      "root_height_max": 0.45625,
+      "num_joints": 12
+    },
+    {
+      "motion_file": "hopturn.txt",
+      "num_frames": 91,
+      "frame_duration_s": 0.041666666666666664,
+      "duration_s": 3.75,
+      "cycles": null,
+      "mean_speed_mps": 0.45430302533590505,
+      "root_height_mean": 0.38686516483516475,
+      "root_height_min": 0.26185,
+      "root_height_max": 0.52937,
+      "num_joints": 12
+    },
+    {
+      "motion_file": "inplace_steps.txt",
+      "num_frames": 208,
+      "frame_duration_s": 0.03,
+      "duration_s": 6.21,
+      "cycles": null,
+      "mean_speed_mps": 0.20045744512940813,
+      "root_height_mean": 0.4470397596153846,
+      "root_height_min": 0.41725,
+      "root_height_max": 0.48273,
+      "num_joints": 12
+    },
+    {
+      "motion_file": "runningman.txt",
+      "num_frames": 161,
+      "frame_duration_s": 0.041666666666666664,
+      "duration_s": 6.666666666666666,
+      "cycles": null,
+      "mean_speed_mps": 0.4897023520957789,
+      "root_height_mean": 0.4184534161490682,
+      "root_height_min": 0.35262,
+      "root_height_max": 0.47695,
+      "num_joints": 12
+    },
+    {
+      "motion_file": "sidesteps.txt",
+      "num_frames": 146,
+      "frame_duration_s": 0.041666666666666664,
+      "duration_s": 6.041666666666666,
+      "cycles": null,
+      "mean_speed_mps": 0.42840427054146996,
+      "root_height_mean": 0.43654410958904105,
+      "root_height_min": 0.36489,
+      "root_height_max": 0.48553,
+      "num_joints": 12
+    },
+    {
+      "motion_file": "turn.txt",
+      "num_frames": 111,
+      "frame_duration_s": 0.041666666666666664,
+      "duration_s": 4.583333333333333,
+      "cycles": null,
+      "mean_speed_mps": 0.20501350181476022,
+      "root_height_mean": 0.4035977477477477,
+      "root_height_min": 0.38506,
+      "root_height_max": 0.42926,
+      "num_joints": 12
+    }
+  ]
+}

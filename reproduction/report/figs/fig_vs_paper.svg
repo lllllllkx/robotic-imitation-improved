@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="597.67017pt" height="237.091671pt" viewBox="0 0 597.67017 237.091671" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-13T18:36:04.526810</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.5.3, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 237.091671 
+L 597.67017 237.091671 
+L 597.67017 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 42.815625 190.285734 
+L 590.47017 190.285734 
+L 590.47017 21.993125 
+L 42.815625 21.993125 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 67.709013 190.285734 
+L 108.217939 190.285734 
+L 108.217939 49.088235 
+L 67.709013 49.088235 
+z
+" clip-path="url(#p4dbb8c9b94)" style="fill: #c6dbef; stroke: #c6dbef; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 133.045991 190.285734 
+L 173.554917 190.285734 
+L 173.554917 52.285795 
+L 133.045991 52.285795 
+z
+" clip-path="url(#p4dbb8c9b94)" style="fill: #6baed6; stroke: #6baed6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 198.382968 190.285734 
+L 238.891894 190.285734 
+L 238.891894 53.632135 
+L 198.382968 53.632135 
+z
+" clip-path="url(#p4dbb8c9b94)" style="fill: #3182bd; stroke: #3182bd; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 263.719946 190.285734 
+L 304.228872 190.285734 
+L 304.228872 64.129547 
+L 263.719946 64.129547 
+z
+" clip-path="url(#p4dbb8c9b94)" style="fill: #e6550d; stroke: #e6550d; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 329.056923 190.285734 
+L 369.56585 190.285734 
+L 369.56585 45.722383 
+L 329.056923 45.722383 
+z
+" clip-path="url(#p4dbb8c9b94)" style="fill: #c6dbef; stroke: #c6dbef; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 394.393901 190.285734 
+L 434.902827 190.285734 
+L 434.902827 49.088235 
+L 394.393901 49.088235 
+z
+" clip-path="url(#p4dbb8c9b94)" style="fill: #6baed6; stroke: #6baed6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 459.730878 190.285734 
+L 500.239805 190.285734 
+L 500.239805 49.088235 
+L 459.730878 49.088235 
+z
+" clip-path="url(#p4dbb8c9b94)" style="fill: #3182bd; stroke: #3182bd; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 525.067856 190.285734 
+L 565.576782 190.285734 
+L 565.576782 82.953914 
+L 525.067856 82.953914 
+z
+" clip-path="url(#p4dbb8c9b94)" style="fill: #e6550d; stroke: #e6550d; stroke-linejoin: miter"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="ma3beca6b77" d="M 0 0 
+L 0 3.5 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#ma3beca6b77" x="87.963476" y="190.285734" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font: 8px 'sans-serif'" transform="translate(39.866234 218.7958)rotate(-18)">论文·无随机化</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#ma3beca6b77" x="153.300454" y="190.285734" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font: 8px 'sans-serif'" transform="translate(105.203211 218.7958)rotate(-18)">论文·鲁棒策略</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#ma3beca6b77" x="218.637431" y="190.285734" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font: 8px 'sans-serif'" transform="translate(178.148641 216.323664)rotate(-18)">论文·自适应</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#ma3beca6b77" x="283.974409" y="190.285734" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font: 8px 'sans-serif'" transform="translate(207.548759 228.000257)rotate(-18)">本次复现 (预训练策略)</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#ma3beca6b77" x="349.311386" y="190.285734" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font: 8px 'sans-serif'" transform="translate(301.214144 218.7958)rotate(-18)">论文·无随机化</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#ma3beca6b77" x="414.648364" y="190.285734" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font: 8px 'sans-serif'" transform="translate(366.551121 218.7958)rotate(-18)">论文·鲁棒策略</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_7">
+      <g>
+       <use xlink:href="#ma3beca6b77" x="479.985341" y="190.285734" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font: 8px 'sans-serif'" transform="translate(439.496551 216.323664)rotate(-18)">论文·自适应</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#ma3beca6b77" x="545.322319" y="190.285734" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font: 8px 'sans-serif'" transform="translate(468.896669 228.000257)rotate(-18)">本次复现 (预训练策略)</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_9">
+      <path d="M 42.815625 190.285734 
+L 590.47017 190.285734 
+" clip-path="url(#p4dbb8c9b94)" style="fill: none; stroke-dasharray: 0.8,1.32; stroke-dashoffset: 0; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8"/>
+     </g>
+     <g id="line2d_10">
+      <defs>
+       <path id="m4cfdc87fb6" d="M 0 0 
+L -3.5 0 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m4cfdc87fb6" x="42.815625" y="190.285734" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font: 10px 'sans-serif'; text-anchor: end" x="35.815625" y="194.282609" transform="rotate(-0, 35.815625, 194.282609)">0.0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_11">
+      <path d="M 42.815625 156.627212 
+L 590.47017 156.627212 
+" clip-path="url(#p4dbb8c9b94)" style="fill: none; stroke-dasharray: 0.8,1.32; stroke-dashoffset: 0; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8"/>
+     </g>
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m4cfdc87fb6" x="42.815625" y="156.627212" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font: 10px 'sans-serif'; text-anchor: end" x="35.815625" y="160.624087" transform="rotate(-0, 35.815625, 160.624087)">0.2</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_13">
+      <path d="M 42.815625 122.96869 
+L 590.47017 122.96869 
+" clip-path="url(#p4dbb8c9b94)" style="fill: none; stroke-dasharray: 0.8,1.32; stroke-dashoffset: 0; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8"/>
+     </g>
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#m4cfdc87fb6" x="42.815625" y="122.96869" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="font: 10px 'sans-serif'; text-anchor: end" x="35.815625" y="126.965565" transform="rotate(-0, 35.815625, 126.965565)">0.4</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_15">
+      <path d="M 42.815625 89.310169 
+L 590.47017 89.310169 
+" clip-path="url(#p4dbb8c9b94)" style="fill: none; stroke-dasharray: 0.8,1.32; stroke-dashoffset: 0; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8"/>
+     </g>
+     <g id="line2d_16">
+      <g>
+       <use xlink:href="#m4cfdc87fb6" x="42.815625" y="89.310169" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <text style="font: 10px 'sans-serif'; text-anchor: end" x="35.815625" y="93.307044" transform="rotate(-0, 35.815625, 93.307044)">0.6</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_17">
+      <path d="M 42.815625 55.651647 
+L 590.47017 55.651647 
+" clip-path="url(#p4dbb8c9b94)" style="fill: none; stroke-dasharray: 0.8,1.32; stroke-dashoffset: 0; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8"/>
+     </g>
+     <g id="line2d_18">
+      <g>
+       <use xlink:href="#m4cfdc87fb6" x="42.815625" y="55.651647" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <text style="font: 10px 'sans-serif'; text-anchor: end" x="35.815625" y="59.648522" transform="rotate(-0, 35.815625, 59.648522)">0.8</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_19">
+      <path d="M 42.815625 21.993125 
+L 590.47017 21.993125 
+" clip-path="url(#p4dbb8c9b94)" style="fill: none; stroke-dasharray: 0.8,1.32; stroke-dashoffset: 0; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8"/>
+     </g>
+     <g id="line2d_20">
+      <g>
+       <use xlink:href="#m4cfdc87fb6" x="42.815625" y="21.993125" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <text style="font: 10px 'sans-serif'; text-anchor: end" x="35.815625" y="25.99" transform="rotate(-0, 35.815625, 25.99)">1.0</text>
+     </g>
+    </g>
+    <g id="text_15">
+     <text style="font: 10px 'sans-serif'; text-anchor: middle" x="15.19375" y="106.139429" transform="rotate(-90, 15.19375, 106.139429)">归一化回报 / 每步奖励 (0-1)</text>
+    </g>
+   </g>
+   <g id="line2d_21">
+    <path d="M 316.642898 190.285734 
+L 316.642898 21.993125 
+" clip-path="url(#p4dbb8c9b94)" style="fill: none; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #999999"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 42.815625 190.285734 
+L 42.815625 21.993125 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 42.815625 190.285734 
+L 590.47017 190.285734 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_16">
+    <text style="font: 8px 'sans-serif'; text-anchor: middle" x="87.963476" y="45.079974" transform="rotate(-0, 87.963476, 45.079974)">0.839</text>
+   </g>
+   <g id="text_17">
+    <text style="font: 8px 'sans-serif'; text-anchor: middle" x="153.300454" y="48.277533" transform="rotate(-0, 153.300454, 48.277533)">0.820</text>
+   </g>
+   <g id="text_18">
+    <text style="font: 8px 'sans-serif'; text-anchor: middle" x="218.637431" y="49.623874" transform="rotate(-0, 218.637431, 49.623874)">0.812</text>
+   </g>
+   <g id="text_19">
+    <text style="font: 8px 'sans-serif'; text-anchor: middle" x="283.974409" y="60.121286" transform="rotate(-0, 283.974409, 60.121286)">0.750</text>
+   </g>
+   <g id="text_20">
+    <text style="font: 8px 'sans-serif'; text-anchor: middle" x="349.311386" y="41.714122" transform="rotate(-0, 349.311386, 41.714122)">0.859</text>
+   </g>
+   <g id="text_21">
+    <text style="font: 8px 'sans-serif'; text-anchor: middle" x="414.648364" y="45.079974" transform="rotate(-0, 414.648364, 45.079974)">0.839</text>
+   </g>
+   <g id="text_22">
+    <text style="font: 8px 'sans-serif'; text-anchor: middle" x="479.985341" y="45.079974" transform="rotate(-0, 479.985341, 45.079974)">0.839</text>
+   </g>
+   <g id="text_23">
+    <text style="font: 8px 'sans-serif'; text-anchor: middle" x="545.322319" y="78.945653" transform="rotate(-0, 545.322319, 78.945653)">0.638</text>
+   </g>
+   <g id="text_24">
+    <text style="font: 700 10px 'sans-serif'; text-anchor: middle" x="185.968943" y="30.588835" transform="rotate(-0, 185.968943, 30.588835)">Dog Pace</text>
+   </g>
+   <g id="text_25">
+    <text style="font: 700 10px 'sans-serif'; text-anchor: middle" x="447.316853" y="30.595866" transform="rotate(-0, 447.316853, 30.595866)">Dog Spin</text>
+   </g>
+   <g id="text_26">
+    <text style="font: 11px 'sans-serif'; text-anchor: start" x="42.815625" y="15.993125" transform="rotate(-0, 42.815625, 15.993125)">与论文 Table V（仿真）对比：预训练策略</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p4dbb8c9b94">
+   <rect x="42.815625" y="21.993125" width="547.654545" height="168.292609"/>
+  </clipPath>
+ </defs>
+</svg>
