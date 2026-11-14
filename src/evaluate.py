@@ -1,21 +1,33 @@
-"""Paper-grade evaluation for motion-imitation policies.
+"""Extended evaluation for motion-imitation policies.
 
-Differences from a plain rollout loop (see docs/IMPROVEMENTS.md):
+What this adds on top of the upstream ``eval_pretrained.py`` loop (see
+``docs/IMPROVEMENTS.md``):
 
-* multi-seed, multi-episode runs with mean/std instead of a single deterministic
-  episode, optionally starting from random points along the reference clip
-  (the protocol the paper uses for its Table V numbers);
-* the five reward terms are logged separately and ``mean(reward)`` is
-  cross-checked against the paper-style normalised return reconstructed from
-  those terms;
-* unbounded drift is separated from bounded error by fitting the slope of the
-  per-step heading error, and a trailing-window reward removes the
-  accumulation artefact from the reported score.
+* multi-episode runs with mean/std instead of a single rollout, with an
+  optional random start phase along the reference clip;
+* two explicit initial-state regimes: ``--upstream-init`` keeps the upstream
+  defaults (90% chance to initialise from the reference state, randomised
+  start time); without it the environment runs in *controlled* mode (always
+  initialise from the reference state, phase set by us) so comparisons are
+  paired;
+* the five reward terms are logged inside ``task.reward()`` and
+  ``mean(reward)`` is cross-checked against the normalised return rebuilt
+  from those terms;
+* yaw from the full quaternion, reporting both a bounded tracking error
+  (wrapped absolute) and a drift slope fitted on the *unwrapped signed*
+  error;
+* horizontal and 3-D speed, an explicit termination reason, and provenance
+  metadata (policy SHA256, library versions, upstream commit).
+
+This protocol is *not* the paper's. The paper's Table V averages normalised
+return over **three independently trained policies** evaluated in simulation
+with canonical dynamics; here a single released policy is evaluated over
+several initial conditions. Seed indices below therefore select initial
+conditions, not training runs.
 
 Usage (from the repository root, inside the project's conda env):
 
-  python -m src.evaluate --motion dog_pace --policy dog_pace \
-      --episodes 5 --seeds 3 --random-phase --yaw-anchor
+  python -m src.evaluate --motion dog_pace --episodes 5 --seeds 3 --random-phase --yaw-anchor
 """
 
 from __future__ import absolute_import
@@ -23,17 +35,30 @@ from __future__ import division
 from __future__ import print_function
 
 import argparse
+import hashlib
 import json
 import os
 import sys
 import time
 
-import numpy as np
+# Pin BLAS/OMP pools *before* numpy (or anything that pulls it in) is imported:
+# once a thread pool is initialised these variables no longer apply, and a
+# multi-threaded pool makes the same policy+seed diverge across processes at
+# the 1e-7 level, which is enough to change a marginally stable 600-step
+# rollout. See docs/IMPROVEMENTS.md ("reproducibility").
+for _var in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS",
+             "NUMEXPR_NUM_THREADS", "VECLIB_MAXIMUM_THREADS"):
+  os.environ[_var] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
+
+import numpy as np  # noqa: E402  (must follow the thread pinning above)
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_CODE_DIR = os.path.join(REPO_ROOT, "third_party", "motion_imitation")
 MOTION_DIR = os.path.join(DEFAULT_CODE_DIR, "data", "motions")
 POLICY_DIR = os.path.join(DEFAULT_CODE_DIR, "data", "policies")
+UPSTREAM_COMMIT = "2f206ab"  # commit vendored into third_party/motion_imitation
 
 from src import env_patch  # noqa: E402  (repo root must be on sys.path)
 from src import metrics  # noqa: E402
@@ -49,11 +74,17 @@ def parse_args(argv=None):
                  help="pretrained policy name, e.g. dog_pace (uses data/policies)")
   p.add_argument("--model_file", default=None)
   p.add_argument("--episodes", type=int, default=5)
-  p.add_argument("--seeds", type=int, default=1)
+  p.add_argument("--seeds", type=int, default=1,
+                 help="number of evaluation seeds (initial conditions, not "
+                      "training seeds)")
   p.add_argument("--random-phase", action="store_true",
                  help="start each episode from a random point in the clip")
   p.add_argument("--start-phases", default=None,
                  help="comma separated phases in [0,1), overrides random phase")
+  p.add_argument("--upstream-init", action="store_true",
+                 help="keep the upstream initial-state distribution "
+                      "(ref_state_init_prob=0.9, randomised start time) "
+                      "instead of the controlled one")
   p.add_argument("--yaw-anchor", action="store_true",
                  help="improvement 1: re-anchor reference heading every cycle")
   p.add_argument("--reward-v2", action="store_true",
@@ -61,6 +92,8 @@ def parse_args(argv=None):
   p.add_argument("--max-steps", type=int, default=600)
   p.add_argument("--out", default=os.path.join(REPO_ROOT, "results", "eval"))
   p.add_argument("--tag", default=None)
+  p.add_argument("--run-id", default=None,
+                 help="tag this run so src.aggregate can select it later")
   p.add_argument("--csv", action="store_true", help="also dump per-step csv")
   p.add_argument("--quiet", action="store_true")
   return p.parse_args(argv)
@@ -84,21 +117,20 @@ def resolve_paths(args):
   return motion_file, model_file
 
 
+def sha256(path):
+  h = hashlib.sha256()
+  with open(path, "rb") as fh:
+    for chunk in iter(lambda: fh.read(1 << 20), b""):
+      h.update(chunk)
+  return h.hexdigest()
+
+
 def build_env(code_dir, motion_file, model_file):
   sys.path.insert(0, os.path.abspath(code_dir))
-  # Single-threaded math kernels: with the default thread pool the same policy
-  # and the same seed can diverge across processes at the 1e-7 level, which is
-  # enough for a marginally stable gait to roll out differently over 600 steps.
-  # Pinning the pool makes runs bit-reproducible across processes.
-  for var in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS",
-              "NUMEXPR_NUM_THREADS"):
-    os.environ[var] = "1"
-  os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-  os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
-
   import tensorflow as tf  # noqa: F401
   import envs.env_builder as env_builder
   import learning.imitation_policies as imitation_policies
+  # note: ppo_imitation pulls in mpi4py (MPI) even for single-process evaluation
   import learning.ppo_imitation as ppo_imitation
 
   env = env_builder.build_imitation_env(
@@ -117,7 +149,23 @@ def build_env(code_dir, motion_file, model_file):
       adam_epsilon=1e-5, schedule="constant", policy_kwargs=policy_kwargs,
       verbose=0)
   model.load_parameters(model_file)
-  return env, model
+  versions = {"python": sys.version.split()[0]}
+  # pybullet 不导出 __version__，只能用发行包元数据；stable-baselines 同理。
+  for name in ("tensorflow", "numpy", "pybullet", "gym", "stable_baselines", "mpi4py"):
+    try:
+      module = __import__(name)
+    except Exception:  # noqa: BLE001  (metadata only, never fatal)
+      versions[name] = "missing"
+      continue
+    ver = getattr(module, "__version__", None)
+    if not ver:
+      try:
+        import pkg_resources
+        ver = pkg_resources.get_distribution(name).version
+      except Exception:  # noqa: BLE001
+        ver = "unknown"
+    versions[name] = ver
+  return env, model, versions
 
 
 def variant_name(args):
@@ -130,6 +178,8 @@ def variant_name(args):
     parts.append("randphase")
   if args.start_phases:
     parts.append("phasegrid")
+  if args.upstream_init:
+    parts.append("upstreaminit")
   return "+".join(parts) if parts else "baseline"
 
 
@@ -139,9 +189,12 @@ def run(argv=None):
   tag = args.tag or os.path.splitext(os.path.basename(motion_file))[0]
   variant = variant_name(args)
 
-  env, model = build_env(args.code_dir, motion_file, model_file)
+  env, model, versions = build_env(args.code_dir, motion_file, model_file)
   task = env_patch.imitation_task(env)
-  task._ref_state_init_prob = 1.0
+  if not args.upstream_init:
+    # Controlled mode: always start from the reference state so the only
+    # difference between variants is the variant itself.
+    task._ref_state_init_prob = 1.0
 
   if args.yaw_anchor:
     env_patch.enable_cycle_heading_anchor(env)
@@ -157,11 +210,13 @@ def run(argv=None):
 
   # The environment's own phase sampler draws from an RNG whose state cannot be
   # pinned from the outside, which made "random phase" runs irreproducible
-  # across processes. Disable it and drive the phase explicitly instead:
+  # across processes. In controlled mode we disable it and drive the phase
+  # explicitly instead:
   #   * --start-phases: a fixed grid, cycled over episodes;
-  #   * --random-phase: one draw per (seed, episode) from a seeded RandomState,
-  #     i.e. the same distribution, but reproducible.
-  task._enable_rand_init_time = False
+  #   * --random-phase: one draw per (seed, episode) from a seeded RandomState.
+  # With --upstream-init the upstream sampler is left untouched.
+  if not args.upstream_init:
+    task._enable_rand_init_time = False
 
   pyb = env._pybullet_client
   robot = env.robot
@@ -182,7 +237,9 @@ def run(argv=None):
   for seed in range(args.seeds):
     env.seed(seed)
     for k in range(args.episodes):
-      if phases is not None:
+      if args.upstream_init:
+        phase = None
+      elif phases is not None:
         phase = phases[k % len(phases)]
         env_patch.set_start_phase(env, task, phase)
       elif args.random_phase:
@@ -192,11 +249,13 @@ def run(argv=None):
         env_patch.clear_start_phase(task)
         phase = None
       o = env.reset()
-      rewards, terms, pose_errs, root_errs, yaw_errs, speeds, sim_z = (
-          [], [], [], [], [], [], [])
+      rewards, terms, pose_errs, root_errs = [], [], [], []
+      speeds, speeds_3d, sim_z = [], [], []
+      yaw_errs, yaw_signed = [], []
       rows = []
       prev_pos = np.array(pyb.getBasePositionAndOrientation(sim_model)[0])
       steps = 0
+      done = False
       t0 = time.time()
       while steps < args.max_steps:
         a, _ = model.predict(o, deterministic=True)
@@ -222,18 +281,24 @@ def run(argv=None):
         ref_pos = np.array(pyb.getBasePositionAndOrientation(ref_model)[0])
         root_errs.append(float(np.linalg.norm(sim_pos - ref_pos)))
         sim_z.append(float(sim_pos[2]))
-        speeds.append(float(np.linalg.norm(sim_pos - prev_pos) / env_dt))
+        delta = sim_pos - prev_pos
+        speeds_3d.append(float(np.linalg.norm(delta) / env_dt))
+        # Horizontal speed is the gait speed the reference asks for; the 3-D
+        # norm additionally counts the vertical bobbing of the torso.
+        speeds.append(float(np.linalg.norm(delta[:2]) / env_dt))
         prev_pos = sim_pos
 
         sim_orn = np.array(pyb.getBasePositionAndOrientation(sim_model)[1])
         ref_orn = np.array(pyb.getBasePositionAndOrientation(ref_model)[1])
-        yaw_sim = 2.0 * np.arctan2(sim_orn[2], sim_orn[3])
-        yaw_ref = 2.0 * np.arctan2(ref_orn[2], ref_orn[3])
-        yaw_errs.append(float(abs((yaw_sim - yaw_ref + np.pi)
-                                  % (2 * np.pi) - np.pi)))
+        yaw_sim = metrics.quat_to_yaw(sim_orn)
+        yaw_ref = metrics.quat_to_yaw(ref_orn)
+        signed = metrics.wrap_angle(yaw_sim - yaw_ref)
+        yaw_signed.append(signed)
+        yaw_errs.append(abs(signed))
         if args.csv:
           rows.append([ep, steps, steps * env_dt, r] + list(step_terms.values())
-                      + [pose_errs[-1], root_errs[-1], yaw_errs[-1], speeds[-1]])
+                      + [pose_errs[-1], root_errs[-1], yaw_errs[-1],
+                         yaw_signed[-1], speeds[-1], speeds_3d[-1]])
 
         if done:
           break
@@ -241,6 +306,7 @@ def run(argv=None):
       term_means = {k: float(np.mean([t[k] for t in terms]))
                     for k in metrics.TERM_NAMES}
       reward_from_terms = metrics.normalized_return(term_means, weights)
+      unwrapped = metrics.unwrap_angles(yaw_signed)
       summary = {
           "episode": ep, "seed": seed, "steps": steps,
           "start_phase": phase,
@@ -256,10 +322,14 @@ def run(argv=None):
           "mean_yaw_err_rad": float(np.mean(yaw_errs)),
           "max_yaw_err_rad": float(np.max(yaw_errs)),
           "final_yaw_err_rad": float(yaw_errs[-1]),
-          "yaw_drift_rad_per_s": metrics.drift_rate(yaw_errs, env_dt),
+          "final_yaw_err_signed_rad": float(yaw_signed[-1]),
+          "yaw_drift_rad_per_s": metrics.drift_rate(unwrapped, env_dt),
           "mean_speed_mps": float(np.mean(speeds)),
+          "mean_speed_3d_mps": float(np.mean(speeds_3d)),
           "mean_sim_z_m": float(np.mean(sim_z)),
           "window5s_mean_reward": metrics.window_mean(rewards, env_dt, 5.0),
+          "termination": metrics.termination_reason(done, steps,
+                                                    args.max_steps),
           "survived": bool(steps >= args.max_steps),
           "wall_time_s": time.time() - t0,
       }
@@ -275,24 +345,34 @@ def run(argv=None):
           w.writerow(["episode", "step", "time", "reward"]
                      + ["term_" + k for k in metrics.TERM_NAMES]
                      + ["pose_err_rad", "root_err_m", "yaw_err_rad",
-                        "speed_mps"])
+                        "yaw_err_signed_rad", "speed_mps", "speed_3d_mps"])
           w.writerows(rows)
 
       if not args.quiet:
         print("[eval] %-9s %-22s seed=%d ep=%d steps=%4d reward=%.4f "
-              "pose=%.4f root=%.4f yaw=%.4f drift=%.4f rad/s"
+              "pose=%.4f root=%.4f yaw=%.4f drift=%.4f rad/s %s"
               % (tag, variant, seed, ep, steps, summary["mean_reward"],
                  summary["mean_pose_err_rad"], summary["mean_root_err_m"],
-                 summary["mean_yaw_err_rad"], summary["yaw_drift_rad_per_s"]))
+                 summary["mean_yaw_err_rad"], summary["yaw_drift_rad_per_s"],
+                 summary["termination"]))
       ep += 1
 
   agg = metrics.summarize_episodes(episodes)
+  by_seed = metrics.aggregate_by_seed(episodes, keys=[
+      "mean_reward", "mean_pose_err_rad", "mean_root_err_m",
+      "mean_yaw_err_rad", "yaw_drift_rad_per_s", "mean_speed_mps"])
   payload = {
       "tag": tag, "variant": variant,
+      "run_id": args.run_id,
       "motion_file": motion_file, "model_file": model_file,
+      "model_sha256": sha256(model_file),
       "env_time_step": env_dt,
+      "provenance": {"upstream_commit": UPSTREAM_COMMIT,
+                     "versions": versions},
       "protocol": {
           "episodes": args.episodes, "seeds": args.seeds,
+          "seed_meaning": "initial conditions (not training seeds)",
+          "init_mode": "upstream" if args.upstream_init else "controlled",
           "random_phase": bool(args.random_phase),
           "start_phases": phases,
           "yaw_anchor": bool(args.yaw_anchor),
@@ -301,6 +381,7 @@ def run(argv=None):
           "max_steps": args.max_steps,
       },
       "aggregate": agg,
+      "by_seed": by_seed,
   }
   with open(os.path.join(out_dir, "summary.json"), "w") as fh:
     json.dump(payload, fh, indent=2)
@@ -309,13 +390,14 @@ def run(argv=None):
   if not args.quiet:
     print("[eval] %s -> %s" % (tag, out_dir))
     print("[eval] mean reward %.4f +- %.4f | pose %.4f rad | root %.4f m | "
-          "yaw %.4f rad | drift %.4f rad/s"
+          "yaw %.4f rad | drift %.4f rad/s | speed(horiz) %.4f m/s"
           % (agg.get("mean_reward_mean", float("nan")),
              agg.get("mean_reward_std", 0.0),
              agg.get("mean_pose_err_rad_mean", float("nan")),
              agg.get("mean_root_err_m_mean", float("nan")),
              agg.get("mean_yaw_err_rad_mean", float("nan")),
-             agg.get("yaw_drift_rad_per_s_mean", float("nan"))))
+             agg.get("yaw_drift_rad_per_s_mean", float("nan")),
+             agg.get("mean_speed_mps_mean", float("nan"))))
   return payload
 
 

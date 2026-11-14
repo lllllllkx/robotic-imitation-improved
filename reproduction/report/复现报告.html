@@ -48,6 +48,7 @@ li{margin:4px 0;color:#2c2a26}
 code{background:#efece4;padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:Consolas,monospace}
 footer{margin-top:70px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
 </style></head><body>
+<div style="background:#fff4e5;border-left:4px solid #d97706;padding:12px 16px;margin:0;font-size:13px;line-height:1.7"><b>legacy 口径提示（2026-11-14 补注）</b>：本报告的偏航数字使用旧公式 <code>2&#183;atan2(qz,qw)</code>，奖励分项是在 <code>env.step()</code> 之后重算的（参考状态已推进，加权和与实际 <code>reward</code> 平均差 0.107），速度项分布也因此不可用。修正后的指标与全部重跑结果见仓库根目录 <code>results/summary_table.md</code>，方法与口径说明见 <code>docs/IMPROVEMENTS.md</code>。</div>
 <header><div class="wrap">
 <div class="kicker">Reproduction Report · RSS 2020</div>
 <h1>Learning Agile Robotic Locomotion Skills by Imitating Animals</h1>

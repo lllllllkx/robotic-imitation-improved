@@ -2,8 +2,11 @@
 
 The upstream sources under ``third_party/motion_imitation`` are never edited.
 Every change below is a monkey-patch applied to a *live* environment object,
-so the baseline behaviour (all flags off) stays bit-identical to the paper
-implementation, and each improvement can be switched on independently.
+so the baseline behaviour (all flags off) follows the upstream code path, and
+each improvement can be switched on independently. Alignment with upstream
+``eval_pretrained.py`` is summary-level only (dog_pace 0.7496, dog_spin 0.6378):
+no per-step (state, obs, action, reward) regression exists, and pybullet here is
+3.2.0 while upstream pins 2.7.3, so "bit-identical" would be an overclaim.
 
 Improvements implemented here
 -----------------------------
@@ -19,10 +22,11 @@ Improvements implemented here
 2. ``apply_velocity_reward_v2`` -- the upstream velocity term is
    ``exp(-0.1 * sum_j (dq_ref - dq_sim)^2)`` over 12 joints. Because the error is
    summed rather than averaged and the scale is small, the term saturates near
-   zero (mean 0.0157, p90 1.5e-4 for dog_pace): its gradient is negligible next
-   to the pose term and it stops shaping the policy. v2 averages the error per
-   joint and widens the scale (0.25) so the same operating range maps to
-   [0.53, 0.16], then re-balances the five weights so they still sum to 1 (which
+   zero (mean 2.6e-3, median 1.6e-4, p90 7.5e-3 over 5400 dog_pace steps): its
+   gradient is negligible next to the pose term and it stops shaping the policy.
+   v2 averages the error per joint and widens the scale (0.25) so the same
+   operating range maps to median 0.162 (p10 0.048, p90 0.361, mean 0.191), then
+   re-balances the five weights so they still sum to 1 (which
    keeps the per-step reward in [0, 1] and therefore keeps "per-step reward ==
    normalised return").
 """
@@ -54,11 +58,13 @@ REWARD_WEIGHTS_V2 = {
 
 VELOCITY_ERR_SCALE_V1 = 0.1
 # Measured on dog_pace with the pretrained policy: sum_j (dq_ref - dq_sim)^2 has
-# mean 57.5 (p10 30.4, p90 87.7), i.e. 4.8 rad^2/s^2 per joint. Upstream
-# exp(-0.1 * sum) therefore returns 0.0157 on average and 1.5e-4 at p90 -- the
-# term is saturated over almost the whole operating range and stops shaping the
-# policy. v2 applies the *mean* per-joint error with scale 0.25, which maps the
-# same operating range to [0.53, 0.16] around 0.30: same monotone objective,
+# median 87.3 (p10 48.9, p90 146.0, mean 92.1), i.e. 2.7 rad/s per-joint RMS.
+# Upstream exp(-0.1 * sum) therefore returns a mean of 2.6e-3 (median 1.6e-4,
+# p90 7.5e-3): saturated over almost the whole operating range, so it stops
+# shaping the policy. exp(-0.1 * 92.1) = 1.0e-4 is only what plugging the mean
+# error in gives; Jensen makes the realised mean 26x higher. v2 applies the
+# *mean* per-joint error with scale 0.25, mapping the same range to median 0.162
+# (p10 0.048, p90 0.361, mean 0.191): same monotone objective,
 # but with a usable gradient. Note that 12 * 0.1 == 1.2, so merely switching to
 # the mean (the naive "fix") is an exact identity -- the rescale is the actual
 # change.

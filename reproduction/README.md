@@ -14,15 +14,18 @@
 
 ## 复现的关键数字（官方预训练策略，CPU，确定性 t=0 起点，600 步 = 20 s）
 
-| 技能 | 每步奖励 | 关节误差 (rad) | 根误差 (m) | 偏航误差 (rad) | 速度 (m/s) |
+| 技能 | 每步奖励 | 关节误差 (rad) | 根误差 (m) | 偏航误差 (rad) | 水平速度 (m/s) |
 | --- | --- | --- | --- | --- | --- |
-| dog_pace | 0.7496 | 0.0651 | 0.0241 | 0.0662 | 1.074 |
-| dog_spin | 0.6378 | 0.0495 | 0.0913 | 0.8017 | — |
+| dog_pace | 0.7496 | 0.0651 | 0.0241 | 0.0558 | 1.0717 |
+| dog_spin | 0.6378 | 0.0495 | 0.0913 | 0.8157 | 0.1372 |
 
-- 论文 Table V（Robust，3 seeds × 5 回合）为 `dog_pace 0.820`、`dog_spin 0.839`。
-  上面的差距来自评估口径（论文是随机相位起点 + 观测噪声 + 域随机化 + 多回合平均），
-  不是实现错误；改用仓库根目录的多 seed 协议可得到 `dog_pace 0.748 ± 0.003`、
-  `dog_spin 0.698 ± 0.007`（见 `../results/summary_table.md`）。
+- 论文 Table V（Robust）的口径是**仿真 + canonical 动力学 + 3 个独立训练策略求平均**，
+  不是"每策略 5 回合"（那是 Table IV 的真机协议），所以 `0.820 / 0.839` 与上表**不可直接比**。
+  本仓库改用随机相位 + 3 个评估初始条件的协议可得到 `dog_pace 0.7481 ± 0.0026`、
+  `dog_spin 0.6980 ± 0.0074`（见 `../results/summary_table.md`），但仍不是论文口径：
+  策略只有一份，也没有域随机化。
+- 本节数字来自本仓库 `src/evaluate.py`（完整 yaw 公式）。早期版本的 `0.0662 / 0.8017`
+  是**旧口径（`2·atan2(qz,qw)`）**，仅作历史记录保留在本目录的 CSV 与 HTML 报告里。
 - 训练管线验证：8 进程 30 万步 PPO，实测 70.6 步/秒、耗时 70.8 min；自训练策略在评估中
   32 步摔倒（奖励 0.083、关节误差 0.612 rad、根误差 0.143 m）——属于"管线跑通、预算不足"，
   不作为策略质量结论。
@@ -36,7 +39,7 @@ report/figs/                报告图表的数据源与位图/SVG
 outputs/eval/*.mp4          dog_pace / dog_spin 单回合回放（各 20 s）
 outputs/eval/*_filmstrip.png 关键帧拼图
 outputs/eval/<tag>/summary.json   每回合指标汇总
-outputs/eval/<tag>/steps.csv      逐帧原始数据（episode, step, reward, 5 个分项, 关节角…）
+outputs/eval/<tag>/steps.csv      [legacy] 逐帧原始数据；分项是在 env.step() 之后重算的，勿用于统计
 outputs/eval/trained_dog_pace/    自训练 30 万步策略的评估结果
 outputs/reference/*.csv     10 段参考动作的逐帧关节/根状态（由官方 .txt 转出）
 outputs/train/dog_pace_300k/ 训练 30 万步的 episodes.csv、训练摘要与最终策略
@@ -67,6 +70,12 @@ python scripts/build_report.py
 脚本内的路径常量指向本目录的 `outputs/eval`，可直接运行或按需修改。
 
 ## 边界
+
+**这批产物是 legacy 口径**：`outputs/eval/*/steps.csv`、HTML 报告与 `复现说明.md` 里的
+奖励分项是在 `env.step()` 之后重算的（此时参考状态已推进），每步加权和与实际 `reward`
+平均差 0.107；偏航数字用的是 `2·atan2(qz,qw)` 的旧公式。它们保留作为第二阶段的历史记录，
+**不要**用它们做统计结论。修正后的指标与重跑结果在仓库根目录 `results/` 下，方法说明见
+`../docs/IMPROVEMENTS.md` 的"`reproduction/` 目录里的旧产物"一节。
 
 - 训练只做了 30 万步（约论文预算的 0.15%），用于验证管线与吞吐，不用于比较策略质量；
 - 论文 4.2 节的潜在空间自适应 / AWR、Table IV 的真机实验在上游仓库中没有实现，本复现也没有补；

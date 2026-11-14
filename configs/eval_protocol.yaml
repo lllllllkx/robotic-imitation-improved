@@ -1,11 +1,16 @@
-# 实验配置：评估协议（对应 docs/IMPROVEMENTS.md 中的报告数字）
+# 实验配置：评估协议（对应 docs/IMPROVEMENTS.md 与 results/summary_table.md 里的数字）
+#
+# 说明：`seeds` 是**评估初始条件**的个数，不是训练种子。论文 Table V 的"3 个策略平均"
+# 与本配置不是同一件事（见 docs/IMPROVEMENTS.md 改进 3 的"和论文的差别"）。
 
 evaluation:
   max_steps: 600          # 20 s @ 30 Hz
   episodes: 3
   seeds: 3
-  random_phase: true      # 论文式：每回合从参考片段随机相位起步
-  start_phases: null      # 若要相位栅格，改成 "0,0.25,0.5,0.75"
+  run_id: r20261114       # 汇总时按它过滤，避免混入历史目录
+  init_mode: controlled   # controlled = 固定从参考状态起步；upstream = ref_state_init_prob 0.9 + 随机起始时间
+  random_phase: true      # 每回合在参考片段上随机相位起步（由 (seed, episode) 显式生成）
+  start_phases: null      # 相位栅格时用 "0,0.25,0.5,0.75"（配 episodes: 4, seeds: 1）
   deterministic_start:    # 上游 eval_pretrained.py 的口径，用于对照
     episodes: 1
     seeds: 1
@@ -14,10 +19,13 @@ evaluation:
 metrics:
   primary: mean_reward            # 每步奖励均值（权重和为 1 时为归一化回报）
   window_mean_seconds: 5.0
-  drift_fit: least_squares_slope_of_yaw_error
+  tracking_error: mean_yaw_err_rad          # 包裹后的绝对偏航误差（跟踪精度）
+  drift: yaw_drift_rad_per_s                # 展开后带符号误差的最小二乘斜率（累积趋势）
+  speed: mean_speed_mps                     # 水平速度；三维速度另存 mean_speed_3d_mps
+  termination: time_limit | early_termination
 
 variants:
-  baseline: []
-  heading_anchor: ["--yaw-anchor"]
-  velocity_v2: ["--reward-v2"]
+  baseline: ["--random-phase"]
+  heading_anchor: ["--random-phase", "--yaw-anchor"]
+  velocity_v2: ["--random-phase", "--reward-v2"]
   full: ["--yaw-anchor", "--reward-v2", "--random-phase"]

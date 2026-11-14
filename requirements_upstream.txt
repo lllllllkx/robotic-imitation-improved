@@ -1,0 +1,15 @@
+# 上游 paper 分支声明的依赖（仅列已核对过的版本），用于与 requirements.txt 对照。
+# 来源：论文仓库 paper 分支的依赖声明 + 论文环境说明。
+# 注意：这份配置在本机没有逐项验证；本机实测跑通的是 requirements.txt（见 requirements_windows.txt）。
+# 未核对的包（scipy / matplotlib / imageio / Pillow）刻意不给版本号，避免臆造。
+python=3.7
+tensorflow==1.14.0
+pybullet==2.7.3
+numpy==1.17.3
+gym==0.17.1
+stable-baselines==2.10.0
+mpi4py==3.0.3
+scipy
+matplotlib
+imageio
+Pillow

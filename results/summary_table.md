@@ -1,7 +1,14 @@
-| skill | variant | episodes | mean_reward | std_reward | pose_err_rad | root_err_m | yaw_err_rad | yaw_drift_rad_s | speed_mps | survival_pct |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| dog_pace | randphase | 9 | 0.7481 | 0.0026 | 0.0651 | 0.0261 | 0.0751 | -0.0006 | 1.0739 | 100 |
-| dog_pace | rewardv2+randphase | 9 | 0.7222 | 0.0027 | 0.0651 | 0.0261 | 0.0751 | -0.0006 | 1.0739 | 100 |
-| dog_pace | yawanchor+randphase | 9 | 0.7521 | 0.0008 | 0.0649 | 0.0239 | 0.0286 | -0.0008 | 1.0792 | 100 |
-| dog_spin | randphase | 9 | 0.6980 | 0.0074 | 0.0502 | 0.0679 | 0.2510 | 0.0038 | 0.1601 | 100 |
-| dog_spin | yawanchor+randphase | 9 | 0.7602 | 0.0014 | 0.0475 | 0.0660 | 0.0473 | -0.0007 | 0.1526 | 100 |
+| skill | variant | init | episodes | mean_reward | std_reward | seed_mean | seed_std | pose_err_rad | root_err_m | yaw_err_rad | yaw_drift_rad_s | speed_mps | survival_pct | sha8 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| dog_pace | phasegrid | controlled | 4 | 0.7492 | 0.0004 | 0.7492 | 0.0000 | 0.0651 | 0.0250 | 0.0583 | -0.0020 | 1.0703 | 100 | 5efb1a76 |
+| dog_pace | randphase+upstreaminit | upstream | 9 | 0.7488 | 0.0019 | 0.7488 | 0.0018 | 0.0651 | 0.0250 | 0.0597 | -0.0010 | 1.0714 | 100 | 5efb1a76 |
+| dog_pace | randphase | controlled | 9 | 0.7481 | 0.0026 | 0.7481 | 0.0014 | 0.0651 | 0.0261 | 0.0631 | 0.0004 | 1.0713 | 100 | 5efb1a76 |
+| dog_pace | rewardv2+randphase | controlled | 9 | 0.7222 | 0.0027 | 0.7222 | 0.0014 | 0.0651 | 0.0261 | 0.0631 | 0.0004 | 1.0713 | 100 | 5efb1a76 |
+| dog_pace | yawanchor+randphase | controlled | 9 | 0.7521 | 0.0008 | 0.7521 | 0.0006 | 0.0649 | 0.0239 | 0.0335 | 0.0000 | 1.0765 | 100 | 5efb1a76 |
+| dog_pace | yawanchor+rewardv2+randphase | controlled | 9 | 0.7264 | 0.0008 | 0.7264 | 0.0006 | 0.0649 | 0.0239 | 0.0335 | 0.0000 | 1.0765 | 100 | 5efb1a76 |
+| dog_spin | phasegrid | controlled | 4 | 0.6828 | 0.0313 | 0.6828 | 0.0000 | 0.0499 | 0.0728 | 0.4150 | -0.0099 | 0.1172 | 100 | 763f4cc7 |
+| dog_spin | randphase+upstreaminit | upstream | 9 | 0.7013 | 0.0068 | 0.7013 | 0.0027 | 0.0502 | 0.0668 | 0.2701 | -0.0047 | 0.1126 | 100 | 763f4cc7 |
+| dog_spin | randphase | controlled | 9 | 0.6980 | 0.0074 | 0.6980 | 0.0026 | 0.0502 | 0.0679 | 0.2804 | -0.0052 | 0.1128 | 100 | 763f4cc7 |
+| dog_spin | rewardv2+randphase | controlled | 9 | 0.6931 | 0.0074 | 0.6931 | 0.0026 | 0.0502 | 0.0679 | 0.2804 | -0.0052 | 0.1128 | 100 | 763f4cc7 |
+| dog_spin | yawanchor+randphase | controlled | 9 | 0.7602 | 0.0014 | 0.7602 | 0.0007 | 0.0475 | 0.0660 | 0.0537 | 0.0006 | 0.1069 | 100 | 763f4cc7 |
+| dog_spin | yawanchor+rewardv2+randphase | controlled | 9 | 0.7551 | 0.0015 | 0.7551 | 0.0007 | 0.0475 | 0.0660 | 0.0537 | 0.0006 | 0.1069 | 100 | 763f4cc7 |
