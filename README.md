@@ -106,6 +106,21 @@ powershell -ExecutionPolicy Bypass -File scripts\run_protocol.ps1 `
     -RunId r20261115 -Python D:\anaconda\envs\motion_imitation_repro\python.exe
 ```
 
+## 改动同步约定
+
+每一轮改动（代码、结果、文档）收尾都**直接提交并推送**到 `main`，不停在本地：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\push_changes.ps1 "fix: 一句话说明这轮改了什么"
+```
+
+脚本做四件事：`git add -A` → 安全检查（拒绝仓库根目录的 `_` 临时文件、`logs/`、单文件 > 50 MB）
+→ `git commit -F`（支持中文多行信息）→ `git push` 后用 `git ls-remote` 校验远端 hash
+与本地一致，不一致直接报错。只想本地留一手时加 `-NoPush`。
+
+每条提交信息都写明这轮数字来自哪个 `run_id`；涉及数字变化时，`results/summary_table.md`
+与 README 结果表必须在同一次提交里一起更新。
+
 ## 目录
 
 ```

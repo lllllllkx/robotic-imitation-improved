@@ -19,3 +19,6 @@ Thumbs.db
 
 # ---- reproduction frames (regenerable, ~200 MB) ----
 reproduction/outputs/**/frames/
+
+# ---- root-level scratch files (commit messages, probe output) ----
+/_*
