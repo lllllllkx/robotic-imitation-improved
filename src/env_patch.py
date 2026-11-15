@@ -61,10 +61,11 @@ REWARD_WEIGHTS_V2 = {
 
 VELOCITY_ERR_SCALE_V1 = 0.1
 # Measured on dog_pace with the pretrained policy: sum_j (dq_ref - dq_sim)^2 has
-# median 87.3 (p10 48.9, p90 146.0, mean 92.1), i.e. 2.7 rad/s per-joint RMS.
+# median 87.4 (p10 48.9, p90 146.0, mean 92.2, max 389 over all 5400 steps),
+# i.e. 2.7 rad/s per-joint RMS.
 # Upstream exp(-0.1 * sum) therefore returns a mean of 2.6e-3 (median 1.6e-4,
 # p90 7.5e-3): numerically flat over almost the whole operating range, so its
-# weighted contribution is 0.02% of the per-step reward. exp(-0.1 * 92.1) =
+# weighted contribution is 0.02% of the per-step reward. exp(-0.1 * 92.2) =
 # 1.0e-4 is only what plugging the mean error in gives; Jensen makes the
 # realised mean 26x higher. v2 applies the *mean* per-joint error with scale
 # 0.25, mapping the same range to median 0.162 (p10 0.048, p90 0.361,

@@ -161,10 +161,10 @@ class VelocityRewardTests(unittest.TestCase):
                            places=2)
 
   def test_exp_of_mean_is_below_mean_of_exp(self):
-    # IMPROVEMENTS.md: plugging the mean error in gives 1.0e-4, while the
+    # IMPROVEMENTS.md: plugging the measured mean error (92.2) in gives 9.9e-5, while the
     # realised mean over 5400 steps is 2.6e-3 (Jensen pushes it 26x higher)
-    self.assertAlmostEqual(metrics.velocity_reward(92.1, 1, 0.1),
-                           1.0e-4, places=6)
+    self.assertAlmostEqual(metrics.velocity_reward(92.2, 1, 0.1),
+                           9.904e-5, delta=1e-7)
 
 
 class TerminationTests(unittest.TestCase):

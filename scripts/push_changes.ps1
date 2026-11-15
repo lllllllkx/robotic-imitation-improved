@@ -7,20 +7,32 @@
   安全检查拒绝三类东西进仓库：仓库根目录的临时文件（_ 开头）、logs/ 日志、单个超过 50 MB 的文件。
 
 .PARAMETER Message
-  提交信息。多行请用反引号换行或传 here-string。
+  提交信息（单段、单行用这个）。
+
+.PARAMETER MessageFile
+  UTF-8 文件里读提交信息；长段落、多行中文用这个，避免命令行引号炸掉。
 
 .PARAMETER NoPush
   只提交不推送（用于想先本地看一眼 diff 的情况）。
 
 .EXAMPLE
   .\scripts\push_changes.ps1 "fix: 跟踪指标改到与奖励同一时点"
+
+.EXAMPLE
+  .\scripts\push_changes.ps1 -MessageFile C:\tmp\msg.txt
 #>
 param(
-  [Parameter(Mandatory = $true, Position = 0)][string]$Message,
+  [Parameter(Mandatory = $true, ParameterSetName = "inline", Position = 0)][string]$Message,
+  [Parameter(Mandatory = $true, ParameterSetName = "file")][string]$MessageFile,
   [string]$Remote = "origin",
   [string]$Branch = "main",
   [switch]$NoPush
 )
+
+if ($PSCmdlet.ParameterSetName -eq "file") {
+  if (-not (Test-Path -LiteralPath $MessageFile)) { throw ("找不到提交信息文件: " + $MessageFile) }
+  $Message = [IO.File]::ReadAllText($MessageFile, [Text.Encoding]::UTF8)
+}
 
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
