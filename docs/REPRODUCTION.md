@@ -83,20 +83,27 @@ mpiexec -n 8 python third_party\motion_imitation\run.py `
 跑完上面的命令后，可逐项核对：
 
 1. 基线单回合评估的**汇总值**应与论文实现的评估工具一致（`dog_pace` 0.7496、`dog_spin` 0.6378，
-   重复跑数值相同）。这**不是**逐位一致：没有做逐步 `(状态, 观测, 动作, 奖励)` 回归，
-   而且 pybullet 版本与上游不同。
+   重复跑数值相同；跟踪误差为关节 0.0350 / 0.0361、根 0.0368 / 0.0942、偏航 0.0548 / 0.7409）。
+   这**不是**逐位一致：没有做逐步 `(状态, 观测, 动作, 奖励)` 回归，而且 pybullet 版本与上游不同。
 2. `reward_from_terms` 应与 `mean_reward` 一致到 1e-12：说明每步记录的分项就是该步奖励的组成部分
    （早期脚本在 `env.step()` 之后重算分项，两者平均差 0.107，已废弃）。
 3. `--yaw-anchor` 应显著降低 `yaw_err_rad` 与 `yaw_drift_rad_per_s`，并抬高 `root_pose` 分项
-   （见 `docs/IMPROVEMENTS.md` 的实测表）。
+   （`dog_spin` 0.2081 → 0.0627 rad、`dog_pace` 0.0630 → 0.0312 rad；见
+   `docs/IMPROVEMENTS.md` 的实测表）。误差与奖励同一时间点，取自 `task.reward()` 内部快照。
 4. 随机相位协议下的 `std` 应明显大于 0；`by_seed` 的 `mean_across_seeds` 才是"跨初始条件"的估计，
    池化 std 会把种子内波动混进来。
 5. `--reward-v2` 下奖励数值与基线**不可直接比较**（权重与尺度都变了），要看关节/根/偏航误差。
+6. 跑 `--upstream-init` 时，同一 seed 的初始状态由任务自己的 `RandomState` 采样（本仓库用
+   `env_patch.pin_task_random` 钉住）；若不钉住，同一命令两次会得到不同轨迹——这是上游的
+   未定行为，不是本仓库的随机性。
+7. `summary.json` 里的 `mean_offstep_yaw_gap_rad` / `mean_offstep_ref_pos_gap_m` 是**诊断量**：
+   它们记录"如果按旧读法在 `env.step()` 之后读参考状态"会偏多少（spin 偏航 0.0763 rad、
+   pace 根参考 0.0376 m/步），用来证明跟踪指标必须与奖励同一时点。
 
 ## 5. 复现阶段产物（`reproduction/`）
 
 `reproduction/` 里是第二阶段（隔离工作区 `robotic_imitation_repro`）的交付物：HTML 报告、
 两段 20 s 回放、逐帧 CSV、10 段参考动作 CSV、30 万步训练的 `episodes.csv`。
 **注意**：那批 CSV 里的奖励分项是在 `env.step()` 之后记录的，口径不正确（见清单第 2 条），
-其中的偏航数值也是旧公式产物。它们保留作为历史记录，**不要**用它们做统计结论；
+其中的偏航数值也是旧公式产物，跟踪误差还比奖励晚一帧（见清单第 7 条）。它们保留作为历史记录，**不要**用它们做统计结论；
 统计请用本仓库 `src/evaluate.py --csv` 新生成的 `ep*.csv`。

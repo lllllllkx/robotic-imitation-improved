@@ -170,14 +170,54 @@ class VelocityRewardTests(unittest.TestCase):
 class TerminationTests(unittest.TestCase):
 
   def test_time_limit(self):
-    self.assertEqual(metrics.termination_reason(True, 600, 600), "time_limit")
+    self.assertEqual(metrics.termination_reason(False, True, 600, 600),
+                     "time_limit")
 
   def test_early_termination(self):
-    self.assertEqual(metrics.termination_reason(True, 32, 600),
+    self.assertEqual(metrics.termination_reason(True, True, 32, 600),
                      "early_termination")
 
-  def test_unknown(self):
-    self.assertEqual(metrics.termination_reason(False, 600, 600), "time_limit")
+  def test_fall_on_last_step_is_not_a_time_limit(self):
+    # the bug the review caught: ordering matters when both flags are set
+    self.assertEqual(metrics.termination_reason(True, True, 600, 600),
+                     "early_termination")
+
+  def test_env_time_cap(self):
+    # wrapper's own max_episode_steps ends the episode before our cap
+    self.assertEqual(metrics.termination_reason(False, True, 500, 600),
+                     "env_time_cap")
+
+
+class TrackingErrorTests(unittest.TestCase):
+  """Joint / root / yaw errors, on one shared time point."""
+
+  def test_pose_error_identical(self):
+    q = np.linspace(-0.5, 0.5, 12)
+    self.assertAlmostEqual(metrics.pose_tracking_error(q, q), 0.0, places=12)
+
+  def test_pose_error_mean_abs(self):
+    ref = np.zeros(4)
+    sim = np.array([0.1, -0.2, 0.3, -0.4])
+    self.assertAlmostEqual(metrics.pose_tracking_error(ref, sim), 0.25)
+
+  def test_pose_error_shape_mismatch_rejected(self):
+    with self.assertRaises(ValueError):
+      metrics.pose_tracking_error(np.zeros(4), np.zeros(5))
+
+  def test_root_error_is_euclidean_distance(self):
+    self.assertAlmostEqual(
+        metrics.root_tracking_error([0, 0, 0], [0.3, 0.4, 0.0]), 0.5)
+
+  def test_yaw_error_sign_and_wrap(self):
+    q0 = [0.0, 0.0, 0.0, 1.0]
+    # robot turned +0.2 rad relative to the reference
+    q_sim = [0.0, 0.0, np.sin(0.1), np.cos(0.1)]
+    self.assertAlmostEqual(metrics.yaw_tracking_error(q_sim, q0), 0.2,
+                           places=6)
+    # and the sign flips with the -pi wrap
+    q_sim2 = [0.0, 0.0, np.sin((np.pi + 0.2) / 2.0), np.cos((np.pi + 0.2) / 2.0)]
+    self.assertAlmostEqual(metrics.yaw_tracking_error(q_sim2, q0),
+                           -np.pi + 0.2, places=6)
 
 
 class PhaseSamplingTests(unittest.TestCase):

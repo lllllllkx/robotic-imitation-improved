@@ -21,14 +21,17 @@ Improvements implemented here
 
 2. ``apply_velocity_reward_v2`` -- the upstream velocity term is
    ``exp(-0.1 * sum_j (dq_ref - dq_sim)^2)`` over 12 joints. Because the error is
-   summed rather than averaged and the scale is small, the term saturates near
-   zero (mean 2.6e-3, median 1.6e-4, p90 7.5e-3 over 5400 dog_pace steps): its
-   gradient is negligible next to the pose term and it stops shaping the policy.
-   v2 averages the error per joint and widens the scale (0.25) so the same
-   operating range maps to median 0.162 (p10 0.048, p90 0.361, mean 0.191), then
-   re-balances the five weights so they still sum to 1 (which
-   keeps the per-step reward in [0, 1] and therefore keeps "per-step reward ==
-   normalised return").
+   summed rather than averaged and the scale is small, the term sits near zero
+   over almost the whole operating range (mean 2.6e-3, median 1.6e-4, p90 7.5e-3
+   over 5400 dog_pace steps), so its weighted contribution to the per-step reward
+   is 0.02%. v2 averages the error per joint and widens the scale (0.25), moving
+   the same operating range to median 0.162 (p10 0.048, p90 0.361, mean 0.191)
+   and lifting the weighted contribution to 2.6%; the five weights are
+   re-balanced so they still sum to 1 (which keeps the per-step reward in
+   [0, 1] and therefore keeps "per-step reward == normalised return").
+   This is a statement about the *numerical range of the reward signal*, not
+   about training: no end-to-end PPO retraining with v2 was run, so a claim
+   about policy gradients or final performance would be unsupported.
 """
 
 from __future__ import absolute_import
@@ -60,14 +63,16 @@ VELOCITY_ERR_SCALE_V1 = 0.1
 # Measured on dog_pace with the pretrained policy: sum_j (dq_ref - dq_sim)^2 has
 # median 87.3 (p10 48.9, p90 146.0, mean 92.1), i.e. 2.7 rad/s per-joint RMS.
 # Upstream exp(-0.1 * sum) therefore returns a mean of 2.6e-3 (median 1.6e-4,
-# p90 7.5e-3): saturated over almost the whole operating range, so it stops
-# shaping the policy. exp(-0.1 * 92.1) = 1.0e-4 is only what plugging the mean
-# error in gives; Jensen makes the realised mean 26x higher. v2 applies the
-# *mean* per-joint error with scale 0.25, mapping the same range to median 0.162
-# (p10 0.048, p90 0.361, mean 0.191): same monotone objective,
-# but with a usable gradient. Note that 12 * 0.1 == 1.2, so merely switching to
-# the mean (the naive "fix") is an exact identity -- the rescale is the actual
-# change.
+# p90 7.5e-3): numerically flat over almost the whole operating range, so its
+# weighted contribution is 0.02% of the per-step reward. exp(-0.1 * 92.1) =
+# 1.0e-4 is only what plugging the mean error in gives; Jensen makes the
+# realised mean 26x higher. v2 applies the *mean* per-joint error with scale
+# 0.25, mapping the same range to median 0.162 (p10 0.048, p90 0.361,
+# mean 0.191): the same monotone objective, but with visible numerical variation
+# inside the operating range, and a weighted contribution of 2.6%. This
+# quantifies the reward signal, not a training effect. Note that 12 * 0.1 ==
+# 1.2, so merely switching to the mean (the naive "fix") is an exact identity --
+# the rescale is the actual change.
 VELOCITY_ERR_SCALE_V2 = 0.25
 
 
@@ -156,18 +161,32 @@ def apply_velocity_reward_v2(env, weights=None, err_scale=None):
 
 
 def attach_term_logger(env):
-  """Capture the five reward terms *inside* ``task.reward()``.
+  """Capture the five reward terms *and* a tracking snapshot inside ``reward()``.
 
-  Calling ``task._calc_reward_*()`` from the outside after ``env.step()``
-  returns values for the *next* reference state (the task advances its motion
-  after computing the reward), so an external recomputation never adds up to
-  the logged reward. Wrapping ``reward`` tees the exact terms the environment
-  used, which makes the per-step reward verifiable against the five terms.
+  Upstream ``LocomotionGymEnv.step()`` runs ``robot.Step`` -> ``self._reward()``
+  -> ``task.update()`` -> ``_update_ref_state()/_update_ref_model()``, i.e. the
+  reference motion advances *after* the reward of the current step has been
+  computed. Reading reference poses from outside ``env.step()`` therefore
+  compares the robot's state against frame ``t+1`` while the reward it earned
+  was measured against frame ``t`` -- a one-simulation-step offset. That offset
+  also interacts with ``--yaw-anchor``: the heading is re-anchored inside
+  ``_update_ref_motion``, so a post-step read would see an already-corrected
+  reference.
+
+  Wrapping ``reward`` tees both the exact terms and the exact (robot state,
+  reference state) pair they were computed against. ``evaluate.py`` derives
+  every tracking metric from this snapshot, so reward, joint error, root error,
+  yaw error and drift all live on the same time point.
   """
   task = imitation_task(env)
   if getattr(task, "_term_logger_installed", False):
     return task
   orig_reward = task.reward
+
+  pyb = task._get_pybullet_client()
+  sim_model = env.robot.quadruped
+  ref_model = task._ref_model
+  n_joints = task._get_num_joints()
 
   def reward(env_):
     task._last_terms = {
@@ -177,10 +196,49 @@ def attach_term_logger(env):
         "root_pose": float(task._calc_reward_root_pose()),
         "root_velocity": float(task._calc_reward_root_velocity()),
     }
+    # Reference frame this reward is scored against (before task.update()).
+    # ``task._ref_pose`` is the frame tuple set by the last _update_ref_motion,
+    # i.e. exactly the one the terms above were computed from.
+    motion = task.get_active_motion()
+    ref_joints = np.array(motion.get_frame_joints(task._ref_pose))
+    sim_joints = []
+    for j in range(n_joints):
+      jq = pyb.getJointStateMultiDof(sim_model, j)[0]
+      if len(jq) > 0:
+        sim_joints.append(float(jq[0]))
+    sim_pos, sim_orn = pyb.getBasePositionAndOrientation(sim_model)
+    ref_pos, ref_orn = pyb.getBasePositionAndOrientation(ref_model)
+    task._last_snapshot = {
+        "ref_time": float(task._get_motion_time()),
+        "ref_joints": ref_joints,
+        "sim_joints": np.array(sim_joints),
+        "sim_pos": np.array(sim_pos),
+        "sim_orn": np.array(sim_orn),
+        "ref_pos": np.array(ref_pos),
+        "ref_orn": np.array(ref_orn),
+    }
     return orig_reward(env_)
 
   task.reward = reward
   task._term_logger_installed = True
+  return task
+
+
+def pin_task_random(task, seed):
+  """Give the task a private, seeded numpy RNG.
+
+  Upstream samples the initial state (``ref_state_init_prob``) and the random
+  start time through ``self._env.np_random`` of the *task*. ``env.seed()``
+  reaches the gym env, but not the object the task holds, so with
+  ``--upstream-init`` those draws fell through to the process-global
+  ``np.random``: the same seed produced different rollouts in different
+  processes (measured: three rollouts of seed 0 gave 0.7034 / 0.7050 / 0.6959,
+  and one draw produced a reset that terminated on step 1). Pinning a
+  RandomState per seed makes that regime reproducible without changing which
+  distribution is sampled.
+  """
+  rng = np.random.RandomState(int(seed))
+  task._env.np_random = rng
   return task
 
 

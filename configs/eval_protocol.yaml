@@ -29,3 +29,17 @@ variants:
   heading_anchor: ["--random-phase", "--yaw-anchor"]
   velocity_v2: ["--random-phase", "--reward-v2"]
   full: ["--yaw-anchor", "--reward-v2", "--random-phase"]
+
+# 指标时间点（本轮修正）
+# 全部跟踪指标（关节 / 根位置 / 偏航 / 漂移）与 5 个奖励分项都在 task.reward() 内部
+# 采样：此时机器人已执行动作、参考动作尚未由 task.update() 推进，因此与当步奖励
+# 严格同一帧（t）。早期版本在 env.step() 返回后才读参考状态，读到的是 t+1 帧，
+# 实测错位量 dog_spin 偏航 0.0763 rad、dog_pace 根参考 0.0376 m/步。
+metric_timepoint: "inside task.reward() (reference frame t, before task.update())"
+diagnostics:
+  mean_offstep_yaw_gap_rad: "step 返回后再读参考朝向与快照的差，用于审计上述错位量级"
+  mean_offstep_ref_pos_gap_m: "同上，参考根位移"
+# 任务 RNG：ImitationTask 通过 self._env.np_random 采样初始状态 / 起始时间，
+# env.seed() 到不了那一层。--upstream-init 模式下由 env_patch.pin_task_random 按 seed
+# 钉住 (np.random.RandomState(seed))；否则同一 seed 跨进程会得到不同轨迹。
+task_rng: "np.random.RandomState(seed) per seed (pinned by us; upstream leaves this RNG unseeded)"

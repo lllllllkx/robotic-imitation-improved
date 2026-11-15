@@ -73,6 +73,31 @@ def velocity_reward(sum_sq_err, n_joints, scale):
   return float(np.exp(-float(scale) * float(sum_sq_err) / float(n_joints)))
 
 
+def pose_tracking_error(ref_joints, sim_joints):
+  """Mean absolute joint-angle tracking error (rad).
+
+  Both arrays must come from the *same* simulation step: the reference frame
+  the reward was computed against, not the frame the task advances to
+  afterwards (see ``env_patch.attach_term_logger``).
+  """
+  ref = np.asarray(ref_joints, dtype=float)
+  sim = np.asarray(sim_joints, dtype=float)
+  if ref.shape != sim.shape:
+    raise ValueError("joint arrays differ: %s vs %s" % (ref.shape, sim.shape))
+  return float(np.mean(np.abs(ref - sim)))
+
+
+def root_tracking_error(sim_pos, ref_pos):
+  """Euclidean distance between robot and reference base position (m)."""
+  return float(np.linalg.norm(np.asarray(sim_pos, dtype=float)
+                              - np.asarray(ref_pos, dtype=float)))
+
+
+def yaw_tracking_error(sim_quat, ref_quat):
+  """Signed yaw error in (-pi, pi], robot minus reference (rad)."""
+  return wrap_angle(quat_to_yaw(sim_quat) - quat_to_yaw(ref_quat))
+
+
 def window_mean(values, dt, window_s):
   """Mean over the trailing ``window_s`` seconds of an episode."""
   values = np.asarray(values, dtype=float)
@@ -99,11 +124,27 @@ def drift_rate(values, dt):
   return float(slope)
 
 
-def termination_reason(done, steps, max_steps):
-  """Separate the time limit from an early (e.g. falling) termination."""
+def termination_reason(terminated, done, steps, max_steps):
+  """Separate a real termination from the step/time cap.
+
+  ``terminated`` is the underlying episode-end flag reported by the environment
+  (``ImitationWrapperEnv.step`` returns ``info = {"terminated": terminated}``
+  where ``terminated = done`` *before* the wrapper ORs in its own step cap).
+  Checking ``steps >= max_steps`` first -- as an earlier version did -- labels a
+  robot that falls on the very last allowed step as "time_limit", which hides
+  exactly the episode that matters for a locomotion study.
+
+  Returns one of ``early_termination`` (robot fell / task failed),
+  ``time_limit`` (our ``--max-steps`` cap reached), ``env_time_cap`` (the
+  environment's own ``max_episode_steps`` reached) or ``unknown``.
+  """
+  if terminated:
+    return "early_termination"
   if steps >= max_steps:
     return "time_limit"
-  return "early_termination" if done else "unknown"
+  if done:
+    return "env_time_cap"
+  return "unknown"
 
 
 def summarize_episodes(episodes):

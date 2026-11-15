@@ -56,7 +56,14 @@ foreach ($motion in @("dog_pace", "dog_spin")) {
         "--start-phases", "0,0.25,0.5,0.75")
 }
 
-# 3) deterministic controls (single controlled episode, t=0 start)
+# 3) alignment with the upstream initial-state distribution (ref_state_init_prob
+#    = 0.9 + randomised start time); same seeds/episodes as the matrix
+foreach ($motion in @("dog_pace", "dog_spin")) {
+    Run-Eval -Out "results\eval" -Motion $motion -Tag $motion -Flags @(
+        "--episodes", "$eps", "--seeds", "$seeds", "--max-steps", "$maxSteps", "--upstream-init")
+}
+
+# 4) deterministic controls (single controlled episode, t=0 start)
 Run-Eval -Out "results\det_dog_pace" -Motion "dog_pace" -Tag "dog_pace" -Flags @(
     "--seeds", "1", "--episodes", "1", "--max-steps", "$maxSteps", "--csv")
 Run-Eval -Out "results\det_dog_spin" -Motion "dog_spin" -Tag "dog_spin" -Flags @(
@@ -64,7 +71,9 @@ Run-Eval -Out "results\det_dog_spin" -Motion "dog_spin" -Tag "dog_spin" -Flags @
 Run-Eval -Out "results\det_spin_yaw" -Motion "dog_spin" -Tag "dog_spin" -Flags @(
     "--seeds", "1", "--episodes", "1", "--max-steps", "$maxSteps", "--yaw-anchor", "--csv")
 
-# 4) one table for this run only
+# 5) one table for this run only: aggregate scans the whole results/ tree
+#    (results/eval + results/det_*), so the deterministic controls above are
+#    included as well; --run-id keeps stale directories out.
 Write-Host "== aggregating run $RunId"
 & $Python -m src.aggregate --run-id $RunId
 if ($LASTEXITCODE -ne 0) { throw "aggregate failed" }
