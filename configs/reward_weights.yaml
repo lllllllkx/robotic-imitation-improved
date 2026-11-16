@@ -12,7 +12,7 @@ reward_v1:                # 上游/论文原始定义
   root_velocity: 0.10
   velocity_term: "exp(-0.1 * sum_j (dq_ref - dq_sim)^2)"
   # 实测（dog_pace 官方策略，9 回合 x 600 步 = 5400 步，取自 task.reward() 内部）：
-  # sum_j (dq_ref-dq_sim)^2 均值 92.2（p10 48.9 / p50 87.4 / p90 146.0）
+  # sum_j (dq_ref-dq_sim)^2 均值 92.2（p10 48.9 / p50 87.4 / p90 146.0 / max 389）
   # 该项取值 p10 4.6e-7 / p50 1.6e-4 / 均值 2.6e-3 / p90 7.5e-3 / max 0.041
   # 加权贡献 1.3e-4（占总奖励 0.02%）-> 该项在常用误差区间内基本饱和
 

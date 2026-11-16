@@ -66,8 +66,8 @@ VELOCITY_ERR_SCALE_V1 = 0.1
 # Upstream exp(-0.1 * sum) therefore returns a mean of 2.6e-3 (median 1.6e-4,
 # p90 7.5e-3): numerically flat over almost the whole operating range, so its
 # weighted contribution is 0.02% of the per-step reward. exp(-0.1 * 92.2) =
-# 1.0e-4 is only what plugging the mean error in gives; Jensen makes the
-# realised mean 26x higher. v2 applies the *mean* per-joint error with scale
+# 9.9e-5 is only what plugging the mean error in gives; Jensen makes the
+# realised mean 26x higher (2.6e-3). v2 applies the *mean* per-joint error with scale
 # 0.25, mapping the same range to median 0.162 (p10 0.048, p90 0.361,
 # mean 0.191): the same monotone objective, but with visible numerical variation
 # inside the operating range, and a weighted contribution of 2.6%. This
