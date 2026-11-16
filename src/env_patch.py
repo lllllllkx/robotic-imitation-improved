@@ -40,6 +40,8 @@ from __future__ import print_function
 
 import numpy as np
 
+from src import heading_anchor
+
 REWARD_WEIGHTS_V1 = {
     "pose": 0.50,
     "velocity": 0.05,
@@ -89,10 +91,34 @@ def imitation_task(env):
 
 
 def enable_cycle_heading_anchor(env):
-  """Re-anchor reference heading at every gait-cycle boundary (improvement 1)."""
+  """Re-anchor reference heading at every gait-cycle boundary (improvement 1).
+
+  Also installs an ``heading_anchor.AnchorTracker``: upstream replaces
+  ``_origin_offset_rot`` outright, so every sync is an absolute world-yaw
+  offset. The tracker keeps the delta each *cycle* sync adds on top of what
+  upstream would have done anyway (reset / clip change), which is what the
+  fixed-frame comparison subtracts -- see ``docs/HEADING_FRAMES.md``.
+  """
   task = imitation_task(env)
   if getattr(task, "_heading_anchor_installed", False):
     return task
+
+  tracker = heading_anchor.AnchorTracker()
+  task._anchor_tracker = tracker
+  # Any sync we do not label explicitly counts as one upstream performs too.
+  task._anchor_event_shared = True
+  orig_sync = task._sync_ref_origin
+
+  def _sync_ref_origin(sync_root_position=True, sync_root_rotation=True):
+    orig_sync(sync_root_position=sync_root_position,
+              sync_root_rotation=sync_root_rotation)
+    rot = getattr(task, "_origin_offset_rot", None)
+    if rot is None:
+      return
+    tracker.on_sync(heading_anchor.offset_yaw(rot),
+                    shared=bool(getattr(task, "_anchor_event_shared", True)))
+
+  task._sync_ref_origin = _sync_ref_origin
 
   def _update_ref_motion():
     time = task._get_motion_time()
@@ -109,7 +135,9 @@ def enable_cycle_heading_anchor(env):
 
     if ((task._enable_cycle_sync and (new_phase < task._prev_motion_phase))
         or change_clip):
-      # upstream: sync_root_rotation=change_clip
+      # upstream: sync_root_rotation=change_clip. A clip change is a sync
+      # upstream performs too, so it must not count as our extra offset.
+      task._anchor_event_shared = bool(change_clip)
       task._sync_ref_origin(sync_root_position=True, sync_root_rotation=True)
 
     task._update_ref_state()
@@ -119,6 +147,23 @@ def enable_cycle_heading_anchor(env):
   task._update_ref_motion = _update_ref_motion
   task._heading_anchor_installed = True
   return task
+
+
+def reset_anchor_tracker(env):
+  """Re-baseline the heading tracker after ``env.reset()``.
+
+  ``_reset_ref_motion`` bypasses ``_sync_ref_origin`` when it installs the
+  opening offset, so the tracker has to be seeded from that value explicitly.
+  Every evaluation episode starts with this call; a custom rollout loop that
+  resets the environment itself must do the same.
+  """
+  task = imitation_task(env)
+  tracker = getattr(task, "_anchor_tracker", None)
+  if tracker is None:
+    return None
+  rot = getattr(task, "_origin_offset_rot", None)
+  tracker.seed(heading_anchor.offset_yaw(rot) if rot is not None else 0.0)
+  return tracker
 
 
 def apply_velocity_reward_v2(env, weights=None, err_scale=None):
@@ -209,7 +254,33 @@ def attach_term_logger(env):
         sim_joints.append(float(jq[0]))
     sim_pos, sim_orn = pyb.getBasePositionAndOrientation(sim_model)
     ref_pos, ref_orn = pyb.getBasePositionAndOrientation(ref_model)
+    tracker = getattr(task, "_anchor_tracker", None)
+    # Raw clip heading at this same time point (origin offset *not* applied):
+    # psi_ref == wrap(psi_raw + theta) must hold, which is what makes
+    # psi_raw + theta_cf the fixed-frame reference.
+    # The offset the reference currently carries is theta; rotating it back
+    # out of the *actual* frame-t reference orientation is exact, whereas
+    # re-evaluating _calc_ref_pose(_get_motion_time()) here would already
+    # point at frame t+1 (one step ahead of the reward).
+    theta_now = (float(tracker.theta) if tracker is not None
+                 and tracker.theta is not None else 0.0)
+    ref_orn_raw = [float(v) for v in
+                   heading_anchor.undo_offset(np.array(ref_orn), theta_now)]
+    ref_yaw_raw = float(heading_anchor.offset_yaw(ref_orn_raw))
     task._last_snapshot = {
+        "ref_orn_raw": ref_orn_raw,
+        "ref_yaw_raw": ref_yaw_raw,
+        # world-yaw offset our cycle re-anchoring has added since the last
+        # shared sync (0.0 when --yaw-anchor is off): the reference yaw this
+        # step would have had in the un-re-anchored (upstream) frame is
+        # ref_yaw_anchored - anchor_cum_yaw.
+        "anchor_cum_yaw": float(tracker.cum) if tracker is not None else 0.0,
+        "anchor_theta_yaw": (float(tracker.theta)
+                              if tracker is not None and tracker.theta is not None
+                              else 0.0),
+        "anchor_theta_cf_yaw": (float(tracker.theta_cf)
+                                 if tracker is not None
+                                 and tracker.theta_cf is not None else 0.0),
         "ref_time": float(task._get_motion_time()),
         "ref_joints": ref_joints,
         "sim_joints": np.array(sim_joints),

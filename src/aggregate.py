@@ -42,6 +42,13 @@ def group_of(path, results_root):
   return GROUP_ALIASES.get(name, name)
 
 
+def fmt_opt(value, digits=4):
+  """Format an optional aggregate entry; missing instrumentation -> n/a."""
+  if value is None:
+    return "n/a"
+  return ("%% .%df" % digits % value).strip()
+
+
 COLUMNS = [
     ("group", lambda p: p["_group"]),
     ("skill", lambda p: p["tag"]),
@@ -57,6 +64,16 @@ COLUMNS = [
     ("yaw_err_rad", lambda p: "%.4f" % p["aggregate"]["mean_yaw_err_rad_mean"]),
     ("yaw_drift_rad_s",
      lambda p: "%.4f" % p["aggregate"]["yaw_drift_rad_per_s_mean"]),
+    # Fixed-frame (post-hoc) readings. For runs without --yaw-anchor the
+    # accumulated offset is 0 by construction, so only the anchored variants
+    # carry a different number here; "n/a" marks a summary that predates the
+    # frame instrumentation and must not be read as zero.
+    ("yaw_fixed_rad", lambda p: fmt_opt(
+        p["aggregate"].get("mean_yaw_err_fixed_rad_mean"))),
+    ("anchor_cum_rad", lambda p: fmt_opt(
+        p["aggregate"].get("final_anchor_cum_yaw_rad_mean"))),
+    ("cum_gap_rad", lambda p: fmt_opt(
+        p["aggregate"].get("max_abs_cum_tracker_vs_geometry_rad_mean"))),
     ("speed_mps", lambda p: "%.4f" % p["aggregate"]["mean_speed_mps_mean"]),
     ("survival_pct",
      lambda p: "%.0f" % (100.0 * sum(

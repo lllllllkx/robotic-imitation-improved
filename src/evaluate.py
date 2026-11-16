@@ -16,6 +16,12 @@ What this adds on top of the upstream ``eval_pretrained.py`` loop (see
 * yaw from the full quaternion, reporting both a bounded tracking error
   (wrapped absolute) and a drift slope fitted on the *unwrapped signed*
   error;
+* with ``--yaw-anchor``, a second yaw series in the *fixed reference frame*:
+  the cycle re-anchoring rotates the reference heading, so the same robot
+  pose is also scored against the frame the reference would have had without
+  the extra cycle syncs (``ref_yaw - anchor_cum_yaw``). This is a post-hoc
+  reconstruction of one executed trajectory, not the error a policy would
+  produce with anchoring disabled (``docs/HEADING_FRAMES.md``);
 * horizontal and 3-D speed, an explicit termination reason, and provenance
   metadata (policy SHA256, library versions, upstream commit).
 
@@ -250,9 +256,15 @@ def run(argv=None):
         env_patch.clear_start_phase(task)
         phase = None
       o = env.reset()
+      if args.yaw_anchor:
+        # _reset_ref_motion installs the opening offset without going through
+        # _sync_ref_origin, so the tracker must be re-baselined here.
+        env_patch.reset_anchor_tracker(env)
       rewards, terms, pose_errs, root_errs = [], [], [], []
       speeds, speeds_3d, sim_z = [], [], []
       yaw_errs, yaw_signed = [], []
+      yaw_fixed_errs, yaw_fixed_signed, anchor_cums = [], [], []
+      cum_gaps = []
       gap_yaw, gap_pos = [], []
       rows = []
       prev_pos = None
@@ -300,6 +312,29 @@ def run(argv=None):
         yaw_signed.append(signed)
         yaw_errs.append(abs(signed))
 
+        # Fixed-reference-frame counterpart: subtract the world-yaw offset our
+        # cycle re-anchoring has accumulated (0.0 without --yaw-anchor, where
+        # the two series are therefore identical by construction).
+        cum = float(snap.get("anchor_cum_yaw", 0.0))
+        # Fixed-frame counterpart, built with the quaternion rather than by
+        # adding two yaw angles: the opening offset is the only rotation the
+        # un-anchored run ever applies, so composing it with the *raw* clip
+        # rotation is exactly the reference upstream would track. On a body
+        # with pitch or roll, yaw(offset * raw) != yaw(offset) + yaw(raw),
+        # which is why the earlier angle-sum version disagreed by up to
+        # ~0.12 rad at some frames.
+        theta_cf = float(snap.get("anchor_theta_cf_yaw", 0.0))
+        ref_orn_fixed = metrics.with_yaw_offset(snap["ref_orn_raw"], theta_cf)
+        fixed = metrics.yaw_tracking_error(snap["sim_orn"], ref_orn_fixed)
+        # Direct measurement of the accumulated frame rotation: how far the
+        # anchored reference has been turned away from the fixed one.
+        cum_meas = metrics.wrap_angle(yaw_ref
+                                      - metrics.quat_to_yaw(ref_orn_fixed))
+        cum_gaps.append(metrics.wrap_angle(cum - cum_meas))
+        anchor_cums.append(cum)
+        yaw_fixed_signed.append(fixed)
+        yaw_fixed_errs.append(abs(fixed))
+
         # Diagnostic only: how far the reference moved during task.update().
         # This is the one-step offset an earlier version measured by accident;
         # reporting it keeps the size of that misalignment auditable.
@@ -313,7 +348,10 @@ def run(argv=None):
                       + list(step_terms.values())
                       + [pose_errs[-1], root_errs[-1], yaw_errs[-1],
                          yaw_signed[-1], speeds[-1], speeds_3d[-1],
-                         gap_yaw[-1], gap_pos[-1]])
+                         gap_yaw[-1], gap_pos[-1],
+                         anchor_cums[-1], yaw_fixed_errs[-1],
+                         yaw_fixed_signed[-1], snap.get("ref_yaw_raw",
+                                                        float("nan"))])
 
         if done:
           break
@@ -339,6 +377,18 @@ def run(argv=None):
           "final_yaw_err_rad": float(yaw_errs[-1]),
           "final_yaw_err_signed_rad": float(yaw_signed[-1]),
           "yaw_drift_rad_per_s": metrics.drift_rate(unwrapped, env_dt),
+          # same trajectory, scored against the un-re-anchored frame
+          "mean_yaw_err_fixed_rad": float(np.mean(yaw_fixed_errs)),
+          "max_yaw_err_fixed_rad": float(np.max(yaw_fixed_errs)),
+          "final_yaw_err_fixed_rad": float(yaw_fixed_errs[-1]),
+          "yaw_drift_fixed_rad_per_s": metrics.drift_rate(
+              metrics.unwrap_angles(yaw_fixed_signed), env_dt),
+          "final_anchor_cum_yaw_rad": float(anchor_cums[-1]),
+          "max_abs_anchor_cum_yaw_rad": float(np.max(np.abs(anchor_cums))),
+          "max_abs_cum_tracker_vs_geometry_rad": (
+              float(np.max(np.abs(cum_gaps))) if cum_gaps else 0.0),
+          "anchor_cycle_events": (task._anchor_tracker.cycle_events
+                                   if args.yaw_anchor else 0),
           "mean_speed_mps": float(np.mean(speeds)),
           "mean_speed_3d_mps": float(np.mean(speeds_3d)),
           "mean_sim_z_m": float(np.mean(sim_z)),
@@ -365,7 +415,9 @@ def run(argv=None):
                      + ["term_" + k for k in metrics.TERM_NAMES]
                      + ["pose_err_rad", "root_err_m", "yaw_err_rad",
                         "yaw_err_signed_rad", "speed_mps", "speed_3d_mps",
-                        "offstep_yaw_gap_rad", "offstep_ref_pos_gap_m"])
+                        "offstep_yaw_gap_rad", "offstep_ref_pos_gap_m",
+                        "anchor_cum_yaw_rad", "yaw_err_fixed_rad",
+                        "yaw_err_fixed_signed_rad", "ref_yaw_raw_rad"])
           w.writerows(rows)
 
       if not args.quiet:
@@ -375,12 +427,18 @@ def run(argv=None):
                  summary["mean_pose_err_rad"], summary["mean_root_err_m"],
                  summary["mean_yaw_err_rad"], summary["yaw_drift_rad_per_s"],
                  summary["termination"]))
+        if args.yaw_anchor:
+          print("           fixed-frame yaw=%.4f rad (anchored %.4f), cum offset %.3f rad"
+                % (summary["mean_yaw_err_fixed_rad"],
+                   summary["mean_yaw_err_rad"],
+                   summary["final_anchor_cum_yaw_rad"]))
       ep += 1
 
   agg = metrics.summarize_episodes(episodes)
   by_seed = metrics.aggregate_by_seed(episodes, keys=[
       "mean_reward", "mean_pose_err_rad", "mean_root_err_m",
-      "mean_yaw_err_rad", "yaw_drift_rad_per_s", "mean_speed_mps"])
+      "mean_yaw_err_rad", "yaw_drift_rad_per_s", "mean_speed_mps",
+      "mean_yaw_err_fixed_rad", "yaw_drift_fixed_rad_per_s"])
   payload = {
       "tag": tag, "variant": variant,
       "run_id": args.run_id,
@@ -396,6 +454,11 @@ def run(argv=None):
           "random_phase": bool(args.random_phase),
           "start_phases": phases,
           "yaw_anchor": bool(args.yaw_anchor),
+          "heading_frame": ("post-hoc fixed-frame reconstruction from the same"
+                             " trajectory (ref_yaw - cum_cycle_anchor_yaw); not"
+                             " the error a policy would produce with anchoring"
+                             " disabled"
+                             if args.yaw_anchor else "not applicable (no anchoring)"),
           "reward_v2": bool(args.reward_v2),
           "metric_timepoint": "inside task.reward() (reference frame t, "
                               "before task.update())",

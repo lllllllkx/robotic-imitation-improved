@@ -7,7 +7,7 @@ evaluation:
   max_steps: 600          # 20 s @ 30 Hz
   episodes: 3
   seeds: 3
-  run_id: r20261114       # 汇总时按它过滤，避免混入历史目录
+  run_id: r20261116       # 汇总时按它过滤，避免混入历史目录
   init_mode: controlled   # controlled = 固定从参考状态起步；upstream = ref_state_init_prob 0.9 + 随机起始时间
   random_phase: true      # 每回合在参考片段上随机相位起步（由 (seed, episode) 显式生成）
   start_phases: null      # 相位栅格时用 "0,0.25,0.5,0.75"（配 episodes: 4, seeds: 1）
@@ -19,8 +19,8 @@ evaluation:
 metrics:
   primary: mean_reward            # 每步奖励均值（权重和为 1 时为归一化回报）
   window_mean_seconds: 5.0
-  tracking_error: mean_yaw_err_rad          # 包裹后的绝对偏航误差（跟踪精度）
-  drift: yaw_drift_rad_per_s                # 展开后带符号误差的最小二乘斜率（累积趋势）
+  tracking_error: mean_yaw_err_rad          # 包裹后的绝对偏航误差（周期对齐参考系，跟踪精度）
+  drift: yaw_drift_rad_per_s                # 展开后带符号误差的最小二乘斜率（累积趋势，周期对齐参考系）
   speed: mean_speed_mps                     # 水平速度；三维速度另存 mean_speed_3d_mps
   termination: time_limit | early_termination
 
@@ -43,3 +43,15 @@ diagnostics:
 # env.seed() 到不了那一层。--upstream-init 模式下由 env_patch.pin_task_random 按 seed
 # 钉住 (np.random.RandomState(seed))；否则同一 seed 跨进程会得到不同轨迹。
 task_rng: "np.random.RandomState(seed) per seed (pinned by us; upstream leaves this RNG unseeded)"
+# 固定参考系口径（改进 1 的事后分解，见 docs/HEADING_FRAMES.md）
+# yaw_err_fixed_rad        同一条已实现轨迹，按 Rz(theta_cf) ⊗ q_raw 重建"未重锚定"的参考朝向
+#                          后再算的绝对偏航误差；不是反事实 A/B，也不代表"关掉重锚定时策略的误差"。
+# anchor_cum_rad           周期重锚定造成的参考系累计转动（只含我们新增的周期同步，不含上游 clip 切换同步）；
+#                          实测 e_fixed ≈ cum 的阶梯。
+# cum_gap_rad              审计量：tracker 累加的 cum 与几何重建 (psi_ref - psi_raw - theta_cf) 的差，
+#                          本轮 5 个锚定 run 全部 <= 2.2e-15 rad。
+heading_frame:
+  fixed_yaw_error: yaw_err_fixed_rad
+  accumulated_rotation: anchor_cum_rad
+  identity_check: cum_gap_rad
+  note: "post-hoc reconstruction on the same trajectory; policy saw anchored reference, so no causal claim"

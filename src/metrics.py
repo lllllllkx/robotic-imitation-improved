@@ -93,6 +93,45 @@ def root_tracking_error(sim_pos, ref_pos):
                               - np.asarray(ref_pos, dtype=float)))
 
 
+def yaw_about_z(angle):
+  """Quaternion (x, y, z, w) for a rotation of ``angle`` about +z."""
+  half = 0.5 * float(angle)
+  return np.array([0.0, 0.0, np.sin(half), np.cos(half)], dtype=float)
+
+
+def quat_multiply(qa, qb):
+  """Hamilton product of two (x, y, z, w) quaternions."""
+  ax, ay, az, aw = np.asarray(qa, dtype=float)
+  bx, by, bz, bw = np.asarray(qb, dtype=float)
+  return np.array([
+      aw * bx + ax * bw + ay * bz - az * by,
+      aw * by - ax * bz + ay * bw + az * bx,
+      aw * bz + ax * by - ay * bx + az * bw,
+      aw * bw - ax * bx - ay * by - az * bz,
+  ])
+
+
+def with_yaw_offset(quat, angle):
+  """Rotate ``quat`` by ``angle`` about the world +z axis.
+
+  This is what ``ImitationTask`` itself does when it installs an origin
+  offset (``transformations.quaternion_about_axis`` composed on the left).
+  Angle addition is *not* equivalent once the body has pitch or roll, which is
+  why the fixed-frame reconstruction goes through the quaternion.
+  """
+  return quat_multiply(yaw_about_z(angle), quat)
+
+
+def normalize_quat(quat):
+  q = np.asarray(quat, dtype=float)
+  return q / np.linalg.norm(q)
+
+
+def undo_yaw_offset(quat, angle):
+  """Inverse of :func:`with_yaw_offset`."""
+  return with_yaw_offset(quat, -angle)
+
+
 def yaw_tracking_error(sim_quat, ref_quat):
   """Signed yaw error in (-pi, pi], robot minus reference (rad)."""
   return wrap_angle(quat_to_yaw(sim_quat) - quat_to_yaw(ref_quat))
