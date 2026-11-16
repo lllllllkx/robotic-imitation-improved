@@ -186,6 +186,6 @@ with anchoring disabled"）。
 - **多片段切换**：本文所有数字都来自单片段 run，不受影响（`dog_spin` 确定性对照在新分支上重跑
   仍为 0.0602 / 1.9912 / −3.6694，逐位相同）。分支 `exp/multi-clip-theta-cf` 已把 `θ_cf` 在
   上游的 clip 同步处重基准，并用同内容双片段对照与 5 例单测验证恒等审计 ≤ 8.9e-16，
-  见 `docs/MULTICLIP_NOTES.md`。仍未验证：连续多段长回合基准、混合技能的行为指标。
+  见 `docs/MULTICLIP_NOTES.md` 与 `results/multiclip_theta_cf_v1/RECORD.md`。仍未验证：连续多段长回合基准、混合技能的行为指标。
 - **没有 A/B 重训**：见第 6 节。
 - **没有对真机/其它技能做同样分解**：只做了 `dog_spin` / `dog_pace` 两个技能。

@@ -42,7 +42,7 @@
 
 **混合片段烟雾**（`dog_pace` + `dog_spin`，1 seed × 3 回合，`--clip-change 3:6`）：`cum_gap_rad`
 同样 ≤ **8.9e-16**；但 3 个回合中有 2 个在第 37 步跌倒，**行为指标不可比**，仅用于审计恒等。
-这两组结果都在 `results/_multiclip/`（gitignored），不入库。
+正式归档见 `results/multiclip_theta_cf_v1/RECORD.md`（run-id `r20261116_multiclip_theta_cf_v1`，含逐步 CSV）；烟测目录 `results/_multiclip/` 被 gitignore 排除，仅作过程留档。
 
 ## 4. 能说与不能说
 
@@ -58,7 +58,7 @@
 ```powershell
 # 同内容双片段审计（把 dog_pace 复制成两个 clip）
 python -m src.evaluate --motion dog_pace \
-    --extra-motions results/_multiclip/aux/dog_pace_copy.txt \
+    --extra-motions results/_multiclip/motion_copy/dog_pace_copy.txt \
     --clip-change 2:4 --policy dog_pace --seeds 2 --episodes 3 \
     --start-phases 0 --yaw-anchor --out results/_multiclip --run-id r_smoke_multiclip
 
