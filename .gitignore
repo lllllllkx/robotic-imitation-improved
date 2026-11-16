@@ -22,3 +22,5 @@ reproduction/outputs/**/frames/
 
 # ---- root-level scratch files (commit messages, probe output) ----
 /_*
+# training checkpoints / tensorboard events stay local
+outputs/
