@@ -1,0 +1,105 @@
+{
+  "run_id": "r20261116_ab_smoke_v1",
+  "code": {
+    "branch": "exp/ab-retrain-smoke",
+    "commit": "e26a143",
+    "training_entrypoint": "src/train_ppo.py"
+  },
+  "arms": {
+    "anchor_off": {
+      "variant": "baseline",
+      "patch_flags": {
+        "heading_anchor_installed": false,
+        "velocity_reward_v2": false,
+        "pose_weight": 0.5,
+        "velocity_weight": 0.05
+      },
+      "requested_aggregate_timesteps": 300000,
+      "actual_aggregate_timesteps": 303104,
+      "wall_time_seconds": 698.2254581451416,
+      "aggregate_steps_per_second": 434.10619945770173,
+      "rank0_episodes": 2390,
+      "model_exists": true
+    },
+    "anchor_on": {
+      "variant": "yaw_anchor",
+      "patch_flags": {
+        "heading_anchor_installed": true,
+        "velocity_reward_v2": false,
+        "pose_weight": 0.5,
+        "velocity_weight": 0.05
+      },
+      "requested_aggregate_timesteps": 300000,
+      "actual_aggregate_timesteps": 303104,
+      "wall_time_seconds": 652.8187851905823,
+      "aggregate_steps_per_second": 464.3003646280071,
+      "rank0_episodes": 2268,
+      "model_exists": true
+    }
+  },
+  "eval": {
+    "anchor_off": {
+      "tag": "ab_smoke_anchor_off",
+      "variant": "randphase",
+      "yaw_anchor": false,
+      "model_sha256": "bd46afc3132821f9bf53bc04feb826ff2daee64c8a7bf1c7d6c5e3487f452f53",
+      "aggregate": {
+        "num_episodes": 6,
+        "steps_mean": 15.0,
+        "mean_reward_mean": 0.08348769192339256,
+        "sum_reward_mean": 1.2457023702720724,
+        "mean_pose_err_rad_mean": 0.5159795516338596,
+        "mean_root_err_m_mean": 0.1115220301924757,
+        "mean_yaw_err_rad_mean": 0.32248276182356295,
+        "mean_yaw_err_fixed_rad_mean": 0.32248276182356295,
+        "final_yaw_err_fixed_rad_mean": 0.7086524900443463,
+        "yaw_drift_rad_per_s_mean": -1.636163743352384,
+        "yaw_drift_fixed_rad_per_s_mean": -1.636163743352384,
+        "mean_speed_mps_mean": 1.0137585852676663,
+        "final_anchor_cum_yaw_rad_mean": 0.0,
+        "max_abs_anchor_cum_yaw_rad_mean": 0.0,
+        "max_abs_cum_tracker_vs_geometry_rad_mean": 0.0,
+        "anchor_cycle_events_mean": 0.0,
+        "anchor_clip_syncs_mean": 0.0
+      },
+      "terminations": [
+        "early_termination"
+      ],
+      "survived": 0
+    },
+    "anchor_on": {
+      "tag": "ab_smoke_anchor_on",
+      "variant": "yawanchor+randphase",
+      "yaw_anchor": true,
+      "model_sha256": "325ffdf0a9cbd5c48ed3d3478008b3876d3d6a4a4a69d04ca7c3e8560de32eac",
+      "aggregate": {
+        "num_episodes": 6,
+        "steps_mean": 20.5,
+        "mean_reward_mean": 0.07426403371605765,
+        "sum_reward_mean": 1.498335631187981,
+        "mean_pose_err_rad_mean": 0.5396377667905891,
+        "mean_root_err_m_mean": 0.10705573556673048,
+        "mean_yaw_err_rad_mean": 0.3045785212884974,
+        "mean_yaw_err_fixed_rad_mean": 0.4612202931450653,
+        "final_yaw_err_fixed_rad_mean": 0.8357582508517377,
+        "yaw_drift_rad_per_s_mean": -0.6022019002476763,
+        "yaw_drift_fixed_rad_per_s_mean": -1.400098975840063,
+        "mean_speed_mps_mean": 1.0178477205229801,
+        "final_anchor_cum_yaw_rad_mean": -0.4289245992270216,
+        "max_abs_anchor_cum_yaw_rad_mean": 0.4289245992270216,
+        "max_abs_cum_tracker_vs_geometry_rad_mean": 4.440892098500626e-16,
+        "anchor_cycle_events_mean": 1.3333333333333333,
+        "anchor_clip_syncs_mean": 0.0
+      },
+      "terminations": [
+        "early_termination"
+      ],
+      "survived": 0
+    }
+  },
+  "interpretation": [
+    "Both arms reached 303104 aggregate timesteps with identical PPO/scenario settings; the only manipulated variable is the cycle heading anchor patch.",
+    "The 300k budget sits in the early part of the 20-to-600 episode-length curriculum; reward differences here cannot rank the methods.",
+    "Arm B lowers cycle-aligned yaw error slightly but raises fixed-frame yaw error, consistent with the reference frame absorbing part of the offset; this is a mechanism check, not evidence of better tracking."
+  ]
+}

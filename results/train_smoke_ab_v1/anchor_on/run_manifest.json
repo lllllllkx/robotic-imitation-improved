@@ -1,0 +1,59 @@
+{
+  "run_id": "r20261116_ab_smoke_seed0_anchor_on",
+  "variant": "yaw_anchor",
+  "patch_flags": {
+    "heading_anchor_installed": true,
+    "velocity_reward_v2": false,
+    "pose_weight": 0.5,
+    "velocity_weight": 0.05
+  },
+  "motion_file": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_improved\\third_party\\motion_imitation\\data\\motions\\dog_pace.txt",
+  "motion_sha256": "fbf6f94c20c3d5da71aef8ae9322eb3366fe9c6fc15be1bb5dc4519c06e3c581",
+  "code": {
+    "git_commit": "e26a143d4f3dc75b21234f4094b4cb905bae5363",
+    "git_branch": "exp/ab-retrain-smoke",
+    "git_describe": "r20261116_multiclip_theta_cf_v1-1-ge26a143",
+    "working_tree_dirty": false,
+    "vendored_upstream_commit": "2f206ab"
+  },
+  "training": {
+    "base_seed": 0,
+    "rank_seed_rule": "base_seed + 97 * MPI_rank",
+    "rank_0_seed": 0,
+    "current_rank_seed": 0,
+    "mpi_processes": 8,
+    "requested_aggregate_timesteps": 300000,
+    "timestep_unit": "aggregate across MPI ranks (allreduce)",
+    "environment_randomizer": true,
+    "curriculum_episode_length_start": 20,
+    "curriculum_episode_length_end": 600,
+    "curriculum_steps_global": 30000000
+  },
+  "ppo": {
+    "gamma": 0.95,
+    "timesteps_per_actorbatch_global": 4096,
+    "optim_epochs": 1,
+    "optim_stepsize": 1e-05,
+    "optim_batchsize_global": 256,
+    "clip_param": 0.2,
+    "lambda": 0.95,
+    "adam_epsilon": 1e-05,
+    "policy": "ImitationPolicy",
+    "network": {
+      "pi": [
+        512,
+        256
+      ],
+      "vf": [
+        512,
+        256
+      ]
+    }
+  },
+  "runtime": {
+    "python": "3.7.1",
+    "cuda_visible_devices": "-1",
+    "omp_num_threads": "1",
+    "started_at_utc": "2026-11-16T12:45:51Z"
+  }
+}

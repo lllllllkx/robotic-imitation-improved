@@ -1,0 +1,21 @@
+{
+  "status": "completed",
+  "run_id": "r20261116_ab_smoke_seed0_anchor_on",
+  "variant": "yaw_anchor",
+  "patch_flags": {
+    "heading_anchor_installed": true,
+    "velocity_reward_v2": false,
+    "pose_weight": 0.5,
+    "velocity_weight": 0.05
+  },
+  "requested_aggregate_timesteps": 300000,
+  "actual_aggregate_timesteps": 303104,
+  "mpi_processes": 8,
+  "base_seed": 0,
+  "wall_time_seconds": 652.8187851905823,
+  "aggregate_steps_per_second": 464.3003646280071,
+  "rank0_episodes": 2268,
+  "model_file": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_improved\\outputs\\train_smoke\\r20261116_ab_smoke_seed0\\anchor_on\\model.zip",
+  "model_exists": true,
+  "finished_at_utc": "2026-11-16T12:56:45Z"
+}
