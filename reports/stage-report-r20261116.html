@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>四足机器人动物运动模仿：复现与评估改进阶段报告</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316233A'/%3E%3Cpath d='M7 22h18M7 22l4-10 5 6 5-6 4 10' stroke='%23F2EFE8' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --ink:#16233A; --ink-soft:#3C4A63; --muted:#6B7789;
+    --line:#D8DDE6; --line-soft:#EAEDF2;
+    --paper:#FBFAF7; --panel:#F3F1EC;
+    --accent:#A8443A;
+    --navy:#16233A; --navy-2:#5B6A85; --navy-3:#AEB8C8;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    font-size:16px; line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:940px; margin:0 auto; padding:0 32px 96px}
+  header.masthead{padding:72px 0 40px; border-bottom:1px solid var(--line)}
+  .kicker{font-size:12px; letter-spacing:.18em; color:var(--muted); text-transform:uppercase}
+  h1{
+    font-family:"Noto Serif SC","Songti SC",serif; font-weight:700;
+    font-size:clamp(28px,4.4vw,44px); line-height:1.28; margin:18px 0 10px; letter-spacing:-.01em;
+  }
+  .subtitle{font-family:"Noto Serif SC",serif; font-size:clamp(17px,2.4vw,21px); color:var(--ink-soft); line-height:1.6; margin:0 0 26px}
+  .meta{display:flex; flex-wrap:wrap; gap:10px 28px; font-size:13px; color:var(--muted)}
+  .meta b{color:var(--ink-soft); font-weight:500}
+  .meta code{font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; font-size:12px; background:#EDEAE3; padding:2px 6px; border-radius:3px}
+
+  section{padding-top:56px}
+  h2{
+    font-family:"Noto Serif SC",serif; font-weight:600; font-size:23px; line-height:1.4;
+    margin:0 0 8px; display:flex; gap:14px; align-items:baseline;
+  }
+  h2 .num{font-family:ui-monospace,Consolas,monospace; font-size:12px; color:var(--muted); letter-spacing:.1em; font-weight:400}
+  h3{font-size:16px; font-weight:600; margin:28px 0 8px; color:var(--ink)}
+  p{margin:12px 0; color:var(--ink-soft)}
+  p strong{color:var(--ink)}
+  .lede{font-size:17px; color:var(--ink)}
+  a{color:var(--navy); text-decoration-color:var(--navy-3)}
+
+  .abstract{background:#fff; border:1px solid var(--line); border-left:3px solid var(--navy); padding:26px 28px; margin:8px 0 0}
+  .abstract .tag{font-size:11px; letter-spacing:.16em; color:var(--muted)}
+  .abstract p{margin:10px 0 0; color:var(--ink)}
+  .abstract ol{margin:14px 0 0; padding-left:1.2em; color:var(--ink-soft)}
+  .abstract ol li{margin:6px 0}
+  .abstract ol li b{color:var(--ink)}
+
+  .rule{height:1px; background:var(--line); margin:0}
+
+  figure{margin:22px 0 8px; background:#fff; border:1px solid var(--line)}
+  .chart{width:100%; height:392px}
+  figcaption{font-size:12.5px; line-height:1.65; color:var(--muted); padding:10px 16px 14px; border-top:1px solid var(--line-soft)}
+  figcaption b{color:var(--ink-soft); font-weight:500}
+
+  table{width:100%; border-collapse:collapse; margin:20px 0 6px; table-layout:fixed; font-size:14.5px; background:#fff}
+  caption{caption-side:top; text-align:left; font-size:12.5px; color:var(--muted); padding-bottom:8px}
+  th,td{padding:9px 10px; border-bottom:1px solid var(--line-soft); vertical-align:top; text-align:left}
+  thead th{background:#EEF0F4; font-weight:600; color:var(--ink); border-bottom:1px solid var(--line); font-size:13.5px}
+  td.num, th.num{text-align:right; font-variant-numeric:tabular-nums; font-family:ui-monospace,Consolas,monospace; font-size:13.5px}
+  tbody tr:nth-child(odd) td{background:#FCFCFD}
+  .hl{color:var(--accent); font-weight:600}
+  .note{font-size:12.5px; color:var(--muted); margin:6px 0 0; line-height:1.65}
+
+  .mechanism{display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin:24px 0 6px; border:1px solid var(--line); background:#fff}
+  .step{padding:18px 16px 20px; position:relative}
+  .step + .step{border-left:1px solid var(--line-soft)}
+  .step .s{font-family:ui-monospace,Consolas,monospace; font-size:11px; color:var(--muted)}
+  .step h4{margin:6px 0 8px; font-size:14.5px; font-weight:600; line-height:1.45; color:var(--ink)}
+  .step p{margin:0; font-size:12.8px; line-height:1.6; color:var(--muted)}
+  .step::after{content:""; position:absolute; right:-6px; top:50%; width:10px; height:10px; border-top:1px solid var(--navy-3); border-right:1px solid var(--navy-3); transform:translateY(-50%) rotate(45deg); background:#fff}
+  .step:last-child::after{display:none}
+
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:22px 0 8px}
+  .card{background:#fff; border:1px solid var(--line); padding:20px 20px 18px}
+  .card .lab{font-size:11px; letter-spacing:.12em; color:var(--muted)}
+  .card .val{font-family:"Noto Serif SC",serif; font-size:26px; font-weight:600; margin:8px 0 2px; color:var(--ink)}
+  .card .val small{font-size:13px; font-weight:400; color:var(--muted); margin-left:4px}
+  .card p{margin:6px 0 0; font-size:13px; color:var(--muted); line-height:1.6}
+
+  .lim{background:#fff; border:1px solid var(--line); padding:0; margin:20px 0}
+  .lim div{display:grid; grid-template-columns:180px 1fr; gap:16px; padding:13px 18px; border-bottom:1px solid var(--line-soft)}
+  .lim div:last-child{border-bottom:none}
+  .lim dt{font-weight:600; color:var(--ink); font-size:14px}
+  .lim dd{margin:0; color:var(--muted); font-size:13.6px}
+
+  blockquote{margin:22px 0; padding:2px 0 2px 20px; border-left:2px solid var(--navy-3); color:var(--ink-soft); font-family:"Noto Serif SC",serif; font-size:16.5px}
+  blockquote cite{display:block; font-size:12.5px; color:var(--muted); margin-top:8px; font-style:normal}
+
+  footer{margin-top:72px; padding-top:24px; border-top:1px solid var(--line); font-size:12.5px; color:var(--muted); line-height:1.7}
+  footer ol{margin:8px 0 0; padding-left:1.2em}
+  footer li{margin:5px 0}
+
+  @media (max-width:760px){
+    .wrap{padding:0 18px 64px}
+    header.masthead{padding:44px 0 28px}
+    h2{display:block}
+    h2 .num{display:block; margin-bottom:2px}
+    .meta{gap:6px 16px; font-size:12px}
+    .mechanism{grid-template-columns:1fr}
+    .step + .step{border-left:none; border-top:1px solid var(--line-soft)}
+    .step::after{right:50%; top:auto; bottom:-6px; transform:translateX(50%) rotate(135deg)}
+    .cards{grid-template-columns:1fr}
+    .lim div{grid-template-columns:1fr; gap:4px}
+    .chart{height:400px}
+    td.num,th.num{font-size:12px}
+    table{font-size:13px}
+    th,td{padding:8px 8px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="kicker">阶段性实验报告 · 具身智能 / 四足运动技能模仿</div>
+  <h1>基于动物运动模仿的四足机器人运动技能复现与评估改进</h1>
+  <p class="subtitle">以 RSS 2020《Learning Agile Robotic Locomotion Skills by Imitating Animals》官方代码为基线，量化三处改进，并把"误差下降"拆成参考系与残余误差两部分。</p>
+  <div class="meta">
+    <span><b>冻结版本</b> <code>9809b20</code> · 分支 <code>main</code></span>
+    <span><b>数据批次</b> <code>r20261116</code>（15 次评估）</span>
+    <span><b>报告日期</b> 2026-11-16</span>
+    <span><b>上游代码</b> commit <code>2f206ab</code></span>
+  </div>
+</header>
+
+<section id="abstract">
+  <h2><span class="num">摘要</span>核心问题：三项改进里，哪一项真的改变了机器人，哪一项只改变了读数？</h2>
+  <div class="abstract">
+    <div class="tag">结论先行</div>
+    <p>本报告在官方预训练策略上做了两类事：一是把论文方法的仿真复现做成可复跑的评估管线；二是在此之上加了三处改进，并用外部审阅推动的对照实验检验它们的真实含义。结论是：<strong>只有评估协议这一项是确凿的改进；朝向重锚定改变的是测量参考系，速度奖励去饱和改变的是奖励数值分布，两者都还没有训练层面的证据。</strong></p>
+    <ol>
+      <li><b>参考系效应。</b>周期朝向重锚定让"周期对齐"口径下的偏航误差从 0.2081 降到 0.0627 rad；但同一条轨迹换回固定参考系重建，误差是 1.4503 rad（基线 0.2081），累计参考系转动 −3.03 rad。降幅主要来自参考系随机器人转动，<b>不能视为跟踪能力提升</b>。</li>
+      <li><b>奖励尺度效应。</b>速度项均值从 2.6e-3 抬到 0.191，加权贡献从 0.02% 升到 2.6%，权重和仍为 1。这证明"奖励信号不再饱和"，<b>不证明策略性能改善</b>——没有端到端重训。</li>
+      <li><b>评估可信度。</b>同步快照、任务 RNG 钉住、奖励分项自洽、终止原因、44 例单测共同把"指标是不是算错了"这类替代解释压低；确定性单回合曾把 dog_spin 低估 9.5%。</li>
+    </ol>
+  </div>
+</section>
+
+<section id="scope">
+  <h2><span class="num">01</span>证据范围：单个发布策略、仿真、无重训</h2>
+  <p class="lede">本报告的所有数字都来自同一套可复跑的评估管线，不包含任何训练结果。先把边界说清，后面的结论才有意义。</p>
+  <p>复现对象是论文官方的两段四足技能：<code>dog_pace</code>（匀速小跑）与 <code>dog_spin</code>（原地转向）。改进层以运行期 patch 挂在环境对象上，开关默认关闭；关闭时走"上游兼容基线路径"，与官方 <code>eval_pretrained.py</code> 的确定性口径一致（<code>dog_pace</code> 0.7496、<code>dog_spin</code> 0.6378）。</p>
+  <p>这里必须区分三类证据：<strong>已实测</strong>（评估数字、审计量、单测）、<strong>已推断</strong>（参考系效应的代数解释）、<strong>未验证</strong>（PPO 重训后的策略性能、真机迁移）。报告正文只把第一、二类写成结论，第三类放在"尚未完成"一节。</p>
+
+  <div class="mechanism">
+    <div class="step"><div class="s">证据 A</div><h4>15 次评估、同一 run-id</h4><p>主矩阵 12 次 + 确定性对照 3 次，汇总脚本按 run-id 过滤，脚本、表格、文档三处同源。</p></div>
+    <div class="step"><div class="s">证据 B</div><h4>评估与奖励同一时点</h4><p>跟踪误差在 task.reward() 内部快照，不再于 env.step() 返回后读参考状态，避免错一帧。</p></div>
+    <div class="step"><div class="s">证据 C</div><h4>恒等审计与单测</h4><p>累计偏移与几何重建差 ≤ 2.2e-15 rad；44 例单元测试覆盖符号、跨 ±π、重建恒等。</p></div>
+    <div class="step"><div class="s">证据 D</div><h4>跨进程可复现</h4><p>固定线程数、显式相位采样、任务 RNG 钉住后，同一命令两次运行逐回合数值相同。</p></div>
+  </div>
+</section>
+
+<section id="baseline">
+  <h2><span class="num">02</span>复现基线：数字对得上，但和论文 Table V 不是同一件事</h2>
+  <p>确定性 t=0 起点、单回合 600 步的结果与官方评估工具一致：<code>dog_pace</code> 每步奖励 0.7496、<code>dog_spin</code> 0.6378；跟踪误差为关节 0.0350 / 0.0361 rad、根 0.0368 / 0.0942 m、偏航 0.0548 / 0.7409 rad。</p>
+  <table>
+    <caption>表 1　复现基线（确定性 t=0、单回合 600 步；跟踪误差与当步奖励同一时点）</caption>
+    <colgroup><col style="width:20%"><col style="width:20%"><col style="width:20%"><col style="width:20%"><col style="width:20%"></colgroup>
+    <thead><tr><th>技能</th><th class="num">每步奖励</th><th class="num">关节误差 (rad)</th><th class="num">根误差 (m)</th><th class="num">偏航误差 (rad)</th></tr></thead>
+    <tbody>
+      <tr><td>dog_pace</td><td class="num">0.7496</td><td class="num">0.0350</td><td class="num">0.0368</td><td class="num">0.0548</td></tr>
+      <tr><td>dog_spin</td><td class="num">0.6378</td><td class="num">0.0361</td><td class="num">0.0942</td><td class="num">0.7409</td></tr>
+    </tbody>
+  </table>
+  <p class="note">与论文 Table V（dog_pace 0.820、dog_spin 0.839）不可直接比较：论文是仿真 + canonical 动力学 + <strong>3 个独立训练策略求平均</strong>，本报告是单份发布策略、确定性起点、单回合。此外本机 pybullet 为 3.2.0、上游声明 2.7.3，物理轨迹不可能逐位相同，因此只声明"summary 级一致"。</p>
+</section>
+
+<section id="improve1">
+  <h2><span class="num">03</span>改进 1：偏航误差下降 69.9% 里，几乎全是参考系</h2>
+  <p class="lede">上游每周期只重锚定参考<strong>位置</strong>，朝向仅在切换动作片段时同步，循环转向技能的朝向差因此单向累积。改进把每周期同步改成位置与朝向一起对齐。表面上误差从 0.2081 掉到 0.0627 rad——但两个口径的差别，正是这份报告最关键的实验。</p>
+
+  <figure>
+    <div class="chart" id="chart-frames" role="img" aria-label="同一轨迹在三种口径下的偏航误差对比"></div>
+    <figcaption><b>图 1　同一轨迹，三种口径。</b>绿色为周期对齐口径（重锚定后直接测量），红色为同轨迹固定参考系重建（把参考姿态按 episode 初始偏移转回去）。基线未开启重锚定，两口径恒等。数值来自 run r20261116，每回合 600 步。</figcaption>
+  </figure>
+
+  <div class="cards">
+    <div class="card"><div class="lab">dog_spin · 周期对齐</div><div class="val">0.0627<small>rad</small></div><p>比基线 0.2081 低 69.9%，这是最容易被误读成"跟踪变好"的数字。</p></div>
+    <div class="card"><div class="lab">dog_spin · 固定参考系</div><div class="val hl">1.4503<small>rad</small></div><p>同一条轨迹换回固定帧，比基线高约 7 倍；逐回合 1.28–1.57。</p></div>
+    <div class="card"><div class="lab">参考系累计转动</div><div class="val">−3.03<small>rad</small></div><p>26–27 次周期事件，折合每周期约 −0.11 rad，方向始终同号。</p></div>
+  </div>
+
+  <h3>为什么固定参考系误差约等于累计偏移</h3>
+  <p>上游在 <code>_calc_ref_pose</code> 里把偏移四元数<strong>左乘</strong>到参考姿态上，所以参考偏航等于片段自身偏航加偏移角。周期对齐后残余误差只有 0.06 rad 量级，于是"固定参考系误差 ≈ 当前偏移 − 初始偏移"，也就是一条阶梯：误差没有消失，只是被搬进了参考系。</p>
+
+  <div class="mechanism">
+    <div class="step"><div class="s">周期 k</div><h4>参考朝向对齐机器人</h4><p>偏移角 θ 被重写为机器人当前朝向，参考系整体跟着转。</p></div>
+    <div class="step"><div class="s">下一周期</div><h4>机器人又偏了一点</h4><p>绝对朝向差没有被纠正，只是再次被写进 θ。</p></div>
+    <div class="step"><div class="s">30 个周期左右</div><h4>累计偏移 −3.03 rad</h4><p>每个周期吸走约 0.11 rad，方向一致，形成单调阶梯。</p></div>
+    <div class="step"><div class="s">事后重建</div><h4>把 θ 转回去测量</h4><p>用初始偏移重建固定帧，得到 1.4503 rad——这才是同一轨迹在原参考系下的样子。</p></div>
+  </div>
+
+  <p><strong>这条结论能推到哪一步？</strong>它能推翻"周期对齐误差下降 = 真实跟踪改善"这个解释；但它<strong>不能</strong>证明"若关掉重锚定，策略会走成什么样"。策略当时观测到的就是重锚定后的参考，参考进入观测、进而影响动作，关掉它得到的是另一条轨迹。因此这个量在本仓库统一叫"固定参考系等价误差（同轨迹事后重建）"，而不是"真实跟踪误差"。</p>
+
+  <blockquote>固定的不是机器人，是测量的坐标系。把坐标系每周期挪到机器人身上，误差当然变小；把坐标系钉回原处，同一段动作就露出来了。<cite>docs/HEADING_FRAMES.md 的核心判断</cite></blockquote>
+</section>
+
+<section id="improve2">
+  <h2><span class="num">04</span>改进 2：速度奖励从"几乎恒为零"抬进可用区间</h2>
+  <p>上游速度项是 12 个关节误差平方和代入 <code>exp(-0.1·Σ)</code>。在 <code>dog_pace</code> 的 5400 步实测里，反解出的误差中位数 87.4（p10 48.9、p90 146.0），代入后这一项自身的取值几乎贴着零：中位数 1.6e-4、均值 2.6e-3，却承担 0.05 的权重。</p>
+
+  <figure>
+    <div class="chart" id="chart-velocity" role="img" aria-label="速度奖励项 v1 与 v2 的分位数区间对比"></div>
+    <figcaption><b>图 2　同一批 5400 步，速度项在 v1 与 v2 下的取值区间（对数轴）。</b>v2 把 12 关节求和改成按关节取均值、尺度从 0.1 改到 0.25。误差区间不变，读数整体抬高约两个数量级。数据来自 task.reward() 内部 tee 出的逐步值，未剔除极端样本。</figcaption>
+  </figure>
+
+  <table>
+    <caption>表 2　速度项与加权贡献（同一段轨迹，策略未被改变）</caption>
+    <colgroup><col style="width:34%"><col style="width:22%"><col style="width:22%"><col style="width:22%"></colgroup>
+    <thead><tr><th>指标</th><th class="num">上游 v1</th><th class="num">v2</th><th class="num">变化</th></tr></thead>
+    <tbody>
+      <tr><td>速度项 p10 / p50 / p90</td><td class="num">4.6e-7 / 1.6e-4 / 7.5e-3</td><td class="num">0.048 / 0.162 / 0.361</td><td class="num">区间上移</td></tr>
+      <tr><td>速度项均值</td><td class="num">2.6e-3</td><td class="num hl">0.191</td><td class="num">73×</td></tr>
+      <tr><td>加权贡献（占单步奖励）</td><td class="num">0.02%</td><td class="num hl">2.6%</td><td class="num">+2.58 pt</td></tr>
+      <tr><td>每步奖励（9 回合随机相位）</td><td class="num">0.7481</td><td class="num">0.7222</td><td class="num">−3.5%</td></tr>
+      <tr><td>关节 / 根 / 偏航误差</td><td class="num">0.0349 / 0.0385 / 0.0630</td><td class="num">完全相同</td><td class="num">策略未变</td></tr>
+    </tbody>
+  </table>
+  <p>加权贡献从 0.02% 抬到 2.6% 意味着：在"标准步态误差"这个常用区间里，速度项终于能对单步总奖励产生可感知的变化。但这只是即时奖励的分解，<strong>不代表</strong>它对归一化优势或策略更新的实际贡献——后者还取决于价值基线、折扣回报与 GAE。本机无 GPU，论文每技能约 2e8 采样、实测 70 步/秒，单技能单种子约 33 天，因此没有做 v2 的端到端重训。</p>
+  <p class="note">口径提醒：<code>exp(-0.1×92.2)=9.9e-5</code> 是把平均误差代入奖励函数的估计值，不是实测均值；实测 2.6e-3 比它高 26 倍，这是 Jensen 不等式的必然结果（exp 为凸函数）。两者不可混写。</p>
+</section>
+
+<section id="protocol">
+  <h2><span class="num">05</span>改进 3：评估协议把"单次回放"变成可复核的分布</h2>
+  <p>上游评估是 5 个回合、每回合都从参考片段 t=0 起步；环境无随机化，5 个回合逐帧完全一致，本质是一次确定性回放，既没有误差棒，也会掩盖起点敏感性。扩展协议用 <code>--random-phase</code> + <code>--seeds N</code> 在参考片段上显式采样起始相位，并输出池化与按种子两层统计。</p>
+
+  <table>
+    <caption>表 3　确定性单回合与随机相位协议的差异</caption>
+    <colgroup><col style="width:22%"><col style="width:26%"><col style="width:30%"><col style="width:22%"></colgroup>
+    <thead><tr><th>技能</th><th class="num">确定性（上游口径）</th><th class="num">3 seeds × 3 回合随机相位</th><th class="num">差异</th></tr></thead>
+    <tbody>
+      <tr><td>dog_spin</td><td class="num">0.6378</td><td class="num">0.6980 ± 0.0074</td><td class="num hl">+9.5%</td></tr>
+      <tr><td>dog_pace</td><td class="num">0.7496</td><td class="num">0.7481 ± 0.0026</td><td class="num">−0.2%</td></tr>
+    </tbody>
+  </table>
+  <p>dog_spin 的确定性口径低估近一成：t=0 起步带着一段朝向误差的暂态，且只有一条轨迹。九个随机相位回合的标准差只有 0.0074，说明这个技能本身对起点并不敏感，低估值来自固定起点而不是随机性。</p>
+  <p>协议本身也做了对齐检查：把初始状态分布恢复成上游的 <code>ref_state_init_prob=0.9</code> + 随机起始时间后，成绩与受控模式只差 0.1%–0.3%（0.7473 vs 0.7481、0.6980 vs 0.6980）。这说明受控起点是为了配对比较，而不是把数字做好看。</p>
+
+  <h3>可信度靠四件事支撑，而不是靠一句"跑通了"</h3>
+  <div class="lim">
+    <div><dt>奖励分项自洽</dt><dd>每步五项加权和与该步 reward 逐位相等（早期版本在 env.step() 之后重算，平均差 0.107，整批作废）。</dd></div>
+    <div><dt>跟踪指标时点</dt><dd>关节、根、偏航误差与奖励同在 task.reward() 快照；错一步的量级被做成可审计诊断量（dog_spin 偏航 0.0763 rad/步）。</dd></div>
+    <div><dt>随机性归属</dt><dd>任务自有 RNG 原先落到进程级 np.random，同一 seed 跨进程会得到不同轨迹；现按 seed 钉住，两次独立进程均为 0.698025。</dd></div>
+    <div><dt>终止判定</dt><dd>优先读上游在叠加自身步数上限前保存的 info["terminated"]，"最后一步摔倒"不再被误记为 time_limit。</dd></div>
+    <div><dt>单元测试</dt><dd>44 例纯 numpy 契约测试，覆盖 yaw 公式、wrap/unwrap、偏航偏移符号、跨 ±π、600 步重建恒等，CI 不需要 TF/pybullet。</dd></div>
+  </div>
+</section>
+
+<section id="pending">
+  <h2><span class="num">06</span>尚未完成：三件事不能写成已验证</h2>
+  <div class="lim">
+    <div><dt>关闭/开启重锚定的 A/B 重训</dt><dd>唯一能判定"重锚定是否让策略变好"的实验。当前只能给出同轨迹事后分解，不能给出反事实轨迹。</dd></div>
+    <div><dt>速度项 v2 的端到端 PPO</dt><dd>算力不允许（约 33 天/技能/种子）。现只有奖励数值分布的证据，没有策略性能证据。</dd></div>
+    <div><dt>多片段切换时的固定参考系</dt><dd>tracker 能识别上游 clip 切换同步，但评估仍用 episode 初始偏移构造固定帧；当前所有实验都是单片段，口径不受影响，通用化留作下一步。</dd></div>
+    <div><dt>更上游的缺口</dt><dd>运动重定向流程、潜在空间自适应 / AWR、真机 Table IV、逐步 (状态,观测,动作,奖励) 回归，均未实现或未做。</dd></div>
+  </div>
+</section>
+
+<section id="conclusion">
+  <h2><span class="num">07</span>结论：三条可以写进论文式分析的表述</h2>
+  <table>
+    <caption>表 4　研究结论、当前证据与应采用的表述</caption>
+    <colgroup><col style="width:26%"><col style="width:36%"><col style="width:38%"></colgroup>
+    <thead><tr><th>研究结论</th><th>当前证据</th><th>应采用的表述</th></tr></thead>
+    <tbody>
+      <tr><td><b>周期朝向重锚定改变了偏航误差的参考系</b></td><td>周期对齐误差 0.2081 → 0.0627 rad；固定参考系重建 1.4503 rad；累计偏移 −3.03 rad，恒等审计 ≤ 2.2e-15</td><td>误差下降主要来自参考系转动，<strong>不能视为跟踪能力提升</strong></td></tr>
+      <tr><td><b>奖励函数 v2 改变了速度奖励的数值分布</b></td><td>速度项均值 2.6e-3 → 0.191；加权贡献 0.02% → 2.6%；同轨迹行为指标逐位不变</td><td>奖励信号贡献得到调整，<strong>尚未证明策略性能改善</strong></td></tr>
+      <tr><td><b>评估与日志可靠性得到改进</b></td><td>同步快照、RNG 钉住、分项自洽、终止判定、44 例单测；确定性口径低估 dog_spin 9.5%</td><td>评估口径与实验可复核性得到改善，结论可逐项回查</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>下一步的顺序，建议先冻结再扩展。</strong>当前批次（<code>r20261116</code>）已经具备形成完整研究阶段的证据；继续叠加指标的边际价值低于把已有结论写清。多片段支持属于方法扩展，应在单独分支实现并单独回归，避免新改动影响已验证的结果。真正能提升结论强度的是关闭/开启重锚定的两组重训——那是下一阶段唯一能把"参考系效应"与"策略行为"分开的实验。</p>
+</section>
+
+<footer>
+  <div>参考来源</div>
+  <ol>
+    <li>Peng, Coumans, Zhang, Lee, Tan, Levine：《Learning Agile Robotic Locomotion Skills by Imitating Animals》，RSS 2020。<a href="https://arxiv.org/pdf/2000.00784v3">arxiv.org/pdf/2000.00784v3</a>（Table II 超参、Table IV 真机、Table V 仿真）。</li>
+    <li>官方实现：<a href="https://github.com/erwincoumans/motion_imitation">erwincoumans/motion_imitation</a>，commit 2f206ab，Apache-2.0。</li>
+    <li>本报告数据仓库：<a href="https://github.com/lllllllkx/robotic-imitation-improved">lllllllkx/robotic-imitation-improved</a>，commit <a href="https://github.com/lllllllkx/robotic-imitation-improved/commit/9809b2044cbd35e56e024ad8ed5ad8809f565581">9809b20</a>；结果表 <code>results/summary_table.md</code>，推导 <code>docs/HEADING_FRAMES.md</code>，改进细节 <code>docs/IMPROVEMENTS.md</code>。</li>
+    <li>口径与审阅记录：<code>docs/REVIEW_RESPONSE.md</code>（含第 21 条固定参考系答复）。</li>
+  </ol>
+  <p style="margin-top:14px">数据批次 r20261116：15 次评估（main 12 + det 3），每回合 600 步，30 Hz；随机相位由 (seed, episode) 显式生成，任务 RNG 按 seed 钉住。</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var ink='#16233A', soft='#5B6A85', light='#AEB8C8', accent='#A8443A', grid='#E4E8EF';
+  var serif='"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif';
+
+  function mount(id, option){
+    var el=document.getElementById(id);
+    if(!el||!window.echarts) return;
+    var chart=echarts.init(el,null,{renderer:'canvas'});
+    chart.setOption(option);
+    if(window.innerWidth<760){
+      var names=option.series.map(function(s){return s.name;});
+      var patch={legend:{top:58,left:4,itemGap:12,itemWidth:12,itemHeight:8,
+                  textStyle:{fontSize:10.5,color:soft,fontFamily:serif}},
+                 grid:{top:104,bottom:34}};
+      patch.series=option.series.map(function(s,i){
+        return {name:names[i],label:{show:i===option.series.length-1}};
+      });
+      chart.setOption(patch);
+    }
+    window.addEventListener('resize',function(){chart.resize();});
+  }
+
+  mount('chart-frames',{
+    color:[light, ink, accent],
+    title:{text:'偏航误差：同一轨迹的三种口径',subtext:'单位 rad；越低越好，但比较基准不同',left:16,top:14,
+      textStyle:{fontSize:15,fontWeight:600,color:ink,fontFamily:serif},
+      subtextStyle:{fontSize:11,color:soft,fontFamily:serif}},
+    legend:{top:62,left:8,itemWidth:14,itemHeight:9,itemGap:18,
+      textStyle:{fontSize:11.5,color:soft,fontFamily:serif}},
+    grid:{left:16,right:22,top:100,bottom:26,containLabel:true},
+    tooltip:{trigger:'axis',triggerOn:'mousemove|click',renderMode:'richText',confine:true,
+      axisPointer:{type:'shadow'},textStyle:{fontSize:12}},
+    xAxis:{type:'category',data:['dog_spin\n随机相位 9 回合','dog_pace\n随机相位 9 回合','dog_spin\n确定性 1 回合'],
+      axisLine:{lineStyle:{color:grid}},axisTick:{show:false},
+      axisLabel:{fontSize:11,color:soft,lineHeight:16,fontFamily:serif,interval:0}},
+    yAxis:{type:'value',name:'rad',nameTextStyle:{color:soft,fontSize:11},
+      min:0,max:2.2,splitNumber:4,
+      axisLine:{show:false},axisTick:{show:false},
+      axisLabel:{fontSize:11,color:soft,fontFamily:serif},
+      splitLine:{lineStyle:{color:grid}}},
+    series:[
+      {name:'上游基线',type:'bar',barGap:'8%',barWidth:18,
+       data:[0.2081,0.0630,0.7409],
+       itemStyle:{color:light},
+       label:{show:true,position:'top',fontSize:10,color:soft,fontFamily:serif,
+         formatter:function(p){return Number(p.value).toFixed(3);}}},
+      {name:'周期对齐口径',type:'bar',barWidth:18,
+       data:[0.0627,0.0312,0.0602],
+       itemStyle:{color:ink},
+       label:{show:true,position:'top',fontSize:10,color:ink,fontFamily:serif,
+         formatter:function(p){return Number(p.value).toFixed(3);}}},
+      {name:'固定参考系重建',type:'bar',barWidth:18,
+       data:[1.4503,0.6993,1.9912],
+       itemStyle:{color:accent},
+       label:{show:true,position:'top',fontSize:10,color:accent,fontFamily:serif,
+         formatter:function(p){return Number(p.value).toFixed(3);}}}
+    ]
+  });
+
+  mount('chart-velocity',{
+    color:[light, ink],
+    title:{text:'速度奖励项：v1 贴着零，v2 进入可用区间',subtext:'同一批 5400 步；对数轴，数值为该奖励项自身的取值',left:16,top:14,
+      textStyle:{fontSize:15,fontWeight:600,color:ink,fontFamily:serif},
+      subtextStyle:{fontSize:11,color:soft,fontFamily:serif}},
+    legend:{top:62,left:8,itemWidth:14,itemHeight:9,itemGap:18,
+      textStyle:{fontSize:11.5,color:soft,fontFamily:serif}},
+    grid:{left:16,right:22,top:100,bottom:26,containLabel:true},
+    tooltip:{trigger:'axis',triggerOn:'mousemove|click',renderMode:'richText',confine:true,
+      axisPointer:{type:'shadow'},textStyle:{fontSize:12},
+      valueFormatter:function(v){return v>=0.001? v.toFixed(3) : v.toExponential(1);}},
+    xAxis:{type:'category',data:['p10','p50','p90','均值','最大值'],
+      axisLine:{lineStyle:{color:grid}},axisTick:{show:false},
+      axisLabel:{fontSize:11,color:soft,fontFamily:serif,interval:0}},
+    yAxis:{type:'log',name:'奖励项取值',nameTextStyle:{color:soft,fontSize:11},
+      min:1e-7,max:1,
+      axisLine:{show:false},axisTick:{show:false},
+      axisLabel:{fontSize:11,color:soft,fontFamily:serif,
+        formatter:function(v){return (v===1e-7||v===1e-5||v===1e-3||v===0.1||v===1)? String(v):'';}},
+      splitLine:{lineStyle:{color:grid}}},
+    series:[
+      {name:'上游 v1',type:'bar',barGap:'10%',barWidth:16,
+       data:[4.6e-7,1.6e-4,7.5e-3,2.6e-3,0.041],
+       itemStyle:{color:light},
+       label:{show:true,position:'top',fontSize:10,color:soft,fontFamily:serif,
+         formatter:function(p){var v=p.value;return v>=0.001?v.toFixed(3):v.toExponential(1);}}},
+      {name:'v2',type:'bar',barWidth:16,
+       data:[0.048,0.162,0.361,0.191,0.515],
+       itemStyle:{color:ink},
+       label:{show:true,position:'top',fontSize:10,color:ink,fontFamily:serif,
+         formatter:function(p){return Number(p.value).toFixed(3);}}}
+    ]
+  });
+})();
+</script>
+</body>
+</html>
