@@ -17,7 +17,7 @@ frame under the robot's feet.
 To ask "what would the yaw error have been if this frame had not been rotated",
 we need the world-yaw offset our extra anchoring has accumulated since the last
 point at which our frame and the upstream frame coincided (reset, or a clip
-change where upstream syncs too):
+change where upstream syncs too; both re-base ``theta_cf``):
 
     psi_ref_unanchored(t) = psi_ref_anchored(t) - cum
 
@@ -70,6 +70,7 @@ class AnchorTracker(object):
     self.clip_sync_delta = 0.0  # only for auditing: delta of the last shared sync
     self.shared_events = 0
     self.cycle_events = 0
+    self.clip_events = 0       # shared syncs after the first (clip changes)
     self.theta_cf = None   # offset of the last shared sync (upstream's frame)
     self.events = []       # (shared, theta_new, cum_after), for diagnostics
 
@@ -78,12 +79,20 @@ class AnchorTracker(object):
     if self.theta is None:
       # first sync of the episode: this is the frame baseline, nothing to add
       self.cum = 0.0
+      self.theta_cf = theta_new
       self.shared_events += 1
     elif shared:
-      # upstream re-synced as well, so its frame and ours coincide again
+      # upstream re-synced as well, so its frame and ours coincide again.
+      # On a clip change upstream also re-installs the offset from the *new*
+      # clip's own heading, so the fixed frame rebases here too; keeping the
+      # episode-opening theta_cf would rebuild the fixed reference with the
+      # previous clip's baseline and make the comparison meaningless across
+      # clips (the single-clip limitation noted in HEADING_FRAMES.md section 8).
       self.clip_sync_delta = wrap_angle(theta_new - self.theta)
       self.cum = 0.0
+      self.theta_cf = theta_new
       self.shared_events += 1
+      self.clip_events += 1
     else:
       self.cum = self.cum + wrap_angle(theta_new - self.theta)
       self.cycle_events += 1
@@ -106,6 +115,7 @@ class AnchorTracker(object):
     self.clip_sync_delta = 0.0
     self.shared_events = 1
     self.cycle_events = 0
+    self.clip_events = 0
     self.events = []
     return self.cum
 

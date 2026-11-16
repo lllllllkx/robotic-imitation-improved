@@ -76,6 +76,13 @@ def parse_args(argv=None):
   p.add_argument("--motion", default=None,
                  help="reference motion name, e.g. dog_pace (uses data/motions)")
   p.add_argument("--motion_file", default=None)
+  p.add_argument("--extra-motions", default=None,
+                 help="comma separated extra motions from data/motions, e.g."
+                      " dog_spin; more than one loaded clip enables multi-clip"
+                      " episodes (needs --clip-change)")
+  p.add_argument("--clip-change", default=None,
+                 help="multi-clip: 'min:max' seconds between clip switches"
+                      " (uniform draw per episode from the seeded task RNG)")
   p.add_argument("--policy", default=None,
                  help="pretrained policy name, e.g. dog_pace (uses data/policies)")
   p.add_argument("--model_file", default=None)
@@ -111,16 +118,39 @@ def resolve_paths(args):
     if args.motion is None:
       raise SystemExit("give --motion or --motion_file")
     motion_file = os.path.join(MOTION_DIR, args.motion + ".txt")
+  motion_files = [motion_file]
+  if args.extra_motions:
+    for name in [x.strip() for x in args.extra_motions.split(",") if x.strip()]:
+      extra = name if name.endswith(".txt") else os.path.join(
+          MOTION_DIR, name + ".txt")
+      motion_files.append(extra)
+  if args.clip_change and len(motion_files) < 2:
+    raise SystemExit("--clip-change needs more than one motion "
+                     "(--extra-motions); upstream only switches clips when"
+                     " num_motions > 1")
   model_file = args.model_file
   policy = args.policy
   if model_file is None:
     if policy is None:
       policy = os.path.splitext(os.path.basename(motion_file))[0]
     model_file = os.path.join(POLICY_DIR, policy + ".zip")
-  for path in (motion_file, model_file):
+  for path in motion_files + [model_file]:
     if not os.path.isfile(path):
       raise SystemExit("missing file: %s" % path)
-  return motion_file, model_file
+  return motion_files, model_file
+
+
+def parse_clip_change(spec):
+  """'min:max' seconds -> (min, max); None keeps the upstream no-change mode."""
+  if not spec:
+    return None
+  try:
+    lo, hi = [float(x) for x in spec.split(":")]
+  except ValueError:
+    raise SystemExit("--clip-change must look like '3:6' (seconds)")
+  if not (0.0 < lo <= hi):
+    raise SystemExit("--clip-change needs 0 < min <= max")
+  return lo, hi
 
 
 def sha256(path):
@@ -131,7 +161,7 @@ def sha256(path):
   return h.hexdigest()
 
 
-def build_env(code_dir, motion_file, model_file):
+def build_env(code_dir, motion_files, model_file):
   sys.path.insert(0, os.path.abspath(code_dir))
   import tensorflow as tf  # noqa: F401
   import envs.env_builder as env_builder
@@ -139,8 +169,10 @@ def build_env(code_dir, motion_file, model_file):
   # note: ppo_imitation pulls in mpi4py (MPI) even for single-process evaluation
   import learning.ppo_imitation as ppo_imitation
 
+  if isinstance(motion_files, str):
+    motion_files = [motion_files]
   env = env_builder.build_imitation_env(
-      motion_files=[motion_file],
+      motion_files=list(motion_files),
       num_parallel_envs=1,
       mode="test",
       enable_randomizer=False,
@@ -191,11 +223,13 @@ def variant_name(args):
 
 def run(argv=None):
   args = parse_args(argv)
-  motion_file, model_file = resolve_paths(args)
+  motion_files, model_file = resolve_paths(args)
+  motion_file = motion_files[0]
+  clip_change = parse_clip_change(args.clip_change)
   tag = args.tag or os.path.splitext(os.path.basename(motion_file))[0]
   variant = variant_name(args)
 
-  env, model, versions = build_env(args.code_dir, motion_file, model_file)
+  env, model, versions = build_env(args.code_dir, motion_files, model_file)
   task = env_patch.imitation_task(env)
   if not args.upstream_init:
     # Controlled mode: always start from the reference state so the only
@@ -206,6 +240,8 @@ def run(argv=None):
     env_patch.enable_cycle_heading_anchor(env)
   if args.reward_v2:
     env_patch.apply_velocity_reward_v2(env)
+  if clip_change is not None:
+    env_patch.enable_clip_change(env, clip_change[0], clip_change[1])
 
   env_patch.attach_term_logger(env)
 
@@ -389,6 +425,9 @@ def run(argv=None):
               float(np.max(np.abs(cum_gaps))) if cum_gaps else 0.0),
           "anchor_cycle_events": (task._anchor_tracker.cycle_events
                                    if args.yaw_anchor else 0),
+          "anchor_clip_syncs": (task._anchor_tracker.clip_events
+                                if args.yaw_anchor
+                                and task._anchor_tracker is not None else 0),
           "mean_speed_mps": float(np.mean(speeds)),
           "mean_speed_3d_mps": float(np.mean(speeds_3d)),
           "mean_sim_z_m": float(np.mean(sim_z)),
@@ -428,10 +467,12 @@ def run(argv=None):
                  summary["mean_yaw_err_rad"], summary["yaw_drift_rad_per_s"],
                  summary["termination"]))
         if args.yaw_anchor:
-          print("           fixed-frame yaw=%.4f rad (anchored %.4f), cum offset %.3f rad"
+          print("           fixed-frame yaw=%.4f rad (anchored %.4f), cum offset %.3f rad,"
+                " %d clip sync(s)"
                 % (summary["mean_yaw_err_fixed_rad"],
                    summary["mean_yaw_err_rad"],
-                   summary["final_anchor_cum_yaw_rad"]))
+                   summary["final_anchor_cum_yaw_rad"],
+                   summary["anchor_clip_syncs"]))
       ep += 1
 
   agg = metrics.summarize_episodes(episodes)
@@ -443,6 +484,8 @@ def run(argv=None):
       "tag": tag, "variant": variant,
       "run_id": args.run_id,
       "motion_file": motion_file, "model_file": model_file,
+      "motion_files": list(motion_files),
+      "clip_change_s": list(clip_change) if clip_change else None,
       "model_sha256": sha256(model_file),
       "env_time_step": env_dt,
       "provenance": {"upstream_commit": UPSTREAM_COMMIT,

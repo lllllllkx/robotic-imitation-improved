@@ -176,5 +176,91 @@ class FrameReconstructionTest(unittest.TestCase):
     self.assertAlmostEqual(tracker.cum, metrics.wrap_angle(-0.735 + 0.46),
                            places=10)
 
+
+class MultiClipFrameTests(unittest.TestCase):
+  """theta_cf must follow upstream when the clip changes mid-episode."""
+
+  def test_first_sync_without_seed_still_sets_theta_cf(self):
+    t = heading_anchor.AnchorTracker()
+    self.assertIsNone(t.theta_cf)
+    t.on_sync(0.42, shared=True)
+    self.assertAlmostEqual(t.theta_cf, 0.42, places=12)
+
+  def test_clip_change_rebases_theta_cf(self):
+    t = heading_anchor.AnchorTracker()
+    t.seed(0.40)
+    t.on_sync(0.55, shared=False)          # one cycle event inside clip 1
+    self.assertAlmostEqual(t.cum, 0.15, places=12)
+    t.on_sync(0.90, shared=True)           # upstream re-syncs on clip change
+    self.assertAlmostEqual(t.theta_cf, 0.90, places=12)
+    self.assertEqual(t.cum, 0.0)
+    self.assertEqual(t.clip_events, 1)
+    # cycle offsets after the switch accumulate from the new baseline only
+    self.assertAlmostEqual(t.on_sync(0.95, shared=False), 0.05, places=12)
+
+  def test_clip_change_across_pi_is_a_small_step(self):
+    t = heading_anchor.AnchorTracker()
+    t.seed(3.05)
+    t.on_sync(-3.05, shared=True)
+    self.assertAlmostEqual(t.theta_cf, metrics.wrap_angle(-3.05), places=12)
+    self.assertAlmostEqual(t.clip_sync_delta,
+                           metrics.wrap_angle(-3.05 - 3.05), places=12)
+    self.assertLess(abs(t.clip_sync_delta), 0.2)
+
+  def test_reconstruction_identity_across_two_clips(self):
+    """Same-trajectory fixed frame must rebase at the clip boundary."""
+    rng = np.random.RandomState(17)
+    # clip A: raw quats with pitch/roll, opening offset theta0
+    qa = [metrics.normalize_quat(rng.randn(4)) for _ in range(30)]
+    qb = [metrics.normalize_quat(rng.randn(4)) for _ in range(30)]
+
+    t = heading_anchor.AnchorTracker()
+    t.seed(0.40)
+    gaps = []
+    for k, q in enumerate(qa):
+      if k and k % 10 == 0:
+        t.on_sync(t.theta + rng.uniform(-0.05, 0.05), shared=False)
+      theta, theta_cf = t.theta, t.theta_cf
+      anchored = metrics.with_yaw_offset(q, theta)
+      fixed = metrics.with_yaw_offset(q, theta_cf)
+      gap = metrics.wrap_angle(metrics.quat_to_yaw(anchored)
+                               - metrics.quat_to_yaw(fixed))
+      gaps.append(metrics.wrap_angle(gap - t.cum))
+
+    # clip switch: upstream installs a new absolute offset for clip B
+    t.on_sync(0.90, shared=True)
+    self.assertEqual(t.cum, 0.0)
+    for k, q in enumerate(qb):
+      if k and k % 10 == 0:
+        t.on_sync(t.theta + rng.uniform(-0.05, 0.05), shared=False)
+      theta, theta_cf = t.theta, t.theta_cf
+      anchored = metrics.with_yaw_offset(q, theta)
+      fixed = metrics.with_yaw_offset(q, theta_cf)
+      gap = metrics.wrap_angle(metrics.quat_to_yaw(anchored)
+                               - metrics.quat_to_yaw(fixed))
+      gaps.append(metrics.wrap_angle(gap - t.cum))
+
+    self.assertAlmostEqual(max(abs(g) for g in gaps), 0.0, places=9)
+    # the fixed frame of clip B is the frame upstream would track
+    q_raw_b0 = qb[0]
+    np.testing.assert_allclose(
+        metrics.with_yaw_offset(metrics.undo_yaw_offset(
+            metrics.with_yaw_offset(q_raw_b0, 0.90), 0.90), 0.90),
+        metrics.with_yaw_offset(q_raw_b0, 0.90), atol=1e-12)
+
+  def test_fixed_frame_stays_within_upstream_frame_after_switch(self):
+    """Before the switch cum counts; after it the new baseline is clean."""
+    t = heading_anchor.AnchorTracker()
+    t.seed(-0.20)
+    for d in (0.03, 0.06, 0.04):
+      t.on_sync(t.theta + d, shared=False)
+    self.assertAlmostEqual(t.cum, 0.13, places=12)
+    t.on_sync(1.10, shared=True)
+    self.assertAlmostEqual(t.cum, 0.0, places=12)
+    self.assertAlmostEqual(t.theta_cf, 1.10, places=12)
+    self.assertAlmostEqual(
+        t.ref_yaw_unanchored(metrics.wrap_angle(1.12)), 1.12, places=12)
+
+
 if __name__ == "__main__":
   unittest.main()

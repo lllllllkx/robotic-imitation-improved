@@ -83,7 +83,7 @@ e_fixed    = wrap( ψ_sim − ψ(q_ref_fixed)  )
 | --- | --- |
 | `src/metrics.py` | `yaw_about_z` / `quat_multiply` / `with_yaw_offset` / `undo_yaw_offset` / `normalize_quat`（纯 numpy） |
 | `src/heading_anchor.py` | `AnchorTracker`：`seed(θ_cf)`、`on_sync(θ_new, shared)`、`cum`、`theta_cf`、事件计数；`offset_yaw` / `undo_offset` |
-| `src/env_patch.py` | 包住 `_sync_ref_origin` 取事件后的 `_origin_offset_rot` 偏航；用 `_anchor_event_shared = bool(change_clip)` 区分"上游也会做的同步"；快照新增 `ref_orn_raw`（把当前 `θ` 从实际参考姿态里转回去，得到 clip 自身朝向）、`anchor_cum_yaw`、`anchor_theta_cf_yaw`；`reset_anchor_tracker(env)` 在每个 episode 开始时从 `_origin_offset_rot` 播种 |
+| `src/env_patch.py` | `enable_clip_change(env, min_s, max_s)` 给多片段评估开切换；包住 `_sync_ref_origin` 取事件后的 `_origin_offset_rot` 偏航；用 `_anchor_event_shared = bool(change_clip)` 区分"上游也会做的同步"；快照新增 `ref_orn_raw`（把当前 `θ` 从实际参考姿态里转回去，得到 clip 自身朝向）、`anchor_cum_yaw`、`anchor_theta_cf_yaw`；`reset_anchor_tracker(env)` 在每个 episode 开始时从 `_origin_offset_rot` 播种 |
 | `src/evaluate.py` | 逐步写 `anchor_cum_yaw_rad` / `yaw_err_fixed_rad` / `yaw_err_fixed_signed_rad` / `ref_yaw_raw_rad`；per-episode 记 `mean/max/final_yaw_err_fixed_rad`、`yaw_drift_fixed_rad_per_s`、`final_anchor_cum_yaw_rad`、`anchor_cycle_events`、`max_abs_cum_tracker_vs_geometry_rad` |
 
 两个自检都在每次评估时自动跑：
@@ -166,6 +166,12 @@ python -m src.evaluate --motion dog_spin --episodes 3 --seeds 3 --random-phase -
 
 # 汇总表新增 yaw_fixed_rad / anchor_cum_rad / cum_gap_rad 三列
 python -m src.aggregate --run-id myrun
+
+# 多片段（clip 切换时 θ_cf 重基准）：同内容双片段对照
+python -m src.evaluate --motion dog_pace \
+    --extra-motions results/_multiclip/aux/dog_pace_copy.txt \
+    --clip-change 2:4 --seeds 2 --episodes 3 --yaw-anchor \
+    --out results/_multiclip --run-id r_smoke_multiclip
 ```
 
 CSV 里 `anchor_cum_yaw_rad`、`yaw_err_fixed_rad`、`yaw_err_fixed_signed_rad`、`ref_yaw_raw_rad`
@@ -177,9 +183,9 @@ with anchoring disabled"）。
 
 ## 8. 已知局限（不要当成已完成）
 
-- **单片段 episode**：本文所有 run 都只加载一段参考动作，没有跨片段切换。若发生 clip 切换，
-  上游自己也会同步朝向，`θ_cf` 应随之更新；tracker 已经记录 `shared` 事件并清零 `cum`，
-  但 `evaluate.py` 目前仍用 episode 开始时的 `θ_cf` 构造固定参考系，**多片段场景下这一口径需要
-  扩展**（当前结果不受影响，因为 `motion_file` 只有一个片段）。
+- **多片段切换**：本文所有数字都来自单片段 run，不受影响（`dog_spin` 确定性对照在新分支上重跑
+  仍为 0.0602 / 1.9912 / −3.6694，逐位相同）。分支 `exp/multi-clip-theta-cf` 已把 `θ_cf` 在
+  上游的 clip 同步处重基准，并用同内容双片段对照与 5 例单测验证恒等审计 ≤ 8.9e-16，
+  见 `docs/MULTICLIP_NOTES.md`。仍未验证：连续多段长回合基准、混合技能的行为指标。
 - **没有 A/B 重训**：见第 6 节。
 - **没有对真机/其它技能做同样分解**：只做了 `dog_spin` / `dog_pace` 两个技能。

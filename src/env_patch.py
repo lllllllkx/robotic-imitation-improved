@@ -166,6 +166,22 @@ def reset_anchor_tracker(env):
   return tracker
 
 
+def enable_clip_change(env, min_seconds, max_seconds):
+  """Let the reference switch between the loaded clips mid-episode.
+
+  Upstream samples a new clip once ``_get_motion_time()`` passes
+  ``_clip_change_time``, and only when more than one motion is loaded
+  (``imitation_task.py:1071-1076``). ``_reset_clip_change_time`` draws the next
+  change time from the task RNG, which ``pin_task_random`` has already pinned,
+  so a multi-clip reconstruction stays reproducible across processes.
+  """
+  task = imitation_task(env)
+  task._clip_time_min = float(min_seconds)
+  task._clip_time_max = float(max_seconds)
+  task._reset_clip_change_time()
+  return task
+
+
 def apply_velocity_reward_v2(env, weights=None, err_scale=None):
   """Rebalance the velocity term and the five reward weights (improvement 2)."""
   task = imitation_task(env)
