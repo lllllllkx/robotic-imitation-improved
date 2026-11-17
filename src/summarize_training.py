@@ -19,7 +19,7 @@ FIELDS = {
     "ep_len_mean": r"\|\s*EpLenMean\s*\|\s*([0-9.eE+-]+)",
     "ep_rew_mean": r"\|\s*EpRewMean\s*\|\s*([0-9.eE+-]+)",
     "episodes_so_far": r"\|\s*EpisodesSoFar\s*\|\s*([0-9]+)",
-    "time_elapsed": r"\|\s*TimeElapsed\s*\|\s*([0-9.]+)",
+    "time_elapsed": r"\|\s*TimeElapsed\s*\|\s*([0-9.]+(?:e[+-]?[0-9]+)?)",
     "timesteps_so_far": r"\|\s*TimestepsSoFar\s*\|\s*([0-9]+)",
 }
 
