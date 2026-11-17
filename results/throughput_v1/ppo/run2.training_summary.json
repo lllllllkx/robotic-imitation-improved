@@ -1,0 +1,21 @@
+{
+  "status": "completed",
+  "run_id": "r20261116_throughput_ppo_v1_run2",
+  "variant": "baseline",
+  "patch_flags": {
+    "heading_anchor_installed": false,
+    "velocity_reward_v2": false,
+    "pose_weight": 0.5,
+    "velocity_weight": 0.05
+  },
+  "requested_aggregate_timesteps": 40960,
+  "actual_aggregate_timesteps": 40960,
+  "mpi_processes": 8,
+  "base_seed": 0,
+  "wall_time_seconds": 35929.68787407875,
+  "aggregate_steps_per_second": 1.1400043369024182,
+  "rank0_episodes": 8,
+  "model_file": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_improved\\outputs\\throughput_ppo\\run2\\model.zip",
+  "model_exists": true,
+  "finished_at_utc": "2026-11-17T00:03:22Z"
+}

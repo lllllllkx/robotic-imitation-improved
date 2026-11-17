@@ -1,0 +1,464 @@
+{
+  "measurement": "PPO end-to-end steady-state, 600-step episodes, pretrained init, randomizer off, 8 MPI processes",
+  "spike_factor": 3.0,
+  "runs": [
+    {
+      "iterations": [
+        {
+          "iteration": 0
+        }
+      ],
+      "steady_rows": [
+        {
+          "iteration": 1,
+          "steps": 4096,
+          "elapsed_s": 6.8500000000000005,
+          "steps_per_s": 597.956204379562,
+          "anomaly": false
+        },
+        {
+          "iteration": 2,
+          "steps": 4096,
+          "elapsed_s": 7.0,
+          "steps_per_s": 585.1428571428571,
+          "anomaly": false
+        },
+        {
+          "iteration": 3,
+          "steps": 4096,
+          "elapsed_s": 7.199999999999999,
+          "steps_per_s": 568.8888888888889,
+          "anomaly": false
+        },
+        {
+          "iteration": 4,
+          "steps": 4096,
+          "elapsed_s": 7.200000000000003,
+          "steps_per_s": 568.8888888888887,
+          "anomaly": false
+        },
+        {
+          "iteration": 5,
+          "steps": 4096,
+          "elapsed_s": 7.299999999999997,
+          "steps_per_s": 561.0958904109591,
+          "anomaly": false
+        },
+        {
+          "iteration": 6,
+          "steps": 4096,
+          "elapsed_s": 7.399999999999999,
+          "steps_per_s": 553.5135135135137,
+          "anomaly": false
+        },
+        {
+          "iteration": 7,
+          "steps": 4096,
+          "elapsed_s": 7.399999999999999,
+          "steps_per_s": 553.5135135135137,
+          "anomaly": false
+        },
+        {
+          "iteration": 8,
+          "steps": 4096,
+          "elapsed_s": 7.299999999999997,
+          "steps_per_s": 561.0958904109591,
+          "anomaly": false
+        },
+        {
+          "iteration": 9,
+          "steps": 4096,
+          "elapsed_s": 7.300000000000011,
+          "steps_per_s": 561.0958904109581,
+          "anomaly": false
+        }
+      ],
+      "valid_iterations": 9,
+      "total_iterations": 9,
+      "steady_steps": 36864,
+      "steady_time_s": 64.95,
+      "steady_steps_per_second": 567.5750577367205,
+      "median_iteration_s": 7.299999999999997,
+      "max_steady_iteration_ratio": 1.0136986301369866,
+      "monotonic_elapsed": true,
+      "invalid_reasons": [],
+      "excluded_iterations": [],
+      "name": "run1",
+      "console_log": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_improved\\results\\throughput_v1\\ppo\\run1.console.log",
+      "wall_time_s": null,
+      "valid": true
+    },
+    {
+      "iterations": [
+        {
+          "iteration": 0
+        }
+      ],
+      "steady_rows": [
+        {
+          "iteration": 1,
+          "steps": 4096,
+          "elapsed_s": 6.950000000000001,
+          "steps_per_s": 589.3525179856114,
+          "anomaly": false
+        },
+        {
+          "iteration": 2,
+          "steps": 4096,
+          "elapsed_s": 7.0,
+          "steps_per_s": 585.1428571428571,
+          "anomaly": false
+        },
+        {
+          "iteration": 3,
+          "steps": 4096,
+          "elapsed_s": 7.099999999999998,
+          "steps_per_s": 576.9014084507044,
+          "anomaly": false
+        },
+        {
+          "iteration": 4,
+          "steps": 4096,
+          "elapsed_s": 8.600000000000001,
+          "steps_per_s": 476.2790697674418,
+          "anomaly": false
+        },
+        {
+          "iteration": 5,
+          "steps": 4096,
+          "elapsed_s": 8.299999999999997,
+          "steps_per_s": 493.4939759036146,
+          "anomaly": false
+        },
+        {
+          "iteration": 6,
+          "steps": 4096,
+          "elapsed_s": -43.709999999999994,
+          "steps_per_s": null,
+          "anomaly": true
+        },
+        {
+          "iteration": 7,
+          "steps": 4096,
+          "elapsed_s": 2.5,
+          "steps_per_s": 1638.4,
+          "anomaly": false
+        },
+        {
+          "iteration": 8,
+          "steps": 4096,
+          "elapsed_s": 0.0,
+          "steps_per_s": null,
+          "anomaly": true
+        },
+        {
+          "iteration": 9,
+          "steps": 4096,
+          "elapsed_s": 0.0,
+          "steps_per_s": null,
+          "anomaly": true
+        }
+      ],
+      "valid_iterations": 6,
+      "total_iterations": 9,
+      "steady_steps": 24576,
+      "steady_time_s": 40.449999999999996,
+      "steady_steps_per_second": 607.5648949320149,
+      "median_iteration_s": 7.099999999999998,
+      "max_steady_iteration_ratio": 1.2112676056338034,
+      "monotonic_elapsed": false,
+      "invalid_reasons": [
+        "non_monotonic_elapsed"
+      ],
+      "excluded_iterations": [
+        6,
+        8,
+        9
+      ],
+      "name": "run2",
+      "console_log": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_improved\\results\\throughput_v1\\ppo\\run2.console.log",
+      "wall_time_s": null,
+      "valid": false
+    },
+    {
+      "iterations": [
+        {
+          "iteration": 0
+        }
+      ],
+      "steady_rows": [
+        {
+          "iteration": 1,
+          "steps": 4096,
+          "elapsed_s": 7.380000000000001,
+          "steps_per_s": 555.0135501355013,
+          "anomaly": false
+        },
+        {
+          "iteration": 2,
+          "steps": 4096,
+          "elapsed_s": 7.199999999999999,
+          "steps_per_s": 568.8888888888889,
+          "anomaly": false
+        },
+        {
+          "iteration": 3,
+          "steps": 4096,
+          "elapsed_s": 10.099999999999998,
+          "steps_per_s": 405.5445544554456,
+          "anomaly": false
+        },
+        {
+          "iteration": 4,
+          "steps": 4096,
+          "elapsed_s": 9.100000000000001,
+          "steps_per_s": 450.10989010989005,
+          "anomaly": false
+        },
+        {
+          "iteration": 5,
+          "steps": 4096,
+          "elapsed_s": 12.5,
+          "steps_per_s": 327.68,
+          "anomaly": false
+        },
+        {
+          "iteration": 6,
+          "steps": 4096,
+          "elapsed_s": 21.900000000000006,
+          "steps_per_s": 187.0319634703196,
+          "anomaly": false
+        },
+        {
+          "iteration": 7,
+          "steps": 4096,
+          "elapsed_s": 54.099999999999994,
+          "steps_per_s": 75.71164510166359,
+          "anomaly": true
+        },
+        {
+          "iteration": 8,
+          "steps": 4096,
+          "elapsed_s": 12.0,
+          "steps_per_s": 341.3333333333333,
+          "anomaly": false
+        },
+        {
+          "iteration": 9,
+          "steps": 4096,
+          "elapsed_s": 7.0,
+          "steps_per_s": 585.1428571428571,
+          "anomaly": false
+        }
+      ],
+      "valid_iterations": 8,
+      "total_iterations": 9,
+      "steady_steps": 32768,
+      "steady_time_s": 87.18,
+      "steady_steps_per_second": 375.866024317504,
+      "median_iteration_s": 10.099999999999998,
+      "max_steady_iteration_ratio": 2.1683168316831694,
+      "monotonic_elapsed": true,
+      "invalid_reasons": [
+        "steady_iteration_degradation"
+      ],
+      "excluded_iterations": [
+        7
+      ],
+      "name": "run3",
+      "console_log": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_improved\\results\\throughput_v1\\ppo\\run3.console.log",
+      "wall_time_s": null,
+      "valid": false
+    },
+    {
+      "iterations": [
+        {
+          "iteration": 0
+        }
+      ],
+      "steady_rows": [
+        {
+          "iteration": 1,
+          "steps": 4096,
+          "elapsed_s": 61.0,
+          "steps_per_s": 67.14754098360656,
+          "anomaly": true
+        },
+        {
+          "iteration": 2,
+          "steps": 4096,
+          "elapsed_s": 7.0,
+          "steps_per_s": 585.1428571428571,
+          "anomaly": false
+        },
+        {
+          "iteration": 3,
+          "steps": 4096,
+          "elapsed_s": 6.0,
+          "steps_per_s": 682.6666666666666,
+          "anomaly": false
+        },
+        {
+          "iteration": 4,
+          "steps": 4096,
+          "elapsed_s": 7.0,
+          "steps_per_s": 585.1428571428571,
+          "anomaly": false
+        },
+        {
+          "iteration": 5,
+          "steps": 4096,
+          "elapsed_s": 7.0,
+          "steps_per_s": 585.1428571428571,
+          "anomaly": false
+        },
+        {
+          "iteration": 6,
+          "steps": 4096,
+          "elapsed_s": 7.0,
+          "steps_per_s": 585.1428571428571,
+          "anomaly": false
+        },
+        {
+          "iteration": 7,
+          "steps": 4096,
+          "elapsed_s": 7.0,
+          "steps_per_s": 585.1428571428571,
+          "anomaly": false
+        },
+        {
+          "iteration": 8,
+          "steps": 4096,
+          "elapsed_s": 8.0,
+          "steps_per_s": 512.0,
+          "anomaly": false
+        },
+        {
+          "iteration": 9,
+          "steps": 4096,
+          "elapsed_s": 7.0,
+          "steps_per_s": 585.1428571428571,
+          "anomaly": false
+        }
+      ],
+      "valid_iterations": 8,
+      "total_iterations": 9,
+      "steady_steps": 32768,
+      "steady_time_s": 56.0,
+      "steady_steps_per_second": 585.1428571428571,
+      "median_iteration_s": 7.0,
+      "max_steady_iteration_ratio": 1.1428571428571428,
+      "monotonic_elapsed": true,
+      "invalid_reasons": [],
+      "excluded_iterations": [
+        1
+      ],
+      "name": "run4",
+      "console_log": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_improved\\results\\throughput_v1\\ppo\\run4.console.log",
+      "wall_time_s": null,
+      "valid": true
+    },
+    {
+      "iterations": [
+        {
+          "iteration": 0
+        }
+      ],
+      "steady_rows": [
+        {
+          "iteration": 1,
+          "steps": 4096,
+          "elapsed_s": 8.440000000000001,
+          "steps_per_s": 485.30805687203787,
+          "anomaly": false
+        },
+        {
+          "iteration": 2,
+          "steps": 4096,
+          "elapsed_s": 8.0,
+          "steps_per_s": 512.0,
+          "anomaly": false
+        },
+        {
+          "iteration": 3,
+          "steps": 4096,
+          "elapsed_s": 7.5,
+          "steps_per_s": 546.1333333333333,
+          "anomaly": false
+        },
+        {
+          "iteration": 4,
+          "steps": 4096,
+          "elapsed_s": 7.600000000000001,
+          "steps_per_s": 538.9473684210525,
+          "anomaly": false
+        },
+        {
+          "iteration": 5,
+          "steps": 4096,
+          "elapsed_s": 7.799999999999997,
+          "steps_per_s": 525.1282051282053,
+          "anomaly": false
+        },
+        {
+          "iteration": 6,
+          "steps": 4096,
+          "elapsed_s": 9.0,
+          "steps_per_s": 455.1111111111111,
+          "anomaly": false
+        },
+        {
+          "iteration": 7,
+          "steps": 4096,
+          "elapsed_s": 66.5,
+          "steps_per_s": 61.59398496240601,
+          "anomaly": true
+        },
+        {
+          "iteration": 8,
+          "steps": 4096,
+          "elapsed_s": 33.0,
+          "steps_per_s": 124.12121212121212,
+          "anomaly": true
+        },
+        {
+          "iteration": 9,
+          "steps": 4096,
+          "elapsed_s": 8.0,
+          "steps_per_s": 512.0,
+          "anomaly": false
+        }
+      ],
+      "valid_iterations": 7,
+      "total_iterations": 9,
+      "steady_steps": 28672,
+      "steady_time_s": 56.34,
+      "steady_steps_per_second": 508.9101881434149,
+      "median_iteration_s": 8.0,
+      "max_steady_iteration_ratio": 1.125,
+      "monotonic_elapsed": true,
+      "invalid_reasons": [],
+      "excluded_iterations": [
+        7,
+        8
+      ],
+      "name": "run5",
+      "console_log": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_improved\\results\\throughput_v1\\ppo\\run5.console.log",
+      "wall_time_s": null,
+      "valid": true
+    }
+  ],
+  "valid_runs": [
+    "run1",
+    "run4",
+    "run5"
+  ],
+  "pooled": {
+    "steps": 98304,
+    "time_s": 177.29000000000002,
+    "steps_per_second": 554.4813582266343
+  },
+  "per_run_steps_per_second_mean": 553.8760343409975,
+  "per_run_steps_per_second_min": 508.9101881434149,
+  "per_run_steps_per_second_max": 585.1428571428571
+}

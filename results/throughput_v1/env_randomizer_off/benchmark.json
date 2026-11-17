@@ -1,0 +1,132 @@
+{
+  "run_id": "r20261116_throughput_env_v1",
+  "tag": "env_rand_off",
+  "motion_file": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_improved\\third_party\\motion_imitation\\data\\motions\\dog_pace.txt",
+  "policy_file": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_improved\\third_party\\motion_imitation\\data\\policies\\dog_pace.zip",
+  "policy_sha256": "5efb1a764ddc6d38225070e39599c25c91aa47bd3ce4e166f1c5a02685571678",
+  "config": {
+    "mpi_processes": 8,
+    "repeats": 3,
+    "episodes_per_rank": 2,
+    "max_steps": 600,
+    "episode_mode": "test (fixed 600-step limit, no curriculum)",
+    "randomizer": false,
+    "deterministic_policy": true,
+    "timing_scope": "env.step wall time only; policy.predict timed separately"
+  },
+  "runtime": {
+    "python": "3.7.1",
+    "omp_num_threads": "1",
+    "finished_at_utc": "2026-11-16T14:02:14Z"
+  },
+  "repeats": [
+    {
+      "repeat": 0,
+      "wall_time_s": 17.659437656402588,
+      "aggregate_steps": 9600,
+      "episodes": 16,
+      "completed_600": 16,
+      "terminated_falls": 0,
+      "max_rank_environment_time_s": 16.67612361907959,
+      "max_rank_policy_time_s": 1.0150249004364014,
+      "env_steps_per_second": 575.6733530696779,
+      "wall_steps_per_second": 543.6186693362478
+    },
+    {
+      "repeat": 1,
+      "wall_time_s": 15.99051809310913,
+      "aggregate_steps": 9600,
+      "episodes": 16,
+      "completed_600": 16,
+      "terminated_falls": 0,
+      "max_rank_environment_time_s": 15.172422170639038,
+      "max_rank_policy_time_s": 0.8276245594024658,
+      "env_steps_per_second": 632.7269233634607,
+      "wall_steps_per_second": 600.3557823518535
+    },
+    {
+      "repeat": 2,
+      "wall_time_s": 16.674925565719604,
+      "aggregate_steps": 9600,
+      "episodes": 16,
+      "completed_600": 16,
+      "terminated_falls": 0,
+      "max_rank_environment_time_s": 15.79949402809143,
+      "max_rank_policy_time_s": 0.8753414154052734,
+      "env_steps_per_second": 607.6143946718321,
+      "wall_steps_per_second": 575.7147138177173
+    }
+  ],
+  "aggregate": {
+    "total_steps": 28800,
+    "total_episodes": 48,
+    "completed_600": 48,
+    "terminated_falls": 0,
+    "env_steps_per_second_mean": 605.3382237016568,
+    "env_steps_per_second_min": 575.6733530696779,
+    "env_steps_per_second_max": 632.7269233634607,
+    "wall_steps_per_second_mean": 573.2297218352728
+  },
+  "rank0_rows": [
+    {
+      "rank": 0,
+      "repeat": 0,
+      "episode": 0,
+      "steps": 600,
+      "completed_600": true,
+      "terminated": false,
+      "environment_time_s": 9.04990530014038,
+      "policy_time_s": 0.5565004348754883
+    },
+    {
+      "rank": 0,
+      "repeat": 0,
+      "episode": 1,
+      "steps": 600,
+      "completed_600": true,
+      "terminated": false,
+      "environment_time_s": 7.626218318939209,
+      "policy_time_s": 0.41170620918273926
+    },
+    {
+      "rank": 0,
+      "repeat": 1,
+      "episode": 0,
+      "steps": 600,
+      "completed_600": true,
+      "terminated": false,
+      "environment_time_s": 7.411991119384766,
+      "policy_time_s": 0.41577839851379395
+    },
+    {
+      "rank": 0,
+      "repeat": 1,
+      "episode": 1,
+      "steps": 600,
+      "completed_600": true,
+      "terminated": false,
+      "environment_time_s": 7.629249095916748,
+      "policy_time_s": 0.4118461608886719
+    },
+    {
+      "rank": 0,
+      "repeat": 2,
+      "episode": 0,
+      "steps": 600,
+      "completed_600": true,
+      "terminated": false,
+      "environment_time_s": 7.860661506652832,
+      "policy_time_s": 0.43781352043151855
+    },
+    {
+      "rank": 0,
+      "repeat": 2,
+      "episode": 1,
+      "steps": 600,
+      "completed_600": true,
+      "terminated": false,
+      "environment_time_s": 7.927947521209717,
+      "policy_time_s": 0.43308353424072266
+    }
+  ]
+}

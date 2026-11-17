@@ -1,0 +1,1783 @@
+﻿mpiexec.exe : D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:516: Futu
+reWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be un
+derstood as (type, (1,)) / '(1,)type'.
+所在位置 行:1 字符: 221
++ ... | Out-Null; & "D:\Microsoft MPI\Bin\mpiexec.exe" -n 8 "D:\anaconda\en ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (D:\anaconda\env...) / '(1,)type'.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:517: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:518: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:519: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:520: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:525: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:516: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:517: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:518: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:519: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:520: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:525: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:516: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:517: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:518: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:519: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:520: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:525: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:516: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:517: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:518: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:519: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:520: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:525: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:516: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:517: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:518: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:519: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:520: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:525: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:516: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:517: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:518: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:519: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:520: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:525: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:516: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:517: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:518: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:519: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:520: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:525: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:516: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:517: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:518: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:519: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:520: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\framework\dtypes.py:525: FutureWarning: Pas
+sing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (t
+ype, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:541: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:541: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:542: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:542: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:543: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:544: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:543: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:545: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:544: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:550: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:545: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:550: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:541: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:542: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:543: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:544: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:545: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:550: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:541: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:542: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:543: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:544: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:545: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:550: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:541: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:542: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:543: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:544: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:545: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:550: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:541: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:542: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:541: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:543: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:544: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:542: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:545: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:543: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:550: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:544: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:545: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:550: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:541: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:542: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:543: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:544: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:545: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorboard\compat\tensorflow_stub\dtypes.py:550: FutureWarni
+ng: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understoo
+d as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+p
+p
+p
+p
+p
+p
+y
+p
+y
+y
+y
+y
+y
+b
+y
+b
+b
+b
+b
+b
+u
+b
+u
+u
+u
+u
+u
+l
+u
+l
+l
+l
+l
+l
+l
+l
+l
+l
+l
+l
+l
+e
+l
+e
+e
+e
+e
+e
+t
+e
+t
+t
+t
+t
+t
+ 
+t
+ 
+ 
+ 
+ 
+ 
+b
+ 
+b
+b
+b
+b
+b
+u
+b
+u
+p
+u
+u
+u
+u
+i
+u
+i
+y
+i
+i
+i
+i
+l
+i
+l
+b
+l
+l
+l
+l
+d
+l
+d
+u
+d
+d
+d
+d
+ 
+d
+ 
+l
+ 
+ 
+ 
+ 
+t
+ 
+t
+l
+t
+t
+t
+t
+i
+t
+i
+e
+i
+i
+i
+i
+m
+i
+m
+t
+m
+m
+m
+m
+e
+m
+e
+ 
+e
+e
+e
+e
+:
+e
+:
+b
+:
+:
+:
+:
+ 
+:
+ 
+u
+ 
+ 
+ 
+ 
+J
+ 
+J
+i
+J
+J
+J
+J
+u
+J
+u
+l
+u
+u
+u
+u
+l
+u
+l
+d
+l
+l
+l
+l
+ 
+l
+ 
+ 
+ 
+ 
+ 
+ 
+2
+ 
+2
+t
+2
+2
+2
+2
+1
+2
+1
+i
+1
+1
+1
+1
+ 
+1
+ 
+m
+ 
+ 
+ 
+ 
+2
+ 
+2
+e
+2
+2
+2
+2
+0
+2
+0
+:
+0
+0
+0
+0
+2
+0
+2
+ 
+2
+2
+2
+2
+2
+2
+2
+J
+2
+2
+2
+2
+ 
+2
+ 
+u
+ 
+ 
+ 
+ 
+2
+ 
+2
+l
+2
+2
+2
+2
+0
+2
+0
+ 
+0
+0
+0
+0
+:
+0
+:
+2
+:
+:
+:
+:
+0
+:
+0
+1
+0
+0
+0
+0
+0
+0
+0
+ 
+0
+0
+0
+0
+:
+0
+:
+2
+:
+:
+:
+:
+1
+:
+1
+0
+1
+1
+1
+1
+9
+1
+9
+2
+9
+9
+9
+9
+
+9
+
+2
+
+
+
+
+
+ 20:00:19
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\src\train_ppo.py:1
+77: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\src\train_ppo.py:1
+77: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\src\train_ppo.py:1
+77: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\src\train_ppo.py:1
+77: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\src\train_ppo.py:1
+77: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\src\train_ppo.py:1
+77: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\src\train_ppo.py:1
+77: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\src\train_ppo.py:1
+77: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+
+a
+a
+r
+r
+g
+g
+v
+v
+[
+[0
+0
+a
+]
+]
+r
+=
+=
+g
+
+
+v[0]=
+argv[0]=
+argv[0]=
+argv[0]=
+argv[0]=
+argv[0]=
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\gym\logger.py:30: UserWarning: [33mWARN: Box bound precision
+ lowered by casting to float32[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\gym\logger.py:30: UserWarning: [33mWARN: Box bound precision
+ lowered by casting to float32[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\gym\logger.py:30: UserWarning: [33mWARN: Box bound precision
+ lowered by casting to float32[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\gym\logger.py:30: UserWarning: [33mWARN: Box bound precision
+ lowered by casting to float32[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\gym\logger.py:30: UserWarning: [33mWARN: Box bound precision
+ lowered by casting to float32[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\gym\logger.py:30: UserWarning: [33mWARN: Box bound precision
+ lowered by casting to float32[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\gym\logger.py:30: UserWarning: [33mWARN: Box bound precision
+ lowered by casting to float32[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+D:\anaconda\envs\motion_imitation_repro\lib\site-packages\gym\logger.py:30: UserWarning: [33mWARN: Box bound precision
+ lowered by casting to float32[0m
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:19
+1: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\tf_util.py:20
+0: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\policies.py:1
+16: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\input.py:25: 
+The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+
+
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+
+
+
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+
+
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\imitation_policies.py:100: flatten (from tensorflow.python.layers.core) is deprecated and will be r
+emoved in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000229809F
+65F8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000229809F65F8>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000229809F
+65F8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000229809F65F8>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001F4E112
+49B0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001F4E11249B0>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001F4E112
+49B0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001F4E11249B0>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000172D348
+6B00>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000172D3486B00>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000172D348
+6B00>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000172D3486B00>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000244C872
+67F0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000244C87267F0>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000244C872
+67F0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000244C87267F0>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022B78E7
+6A58>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022B78E76A58>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022B78E7
+6A58>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022B78E76A58>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000206A7F6
+7B00>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000206A7F67B00>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000206A7F6
+7B00>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000206A7F67B00>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001FEA6C1
+8940>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001FEA6C18940>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001FEA6C1
+8940>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001FEA6C18940>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022D07D2
+4B00>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022D07D24B00>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022D07D2
+4B00>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022D07D24B00>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001F4E3F8
+5A90>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001F4E3F85A90>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001F4E3F8
+5A90>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001F4E3F85A90>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000002298385
+BB38>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000002298385BB38>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000002298385
+BB38>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000002298385BB38>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022D0AB5
+7BE0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022D0AB57BE0>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022D0AB5
+7BE0>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022D0AB57BE0>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000172D62C
+5AC8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000172D62C5AC8>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000172D62C
+5AC8>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000172D62C5AC8>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022B1027
+5C50>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022B10275C50>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022B1027
+5C50>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x0000022B10275C50>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000244CB55
+4E10>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000244CB554E10>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000244CB55
+4E10>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000244CB554E10>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000206A8F2
+6C88>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000206A8F26C88>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000206A8F2
+6C88>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x00000206A8F26C88>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001FEA9A3
+7A58>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001FEA9A37A58>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:Entity <bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001FEA9A3
+7A58>> could not be transformed and will be executed as-is. Please report this to the AutgoGraph team. When filing the 
+bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output. Cause: converting 
+<bound method Flatten.call of <tensorflow.python.layers.core.Flatten object at 0x000001FEA9A37A58>>: AttributeError: mo
+dule 'gast' has no attribute 'Index'
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:167: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be remo
+ved in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:176: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.sca
+lar instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion
+_imitation\learning\ppo_imitation.py:215: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.
+merge_all instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\tensorflow\python\ops\math_grad.py:12
+50: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a
+ future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\base_class.py
+:1143: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+WARNING:tensorflow:From D:\anaconda\envs\motion_imitation_repro\lib\site-packages\stable_baselines\common\base_class.py
+:1143: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+********** Iteration 0 ************
+C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion_imitation\learning\imit
+ation_runners.py:82: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will per
+form elementwise comparison
+  terminated = ("terminated" not in info) or info["terminated"]
+C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion_imitation\learning\imit
+ation_runners.py:82: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will per
+form elementwise comparison
+  terminated = ("terminated" not in info) or info["terminated"]
+C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion_imitation\learning\imit
+ation_runners.py:82: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will per
+form elementwise comparison
+  terminated = ("terminated" not in info) or info["terminated"]
+C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion_imitation\learning\imit
+ation_runners.py:82: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will per
+form elementwise comparison
+  terminated = ("terminated" not in info) or info["terminated"]
+C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion_imitation\learning\imit
+ation_runners.py:82: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will per
+form elementwise comparison
+  terminated = ("terminated" not in info) or info["terminated"]
+C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion_imitation\learning\imit
+ation_runners.py:82: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will per
+form elementwise comparison
+  terminated = ("terminated" not in info) or info["terminated"]
+Optimizing...
+     pol_surr |    pol_entpen |       vf_loss |            kl |           ent
+C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion_imitation\learning\imit
+ation_runners.py:82: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will per
+form elementwise comparison
+  terminated = ("terminated" not in info) or info["terminated"]
+C:\Users\88950\Doubao\chats\2026-11-13\new-chat-1\robotic_imitation_improved\third_party\motion_imitation\learning\imit
+ation_runners.py:82: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will per
+form elementwise comparison
+  terminated = ("terminated" not in info) or info["terminated"]
+      0.02886 |       0.07926 |       1.70447 |       0.02714 |      -7.92603
+Evaluating losses...
+     -0.00667 |       0.07926 |       1.58052 |       0.03008 |      -7.92603
+----------------------------------
+| EpThisIter      | 0            |
+| EpisodesSoFar   | 0            |
+| TimeElapsed     | 9.72         |
+| TimestepsSoFar  | 4096         |
+| ev_tdlam_before | 0.273        |
+| loss_ent        | -7.9260345   |
+| loss_kl         | 0.03007577   |
+| loss_pol_entpen | 0.07926035   |
+| loss_pol_surr   | -0.006674172 |
+| loss_vf_loss    | 1.5805216    |
+----------------------------------
+********** Iteration 1 ************
+Optimizing...
+     pol_surr |    pol_entpen |       vf_loss |            kl |           ent
+      0.00308 |       0.07926 |       1.63234 |       0.02683 |      -7.92603
+Evaluating losses...
+     -0.00489 |       0.07926 |       1.61898 |       0.02156 |      -7.92603
+----------------------------------
+| EpLenMean       | 600          |
+| EpRewMean       | 378          |
+| EpThisIter      | 8            |
+| EpisodesSoFar   | 8            |
+| TimeElapsed     | 17.1         |
+| TimestepsSoFar  | 8192         |
+| ev_tdlam_before | 0.147        |
+| loss_ent        | -7.9260345   |
+| loss_kl         | 0.021558344  |
+| loss_pol_entpen | 0.07926035   |
+| loss_pol_surr   | -0.004892665 |
+| loss_vf_loss    | 1.618979     |
+----------------------------------
+********** Iteration 2 ************
+Optimizing...
+     pol_surr |    pol_entpen |       vf_loss |            kl |           ent
+      0.00450 |       0.07926 |       1.73046 |       0.01258 |      -7.92603
+Evaluating losses...
+     -0.00123 |       0.07926 |       1.62753 |       0.02696 |      -7.92603
+-----------------------------------
+| EpLenMean       | 600           |
+| EpRewMean       | 378           |
+| EpThisIter      | 8             |
+| EpisodesSoFar   | 16            |
+| TimeElapsed     | 24.3          |
+| TimestepsSoFar  | 12288         |
+| ev_tdlam_before | 0.0497        |
+| loss_ent        | -7.9260345    |
+| loss_kl         | 0.026962781   |
+| loss_pol_entpen | 0.07926035    |
+| loss_pol_surr   | -0.0012279395 |
+| loss_vf_loss    | 1.6275349     |
+-----------------------------------
+********** Iteration 3 ************
+Optimizing...
+     pol_surr |    pol_entpen |       vf_loss |            kl |           ent
+      0.00701 |       0.07926 |       1.70175 |       0.02192 |      -7.92603
+Evaluating losses...
+     -0.00114 |       0.07926 |       1.75868 |       0.03864 |      -7.92603
+-----------------------------------
+| EpLenMean       | 583           |
+| EpRewMean       | 368           |
+| EpThisIter      | 9             |
+| EpisodesSoFar   | 25            |
+| TimeElapsed     | 34.4          |
+| TimestepsSoFar  | 16384         |
+| ev_tdlam_before | 0.172         |
+| loss_ent        | -7.9260345    |
+| loss_kl         | 0.038643684   |
+| loss_pol_entpen | 0.07926035    |
+| loss_pol_surr   | -0.0011386566 |
+| loss_vf_loss    | 1.7586842     |
+-----------------------------------
+********** Iteration 4 ************
+Optimizing...
+     pol_surr |    pol_entpen |       vf_loss |            kl |           ent
+      0.01230 |       0.07926 |       1.66327 |       0.01657 |      -7.92603
+Evaluating losses...
+      0.00214 |       0.07926 |       1.80643 |       0.02767 |      -7.92603
+----------------------------------
+| EpLenMean       | 556          |
+| EpRewMean       | 350          |
+| EpThisIter      | 9            |
+| EpisodesSoFar   | 34           |
+| TimeElapsed     | 43.5         |
+| TimestepsSoFar  | 20480        |
+| ev_tdlam_before | 0.208        |
+| loss_ent        | -7.9260345   |
+| loss_kl         | 0.02766984   |
+| loss_pol_entpen | 0.07926035   |
+| loss_pol_surr   | 0.0021364507 |
+| loss_vf_loss    | 1.8064256    |
+----------------------------------
+********** Iteration 5 ************
+Optimizing...
+     pol_surr |    pol_entpen |       vf_loss |            kl |           ent
+      0.00959 |       0.07926 |       1.67843 |       0.02737 |      -7.92603
+Evaluating losses...
+     -0.00368 |       0.07926 |       1.61813 |       0.01432 |      -7.92603
+-----------------------------------
+| EpLenMean       | 563           |
+| EpRewMean       | 355           |
+| EpThisIter      | 7             |
+| EpisodesSoFar   | 41            |
+| TimeElapsed     | 56            |
+| TimestepsSoFar  | 24576         |
+| ev_tdlam_before | 0.019         |
+| loss_ent        | -7.9260345    |
+| loss_kl         | 0.014317708   |
+| loss_pol_entpen | 0.07926035    |
+| loss_pol_surr   | -0.0036796422 |
+| loss_vf_loss    | 1.6181254     |
+-----------------------------------
+********** Iteration 6 ************
+Optimizing...
+     pol_surr |    pol_entpen |       vf_loss |            kl |           ent
+      0.00869 |       0.07926 |       1.66966 |       0.02401 |      -7.92603
+Evaluating losses...
+     -0.00806 |       0.07926 |       1.69232 |       0.01492 |      -7.92603
+----------------------------------
+| EpLenMean       | 565          |
+| EpRewMean       | 356          |
+| EpThisIter      | 2            |
+| EpisodesSoFar   | 43           |
+| TimeElapsed     | 77.9         |
+| TimestepsSoFar  | 28672        |
+| ev_tdlam_before | 0.0639       |
+| loss_ent        | -7.9260345   |
+| loss_kl         | 0.014918182  |
+| loss_pol_entpen | 0.07926035   |
+| loss_pol_surr   | -0.008057626 |
+| loss_vf_loss    | 1.6923242    |
+----------------------------------
+********** Iteration 7 ************
+Optimizing...
+     pol_surr |    pol_entpen |       vf_loss |            kl |           ent
+      0.01685 |       0.07926 |       2.18966 |       0.01759 |      -7.92603
+Evaluating losses...
+     -0.00574 |       0.07926 |       1.62618 |       0.01923 |      -7.92603
+----------------------------------
+| EpLenMean       | 571          |
+| EpRewMean       | 360          |
+| EpThisIter      | 8            |
+| EpisodesSoFar   | 51           |
+| TimeElapsed     | 132          |
+| TimestepsSoFar  | 32768        |
+| ev_tdlam_before | 0.504        |
+| loss_ent        | -7.9260345   |
+| loss_kl         | 0.019230243  |
+| loss_pol_entpen | 0.07926035   |
+| loss_pol_surr   | -0.005743848 |
+| loss_vf_loss    | 1.6261771    |
+----------------------------------
+********** Iteration 8 ************
+Optimizing...
+     pol_surr |    pol_entpen |       vf_loss |            kl |           ent
+      0.00323 |       0.07926 |       1.61864 |       0.01712 |      -7.92603
+Evaluating losses...
+     -0.00427 |       0.07926 |       1.49985 |       0.02137 |      -7.92603
+-----------------------------------
+| EpLenMean       | 575           |
+| EpRewMean       | 362           |
+| EpThisIter      | 8             |
+| EpisodesSoFar   | 59            |
+| TimeElapsed     | 144           |
+| TimestepsSoFar  | 36864         |
+| ev_tdlam_before | 0.217         |
+| loss_ent        | -7.9260345    |
+| loss_kl         | 0.021368995   |
+| loss_pol_entpen | 0.07926035    |
+| loss_pol_surr   | -0.0042728167 |
+| loss_vf_loss    | 1.4998549     |
+-----------------------------------
+********** Iteration 9 ************
+Optimizing...
+     pol_surr |    pol_entpen |       vf_loss |            kl |           ent
+      0.00534 |       0.07926 |       1.67030 |       0.01847 |      -7.92603
+Evaluating losses...
+      0.00015 |       0.07926 |       1.59673 |       0.02490 |      -7.92603
+-----------------------------------
+| EpLenMean       | 578           |
+| EpRewMean       | 363           |
+| EpThisIter      | 8             |
+| EpisodesSoFar   | 67            |
+| TimeElapsed     | 151           |
+| TimestepsSoFar  | 40960         |
+| ev_tdlam_before | 0.106         |
+| loss_ent        | -7.9260345    |
+| loss_kl         | 0.024901018   |
+| loss_pol_entpen | 0.07926035    |
+| loss_pol_surr   | 0.00014550012 |
+| loss_vf_loss    | 1.5967338     |
+-----------------------------------
+TRAINING_COMPLETE
+{
+  "status": "completed",
+  "run_id": "r20261116_throughput_ppo_v1_run3",
+  "variant": "baseline",
+  "patch_flags": {
+    "heading_anchor_installed": false,
+    "velocity_reward_v2": false,
+    "pose_weight": 0.5,
+    "velocity_weight": 0.05
+  },
+  "requested_aggregate_timesteps": 40960,
+  "actual_aggregate_timesteps": 40960,
+  "mpi_processes": 8,
+  "base_seed": 0,
+  "wall_time_seconds": 151.28325581550598,
+  "aggregate_steps_per_second": 270.75038661219605,
+  "rank0_episodes": 8,
+  "model_file": "C:\\Users\\88950\\Doubao\\chats\\2026-11-13\\new-chat-1\\robotic_imitation_improved\\outputs\\throughput_ppo\\run3\\model.zip",
+  "model_exists": true,
+  "finished_at_utc": "2026-11-17T00:06:03Z"
+}

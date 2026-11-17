@@ -161,6 +161,11 @@ def parse_args():
     ap.add_argument("--expected-procs", type=int, default=8)
     ap.add_argument("--disable-randomizer", action="store_true")
     ap.add_argument("--int-save-freq", type=int, default=0)
+    ap.add_argument("--init-model", default=None,
+                    help="Initialise PPO weights from this model.zip before training.")
+    ap.add_argument("--episode-mode", default="train",
+                    choices=("train", "test"),
+                    help="train = 20-to-600 curriculum; test = fixed 600-step episodes.")
     ap.add_argument("--dry-run", action="store_true")
     return ap.parse_args()
 
@@ -235,7 +240,10 @@ def build_manifest(args, motion_file, rank_seed, num_procs, task):
             "requested_aggregate_timesteps": int(args.total_timesteps),
             "timestep_unit": "aggregate across MPI ranks (allreduce)",
             "environment_randomizer": not bool(args.disable_randomizer),
-            "curriculum_episode_length_start": 20,
+            "episode_mode": args.episode_mode,
+            "init_model": args.init_model,
+            "curriculum_episode_length_start": (
+                20 if args.episode_mode == "train" else 600),
             "curriculum_episode_length_end": 600,
             "curriculum_steps_global": 30000000,
         },
@@ -282,7 +290,7 @@ def main():
     env = env_builder.build_imitation_env(
         motion_files=[motion_file],
         num_parallel_envs=num_procs,
-        mode="train",
+        mode=args.episode_mode,
         enable_randomizer=not args.disable_randomizer,
         enable_rendering=False)
 
@@ -335,6 +343,9 @@ def main():
         verbose=1 if rank == 0 else 0,
         seed=rank_seed,
         n_cpu_tf_sess=1)
+
+    if args.init_model:
+        model.load_parameters(os.path.abspath(args.init_model))
 
     callback = None
     if args.int_save_freq > 0:
