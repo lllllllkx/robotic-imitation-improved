@@ -1,0 +1,126 @@
+{
+  "generator": "np.random.RandomState(1000*seed+k).uniform()",
+  "n": 20,
+  "phases": [
+    {
+      "plan_index": 0,
+      "phase_origin_seed": 0,
+      "phase_origin_episode": 0,
+      "phase": 0.548813504
+    },
+    {
+      "plan_index": 1,
+      "phase_origin_seed": 0,
+      "phase_origin_episode": 1,
+      "phase": 0.417022005
+    },
+    {
+      "plan_index": 2,
+      "phase_origin_seed": 0,
+      "phase_origin_episode": 2,
+      "phase": 0.435994902
+    },
+    {
+      "plan_index": 3,
+      "phase_origin_seed": 0,
+      "phase_origin_episode": 3,
+      "phase": 0.550797903
+    },
+    {
+      "plan_index": 4,
+      "phase_origin_seed": 0,
+      "phase_origin_episode": 4,
+      "phase": 0.967029839
+    },
+    {
+      "plan_index": 5,
+      "phase_origin_seed": 1,
+      "phase_origin_episode": 0,
+      "phase": 0.653589585
+    },
+    {
+      "plan_index": 6,
+      "phase_origin_seed": 1,
+      "phase_origin_episode": 1,
+      "phase": 0.30623218
+    },
+    {
+      "plan_index": 7,
+      "phase_origin_seed": 1,
+      "phase_origin_episode": 2,
+      "phase": 0.128988289
+    },
+    {
+      "plan_index": 8,
+      "phase_origin_seed": 1,
+      "phase_origin_episode": 3,
+      "phase": 0.597805798
+    },
+    {
+      "plan_index": 9,
+      "phase_origin_seed": 1,
+      "phase_origin_episode": 4,
+      "phase": 0.038951638
+    },
+    {
+      "plan_index": 10,
+      "phase_origin_seed": 2,
+      "phase_origin_episode": 0,
+      "phase": 0.570517285
+    },
+    {
+      "plan_index": 11,
+      "phase_origin_seed": 2,
+      "phase_origin_episode": 1,
+      "phase": 0.167125643
+    },
+    {
+      "plan_index": 12,
+      "phase_origin_seed": 2,
+      "phase_origin_episode": 2,
+      "phase": 0.654513738
+    },
+    {
+      "plan_index": 13,
+      "phase_origin_seed": 2,
+      "phase_origin_episode": 3,
+      "phase": 0.492290354
+    },
+    {
+      "plan_index": 14,
+      "phase_origin_seed": 2,
+      "phase_origin_episode": 4,
+      "phase": 0.587748289
+    },
+    {
+      "plan_index": 15,
+      "phase_origin_seed": 3,
+      "phase_origin_episode": 0,
+      "phase": 0.510793561
+    },
+    {
+      "plan_index": 16,
+      "phase_origin_seed": 3,
+      "phase_origin_episode": 1,
+      "phase": 0.25680088
+    },
+    {
+      "plan_index": 17,
+      "phase_origin_seed": 3,
+      "phase_origin_episode": 2,
+      "phase": 0.123516997
+    },
+    {
+      "plan_index": 18,
+      "phase_origin_seed": 3,
+      "phase_origin_episode": 3,
+      "phase": 0.339041096
+    },
+    {
+      "plan_index": 19,
+      "phase_origin_seed": 3,
+      "phase_origin_episode": 4,
+      "phase": 0.495560428
+    }
+  ]
+}

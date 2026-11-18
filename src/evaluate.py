@@ -108,6 +108,13 @@ def parse_args(argv=None):
   p.add_argument("--run-id", default=None,
                  help="tag this run so src.aggregate can select it later")
   p.add_argument("--csv", action="store_true", help="also dump per-step csv")
+  p.add_argument("--enable-randomizer", action="store_true",
+                 help="enable the training-time environment randomizer; each"
+                      " episode is randomised with the episode seed")
+  p.add_argument("--diag", action="store_true",
+                 help="with --csv, also dump joint-level trajectories, base"
+                      " rpy/height/velocity, foot vs non-foot contacts and the"
+                      " termination-condition flags per step")
   p.add_argument("--quiet", action="store_true")
   return p.parse_args(argv)
 
@@ -161,7 +168,69 @@ def sha256(path):
   return h.hexdigest()
 
 
-def build_env(code_dir, motion_files, model_file):
+def find_env_randomizers(env):
+  """Return the LocomotionGymEnv randomizer list through the wrapper chain."""
+  seen = set()
+  stack = [env]
+  while stack:
+    obj = stack.pop()
+    if id(obj) in seen:
+      continue
+    seen.add(id(obj))
+    randomizers = getattr(obj, "_env_randomizers", None)
+    if randomizers is not None:
+      return randomizers
+    for attr in ("_gym_env", "_env", "env", "_wrapped_env"):
+      child = getattr(obj, attr, None)
+      if child is not None and not isinstance(child, (str, bytes)):
+        stack.append(child)
+  return []
+
+
+def jsonable(value):
+  """Convert numpy scalars/arrays from randomizer parameter dumps to JSON."""
+  if isinstance(value, np.ndarray):
+    return value.tolist()
+  if isinstance(value, (np.floating, np.integer)):
+    return value.item()
+  if isinstance(value, (list, tuple)):
+    return [jsonable(v) for v in value]
+  return value
+
+
+def termination_state(pyb, env, task, snap):
+  """Which of the four upstream terminal conditions hold at this state."""
+  foot_links = set(int(x) for x in env.robot.GetFootLinkIDs())
+  ground = env.get_ground()
+  contacts = (pyb.getContactPoints(bodyA=env.robot.quadruped, bodyB=ground)
+              if env.env_step_counter > 0 else [])
+  foot_contacts = sum(1 for c in contacts if int(c[3]) in foot_links)
+  nonfoot_contacts = len(contacts) - foot_contacts
+  root_dist = float(np.linalg.norm(np.asarray(snap["ref_pos"])
+                                   - np.asarray(snap["sim_pos"])))
+  rot_angle = metrics.quat_angle_between(snap["sim_orn"], snap["ref_orn"])
+  # The robot model's rest orientation is not identity in world coordinates
+  # (the base frame is rotated about x), so absolute roll/pitch would report
+  # ~90 deg for an upright dog. Tilt has to be measured against the reference.
+  q_rel = metrics.quat_multiply(metrics.quat_conjugate(snap["ref_orn"]),
+                                snap["sim_orn"])
+  q_rel = metrics.normalize_quat(q_rel)
+  roll, pitch = metrics.quat_to_roll_pitch(q_rel)
+  return {
+      "motion_over": bool(task.is_motion_over()),
+      "contact_fall": bool(nonfoot_contacts > 0),
+      "root_pos_fail": bool(root_dist > 1.0),
+      "root_rot_fail": bool(rot_angle > 0.5 * np.pi),
+      "foot_contacts": foot_contacts,
+      "nonfoot_contacts": nonfoot_contacts,
+      "root_dist_m": root_dist,
+      "root_rot_angle_rad": rot_angle,
+      "roll_rad": roll,
+      "pitch_rad": pitch,
+  }
+
+
+def build_env(code_dir, motion_files, model_file, enable_randomizer=False):
   sys.path.insert(0, os.path.abspath(code_dir))
   import tensorflow as tf  # noqa: F401
   import envs.env_builder as env_builder
@@ -175,7 +244,7 @@ def build_env(code_dir, motion_files, model_file):
       motion_files=list(motion_files),
       num_parallel_envs=1,
       mode="test",
-      enable_randomizer=False,
+      enable_randomizer=bool(enable_randomizer),
       enable_rendering=False)
 
   policy_kwargs = {"net_arch": [{"pi": [512, 256], "vf": [512, 256]}],
@@ -216,6 +285,8 @@ def variant_name(args):
     parts.append("randphase")
   if args.start_phases:
     parts.append("phasegrid")
+  if args.enable_randomizer:
+    parts.append("randenv")
   if args.upstream_init:
     parts.append("upstreaminit")
   return "+".join(parts) if parts else "baseline"
@@ -229,7 +300,9 @@ def run(argv=None):
   tag = args.tag or os.path.splitext(os.path.basename(motion_file))[0]
   variant = variant_name(args)
 
-  env, model, versions = build_env(args.code_dir, motion_files, model_file)
+  env, model, versions = build_env(args.code_dir, motion_files, model_file,
+                                   enable_randomizer=args.enable_randomizer)
+  randomizers = find_env_randomizers(env) if args.enable_randomizer else []
   task = env_patch.imitation_task(env)
   if not args.upstream_init:
     # Controlled mode: always start from the reference state so the only
@@ -275,6 +348,9 @@ def run(argv=None):
   ep = 0
   for seed in range(args.seeds):
     env.seed(seed)
+    for randomizer in randomizers:
+      if hasattr(randomizer, "randomization_seed"):
+        randomizer.randomization_seed = int(seed)
     # The task holds its own reference RNG (initial state / start time). env.seed
     # does not reach it, so pin it per seed; otherwise --upstream-init draws from
     # the process-global RNG and no run is reproducible.
@@ -292,6 +368,9 @@ def run(argv=None):
         env_patch.clear_start_phase(task)
         phase = None
       o = env.reset()
+      # A randomizer may change the control step; every speed, drift and
+      # episode-duration number must use the step actually in force.
+      dt = float(env.env_time_step)
       if args.yaw_anchor:
         # _reset_ref_motion installs the opening offset without going through
         # _sync_ref_origin, so the tracker must be re-baselined here.
@@ -303,6 +382,8 @@ def run(argv=None):
       cum_gaps = []
       gap_yaw, gap_pos = [], []
       rows = []
+      joint_rows = []
+      nonfoot_first_step = None
       prev_pos = None
       steps = 0
       done = False
@@ -337,10 +418,10 @@ def run(argv=None):
           delta = np.zeros(3)
         else:
           delta = sim_pos - prev_pos
-        speeds_3d.append(float(np.linalg.norm(delta) / env_dt))
+        speeds_3d.append(float(np.linalg.norm(delta) / dt))
         # Horizontal speed is the gait speed the reference asks for; the 3-D
         # norm additionally counts the vertical bobbing of the torso.
-        speeds.append(float(np.linalg.norm(delta[:2]) / env_dt))
+        speeds.append(float(np.linalg.norm(delta[:2]) / dt))
         prev_pos = sim_pos
 
         signed = metrics.yaw_tracking_error(snap["sim_orn"], snap["ref_orn"])
@@ -379,19 +460,62 @@ def run(argv=None):
             metrics.quat_to_yaw(post_ref[1]) - yaw_ref)))
         gap_pos.append(float(np.linalg.norm(np.array(post_ref[0]) - ref_pos)))
 
+        diag = None
+        if args.csv and args.diag:
+          diag = termination_state(pyb, env, task, snap)
+          lin_vel = np.asarray(snap.get("sim_lin_vel", np.zeros(3)), dtype=float)
+          ang_vel = np.asarray(snap.get("sim_ang_vel", np.zeros(3)), dtype=float)
+          diag.update({
+              "sim_z": float(snap["sim_pos"][2]),
+              "lin_vx": float(lin_vel[0]), "lin_vy": float(lin_vel[1]),
+              "lin_vz": float(lin_vel[2]),
+              "ang_vx": float(ang_vel[0]), "ang_vy": float(ang_vel[1]),
+              "ang_vz": float(ang_vel[2]),
+              "dt": dt,
+          })
+          if diag["nonfoot_contacts"] > 0 and nonfoot_first_step is None:
+            nonfoot_first_step = steps
+          ref_j = np.asarray(snap["ref_joints"], dtype=float)
+          sim_j = np.asarray(snap["sim_joints"], dtype=float)
+          ref_v = np.asarray(snap.get("ref_joints_vel", np.zeros_like(ref_j)),
+                             dtype=float)
+          sim_v = np.asarray(snap.get("sim_joints_vel", np.zeros_like(sim_j)),
+                             dtype=float)
+          for j in range(len(ref_j)):
+            joint_rows.append([
+                ep, steps, steps * dt, snap["ref_time"], j,
+                float(ref_j[j]), float(sim_j[j]),
+                float(abs(ref_j[j] - sim_j[j])),
+                float(ref_v[j]) if j < len(ref_v) else float("nan"),
+                float(sim_v[j]) if j < len(sim_v) else float("nan"),
+                (float(abs(ref_v[j] - sim_v[j]))
+                 if j < len(ref_v) and j < len(sim_v) else float("nan"))])
+
         if args.csv:
-          rows.append([ep, steps, steps * env_dt, snap["ref_time"], r]
+          rows.append([ep, steps, steps * dt, snap["ref_time"], r]
                       + list(step_terms.values())
                       + [pose_errs[-1], root_errs[-1], yaw_errs[-1],
                          yaw_signed[-1], speeds[-1], speeds_3d[-1],
                          gap_yaw[-1], gap_pos[-1],
                          anchor_cums[-1], yaw_fixed_errs[-1],
                          yaw_fixed_signed[-1], snap.get("ref_yaw_raw",
-                                                        float("nan"))])
+                                                        float("nan"))]
+                      + ([diag["roll_rad"], diag["pitch_rad"],
+                          diag["lin_vx"], diag["lin_vy"], diag["lin_vz"],
+                          diag["ang_vx"], diag["ang_vy"], diag["ang_vz"],
+                          diag["foot_contacts"], diag["nonfoot_contacts"],
+                          diag["root_dist_m"], diag["root_rot_angle_rad"],
+                          diag["motion_over"], diag["root_pos_fail"],
+                          diag["root_rot_fail"], diag["contact_fall"],
+                          diag["sim_z"], diag["dt"]] if diag else []))
 
         if done:
           break
 
+      final_state = termination_state(pyb, env, task, task._last_snapshot)
+      termination_causes = sorted(k for k in ("motion_over", "contact_fall",
+                                              "root_pos_fail", "root_rot_fail")
+                                  if final_state[k]) if terminated else []
       term_means = {k: float(np.mean([t[k] for t in terms]))
                     for k in metrics.TERM_NAMES}
       reward_from_terms = metrics.normalized_return(term_means, weights)
@@ -399,7 +523,7 @@ def run(argv=None):
       summary = {
           "episode": ep, "seed": seed, "steps": steps,
           "start_phase": phase,
-          "episode_seconds": steps * env_dt,
+          "episode_seconds": steps * dt,
           "mean_reward": float(np.mean(rewards)),
           "sum_reward": float(np.sum(rewards)),
           "reward_from_terms": reward_from_terms,
@@ -412,13 +536,13 @@ def run(argv=None):
           "max_yaw_err_rad": float(np.max(yaw_errs)),
           "final_yaw_err_rad": float(yaw_errs[-1]),
           "final_yaw_err_signed_rad": float(yaw_signed[-1]),
-          "yaw_drift_rad_per_s": metrics.drift_rate(unwrapped, env_dt),
+          "yaw_drift_rad_per_s": metrics.drift_rate(unwrapped, dt),
           # same trajectory, scored against the un-re-anchored frame
           "mean_yaw_err_fixed_rad": float(np.mean(yaw_fixed_errs)),
           "max_yaw_err_fixed_rad": float(np.max(yaw_fixed_errs)),
           "final_yaw_err_fixed_rad": float(yaw_fixed_errs[-1]),
           "yaw_drift_fixed_rad_per_s": metrics.drift_rate(
-              metrics.unwrap_angles(yaw_fixed_signed), env_dt),
+              metrics.unwrap_angles(yaw_fixed_signed), dt),
           "final_anchor_cum_yaw_rad": float(anchor_cums[-1]),
           "max_abs_anchor_cum_yaw_rad": float(np.max(np.abs(anchor_cums))),
           "max_abs_cum_tracker_vs_geometry_rad": (
@@ -431,9 +555,22 @@ def run(argv=None):
           "mean_speed_mps": float(np.mean(speeds)),
           "mean_speed_3d_mps": float(np.mean(speeds_3d)),
           "mean_sim_z_m": float(np.mean(sim_z)),
-          "window5s_mean_reward": metrics.window_mean(rewards, env_dt, 5.0),
+          "window5s_mean_reward": metrics.window_mean(rewards, dt, 5.0),
+          "env_time_step_s": dt,
+          "randomizer_seed": int(seed) if args.enable_randomizer else None,
+          "randomizer_count": len(randomizers),
+          "randomizer_params": (
+              {str(k): jsonable(v)
+               for k, v in randomizers[0].get_randomization_parameters().items()}
+              if randomizers and hasattr(randomizers[0],
+                                         "get_randomization_parameters")
+              else None),
+          "first_nonfoot_contact_step": nonfoot_first_step,
           "termination": metrics.termination_reason(terminated, done, steps,
                                                     args.max_steps),
+          "termination_causes": termination_causes,
+          "final_root_dist_m": final_state["root_dist_m"],
+          "final_root_rot_angle_rad": final_state["root_rot_angle_rad"],
           "survived": bool(steps >= args.max_steps and not terminated),
           # diagnostic: size of the one-step offset between the reward time
           # point and a post-step read of the reference state
@@ -456,8 +593,25 @@ def run(argv=None):
                         "yaw_err_signed_rad", "speed_mps", "speed_3d_mps",
                         "offstep_yaw_gap_rad", "offstep_ref_pos_gap_m",
                         "anchor_cum_yaw_rad", "yaw_err_fixed_rad",
-                        "yaw_err_fixed_signed_rad", "ref_yaw_raw_rad"])
+                        "yaw_err_fixed_signed_rad", "ref_yaw_raw_rad"]
+                     + (["roll_rad", "pitch_rad",
+                         "lin_vx_mps", "lin_vy_mps", "lin_vz_mps",
+                         "ang_vx_radps", "ang_vy_radps", "ang_vz_radps",
+                         "foot_contacts", "nonfoot_contacts",
+                         "root_dist_m", "root_rot_angle_rad",
+                         "motion_over", "root_pos_fail", "root_rot_fail",
+                         "contact_fall", "sim_z_m", "dt_s"]
+                        if args.diag else []))
           w.writerows(rows)
+        if args.diag:
+          joints_path = os.path.join(out_dir, "ep%02d_joints.csv" % ep)
+          with open(joints_path, "w", newline="") as fh:
+            w = _csv.writer(fh)
+            w.writerow(["episode", "step", "time", "ref_time", "joint",
+                        "ref_joint_rad", "sim_joint_rad", "pose_err_rad",
+                        "ref_joint_vel_radps", "sim_joint_vel_radps",
+                        "vel_err_radps"])
+            w.writerows(joint_rows)
 
       if not args.quiet:
         print("[eval] %-9s %-22s seed=%d ep=%d steps=%4d reward=%.4f "
@@ -495,6 +649,12 @@ def run(argv=None):
           "seed_meaning": "initial conditions (not training seeds)",
           "init_mode": "upstream" if args.upstream_init else "controlled",
           "random_phase": bool(args.random_phase),
+          "enable_randomizer": bool(args.enable_randomizer),
+          "randomizer_count": len(randomizers),
+          "randomizer_classes": [type(r).__name__ for r in randomizers],
+          "randomizer_seed": ("episode seed, applied as"
+                              " randomizer.randomization_seed before each reset"
+                              if args.enable_randomizer else None),
           "start_phases": phases,
           "yaw_anchor": bool(args.yaw_anchor),
           "heading_frame": ("post-hoc fixed-frame reconstruction from the same"
@@ -512,6 +672,7 @@ def run(argv=None):
       },
       "aggregate": agg,
       "by_seed": by_seed,
+      "episodes": episodes,
   }
   with open(os.path.join(out_dir, "summary.json"), "w") as fh:
     json.dump(payload, fh, indent=2)

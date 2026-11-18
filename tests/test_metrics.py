@@ -63,6 +63,18 @@ class MetricHelperTests(unittest.TestCase):
     self.assertAlmostEqual(agg["mean_reward_std"], 0.1414213562373095)
     self.assertEqual(agg["num_episodes"], 2)
 
+  def test_summarize_episodes_skips_null_fields(self):
+    # `first_nonfoot_contact_step` is None whenever the body never touched
+    # down; that must not abort aggregation of the remaining fields.
+    episodes = [{"mean_reward": 0.5, "steps": 41,
+                 "first_nonfoot_contact_step": None},
+                {"mean_reward": 0.7, "steps": 41,
+                 "first_nonfoot_contact_step": 39}]
+    agg = metrics.summarize_episodes(episodes)
+    self.assertAlmostEqual(agg["mean_reward_mean"], 0.6)
+    self.assertNotIn("first_nonfoot_contact_step_mean", agg)
+    self.assertEqual(len(agg["episodes"]), 2)
+
 
 class PatchContractTests(unittest.TestCase):
 

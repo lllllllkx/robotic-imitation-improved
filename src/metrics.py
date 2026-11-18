@@ -42,6 +42,35 @@ def quat_to_yaw(quat):
                           1.0 - 2.0 * (y * y + z * z)))
 
 
+def quat_to_roll_pitch(quat):
+  """Extrinsic ZYX roll and pitch (rad) of a pybullet quaternion.
+
+  Same convention as :func:`quat_to_yaw`. Used by the failure-phase
+  diagnostics to catch body tilt before the root-rotation termination fires.
+  """
+  x, y, z, w = (float(v) for v in quat[:4])
+  roll = float(np.arctan2(2.0 * (w * x + y * z),
+                          1.0 - 2.0 * (x * x + y * y)))
+  sin_pitch = 2.0 * (w * y - z * x)
+  sin_pitch = max(-1.0, min(1.0, sin_pitch))
+  return roll, float(np.arcsin(sin_pitch))
+
+
+def quat_conjugate(quat):
+  """Conjugate of a pybullet-order quaternion ``[x, y, z, w]``."""
+  x, y, z, w = (float(v) for v in quat[:4])
+  return np.array([-x, -y, -z, w], dtype=float)
+
+
+def quat_angle_between(quat_a, quat_b):
+  """Rotation angle (rad, in [0, pi]) between two orientations."""
+  a = np.asarray(quat_a, dtype=float)
+  b = np.asarray(quat_b, dtype=float)
+  dot = abs(float(np.dot(a, b)))
+  dot = max(-1.0, min(1.0, dot))
+  return float(2.0 * np.arccos(dot))
+
+
 def wrap_angle(angle):
   """Wrap an angle to (-pi, pi]."""
   return float((float(angle) + np.pi) % (2.0 * np.pi) - np.pi)
@@ -197,7 +226,14 @@ def summarize_episodes(episodes):
           if isinstance(v, (int, float)) and not isinstance(v, bool)]
   out = {"num_episodes": len(episodes)}
   for k in keys:
-    vals = np.asarray([float(e[k]) for e in episodes], dtype=float)
+    raw = [e.get(k) for e in episodes]
+    if any(v is None or isinstance(v, bool)
+           or not isinstance(v, (int, float)) for v in raw):
+      # A field that is present but null in some episode (e.g. the step of a
+      # contact that never happened) cannot be averaged; drop it rather than
+      # failing the whole run.
+      continue
+    vals = np.asarray([float(v) for v in raw], dtype=float)
     out[k + "_mean"] = float(np.mean(vals))
     out[k + "_std"] = float(np.std(vals, ddof=1)) if vals.size > 1 else 0.0
   out["episodes"] = episodes
@@ -223,7 +259,11 @@ def aggregate_by_seed(episodes, keys=None):
   for seed, eps in sorted(groups.items()):
     entry = {"seed": seed, "num_episodes": len(eps)}
     for k in keys:
-      entry[k] = float(np.mean([float(e[k]) for e in eps]))
+      raw = [e.get(k) for e in eps]
+      if any(v is None or isinstance(v, bool)
+             or not isinstance(v, (int, float)) for v in raw):
+        continue
+      entry[k] = float(np.mean([float(v) for v in raw]))
     out["seeds"].append(entry)
     per_seed[seed] = entry
   for k in keys:

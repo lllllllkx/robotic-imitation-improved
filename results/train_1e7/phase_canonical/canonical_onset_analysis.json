@@ -1,0 +1,130 @@
+{
+  "pre": [
+    {
+      "ep": 0,
+      "phase": 0.417,
+      "steps": 29,
+      "survived": false,
+      "causes": [
+        "contact_fall"
+      ],
+      "onset": {
+        "t_root_0.20m": 24,
+        "t_joint_0.50rad": 24,
+        "t_height_drop_0.10m": 26,
+        "t_nonfoot_contact": 29,
+        "base_z_m": 0.4596594171631585,
+        "earliest_step": 24
+      },
+      "joint_top_terminal": [
+        {
+          "joint": 1,
+          "err": 0.7398411738351544
+        },
+        {
+          "joint": 10,
+          "err": 0.19014176812434164
+        },
+        {
+          "joint": 5,
+          "err": 0.1709156945431095
+        }
+      ]
+    },
+    {
+      "ep": 1,
+      "phase": 0.129,
+      "steps": 33,
+      "survived": false,
+      "causes": [
+        "contact_fall"
+      ],
+      "onset": {
+        "t_root_0.20m": 28,
+        "t_joint_0.50rad": 30,
+        "t_height_drop_0.10m": 31,
+        "t_nonfoot_contact": 33,
+        "base_z_m": 0.45118592451914724,
+        "earliest_step": 28
+      },
+      "joint_top_terminal": [
+        {
+          "joint": 1,
+          "err": 0.6014087918709283
+        },
+        {
+          "joint": 2,
+          "err": 0.35642715275197334
+        },
+        {
+          "joint": 0,
+          "err": 0.23751292489106113
+        }
+      ]
+    }
+  ],
+  "post": [
+    {
+      "ep": 0,
+      "phase": 0.417,
+      "steps": 27,
+      "survived": false,
+      "causes": [
+        "contact_fall"
+      ],
+      "onset": {
+        "t_root_0.20m": 24,
+        "t_joint_0.50rad": 25,
+        "t_height_drop_0.10m": 25,
+        "t_nonfoot_contact": 27,
+        "base_z_m": 0.45504905456406075,
+        "earliest_step": 24
+      },
+      "joint_top_terminal": [
+        {
+          "joint": 1,
+          "err": 0.8795176322496588
+        },
+        {
+          "joint": 4,
+          "err": 0.1887808806784982
+        },
+        {
+          "joint": 2,
+          "err": 0.17499574967890585
+        }
+      ]
+    },
+    {
+      "ep": 1,
+      "phase": 0.129,
+      "steps": 39,
+      "survived": false,
+      "causes": [
+        "root_rot_fail"
+      ],
+      "onset": {
+        "t_root_0.20m": 31,
+        "t_joint_0.50rad": null,
+        "t_height_drop_0.10m": 39,
+        "t_nonfoot_contact": null,
+        "base_z_m": 0.44794431908868704,
+        "earliest_step": 31
+      },
+      "joint_top_terminal": [
+        {
+          "joint": 10,
+          "err": 0.11883627748020884
+        },
+        {
+          "joint": 0,
+          "err": 0.10143938764834766
+        },
+        {
+          "joint": 8,
+          "err": 0.0950626098153392
+        }
+      ]
+    }
+  ]
+}

@@ -264,11 +264,18 @@ def attach_term_logger(env):
     motion = task.get_active_motion()
     ref_joints = np.array(motion.get_frame_joints(task._ref_pose))
     sim_joints = []
+    sim_joint_vel = []
     for j in range(n_joints):
-      jq = pyb.getJointStateMultiDof(sim_model, j)[0]
-      if len(jq) > 0:
-        sim_joints.append(float(jq[0]))
+      jq = pyb.getJointStateMultiDof(sim_model, j)
+      if len(jq[0]) > 0:
+        sim_joints.append(float(jq[0][0]))
+        sim_joint_vel.append(float(jq[1][0]))
     sim_pos, sim_orn = pyb.getBasePositionAndOrientation(sim_model)
+    sim_lin_vel, sim_ang_vel = pyb.getBaseVelocity(sim_model)
+    try:
+      ref_joints_vel = np.array(motion.get_frame_joints_vel(task._ref_pose))
+    except Exception:  # noqa: BLE001  (diagnostic-only field)
+      ref_joints_vel = np.zeros_like(ref_joints)
     ref_pos, ref_orn = pyb.getBasePositionAndOrientation(ref_model)
     tracker = getattr(task, "_anchor_tracker", None)
     # Raw clip heading at this same time point (origin offset *not* applied):
@@ -300,6 +307,10 @@ def attach_term_logger(env):
         "ref_time": float(task._get_motion_time()),
         "ref_joints": ref_joints,
         "sim_joints": np.array(sim_joints),
+        "ref_joints_vel": ref_joints_vel,
+        "sim_joints_vel": np.array(sim_joint_vel),
+        "sim_lin_vel": np.array(sim_lin_vel),
+        "sim_ang_vel": np.array(sim_ang_vel),
         "sim_pos": np.array(sim_pos),
         "sim_orn": np.array(sim_orn),
         "ref_pos": np.array(ref_pos),
