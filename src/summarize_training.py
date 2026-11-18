@@ -62,25 +62,30 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--log", required=True)
     ap.add_argument("--curriculum-steps", type=int, default=30000000)
+    ap.add_argument("--resume-step-count", type=int, default=0)
     ap.add_argument("--out-prefix", required=True)
     args = ap.parse_args()
 
     rows = [r for r in parse(args.log) if r["timesteps_so_far"] is not None]
     for row in rows:
+        row["total_timesteps_so_far"] = (
+            args.resume_step_count + row["timesteps_so_far"])
         row["curriculum_limit"] = curriculum_limit(
-            row["timesteps_so_far"], args.curriculum_steps)
+            row["total_timesteps_so_far"], args.curriculum_steps)
 
     with io.open(args.out_prefix + ".csv", "w", newline="",
                  encoding="utf-8") as fh:
         writer = csv.writer(fh)
         writer.writerow(["iteration", "timesteps_so_far", "ep_len_mean",
                          "ep_rew_mean", "episodes_so_far", "time_elapsed",
-                         "iteration_seconds", "curriculum_limit"])
+                         "iteration_seconds", "total_timesteps_so_far",
+                         "curriculum_limit"])
         for row in rows:
             writer.writerow([row["iteration"], row["timesteps_so_far"],
                              row["ep_len_mean"], row["ep_rew_mean"],
                              row["episodes_so_far"], row["time_elapsed"],
                              row["iteration_seconds"],
+                             row["total_timesteps_so_far"],
                              row["curriculum_limit"]])
     with io.open(args.out_prefix + ".json", "w", encoding="utf-8",
                  newline="\n") as fh:
