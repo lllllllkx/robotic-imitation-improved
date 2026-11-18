@@ -312,6 +312,24 @@ def attach_term_logger(env):
   return task
 
 
+def pin_episode_length(env, length):
+  """Freeze the curriculum at a fixed episode length.
+
+  ``ImitationWrapperEnv.reset`` recomputes ``_max_episode_steps`` from
+  ``_total_step_count`` whenever the curriculum is enabled, so merely assigning
+  ``_max_episode_steps`` is overwritten at the next reset. Zeroing
+  ``_curriculum_steps`` disables ``_enable_curriculum()`` and keeps the pinned
+  value for the whole run, which is what a fixed-difficulty diagnostic needs.
+  """
+  length = int(length)
+  if length <= 0:
+    raise ValueError("episode length must be positive, got %r" % (length,))
+  env._max_episode_steps = length
+  env._curriculum_steps = 0
+  env._fixed_episode_length = length
+  return env
+
+
 def pin_task_random(task, seed):
   """Give the task a private, seeded numpy RNG.
 

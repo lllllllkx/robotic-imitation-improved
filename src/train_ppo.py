@@ -169,6 +169,10 @@ def parse_args():
     ap.add_argument("--resume-step-count", type=int, default=0,
                     help="Aggregate steps already trained; backfills the "
                          "curriculum counter so the episode limit continues.")
+    ap.add_argument("--fixed-episode-length", type=int, default=0,
+                    help="Freeze the episode limit at this value and disable "
+                         "the cubic curriculum schedule. Intended for "
+                         "fixed-difficulty plateau diagnostics.")
     ap.add_argument("--dry-run", action="store_true")
     return ap.parse_args()
 
@@ -249,6 +253,11 @@ def build_manifest(args, motion_file, rank_seed, num_procs, task):
                 20 if args.episode_mode == "train" else 600),
             "curriculum_episode_length_end": 600,
             "curriculum_steps_global": 30000000,
+            "fixed_episode_length": (
+                int(args.fixed_episode_length)
+                if args.fixed_episode_length else None),
+            "curriculum_mode": (
+                "fixed" if args.fixed_episode_length else "cubic"),
             "resume_step_count": int(args.resume_step_count),
             "segment": ("continuation" if args.resume_step_count else "initial"),
         },
@@ -316,6 +325,22 @@ def main():
                   "curriculum_steps={} episode_limit={}".format(
                       args.resume_step_count, per_env,
                       env._curriculum_steps, env._max_episode_steps))
+
+    if args.fixed_episode_length:
+        if args.episode_mode != "train":
+            raise SystemExit(
+                "--fixed-episode-length requires --episode-mode train")
+        env_patch.pin_episode_length(env, args.fixed_episode_length)
+        if not env._max_episode_steps == int(args.fixed_episode_length):
+            raise RuntimeError("fixed episode length was not applied")
+        if env._enable_curriculum():
+            raise RuntimeError("curriculum still enabled after pinning")
+        if rank == 0:
+            print("FIXED_EPISODE_LENGTH episode_limit={} curriculum_enabled={} "
+                  "total_step_count={}".format(
+                      env._max_episode_steps,
+                      bool(env._enable_curriculum()),
+                      env._total_step_count))
 
     if args.dry_run:
         obs = env.reset()
@@ -392,6 +417,11 @@ def main():
                 "actual_aggregate_timesteps_total": (
                     steps + int(args.resume_step_count)),
                 "resume_step_count": int(args.resume_step_count),
+                "fixed_episode_length": (
+                    int(args.fixed_episode_length)
+                    if args.fixed_episode_length else None),
+                "curriculum_mode": (
+                    "fixed" if args.fixed_episode_length else "cubic"),
                 "mpi_processes": int(num_procs),
                 "base_seed": int(args.seed),
                 "wall_time_seconds": float(elapsed),

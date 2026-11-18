@@ -117,6 +117,24 @@ powershell -ExecutionPolicy Bypass -File scripts\run_protocol.ps1 `
     -RunId r20261116 -Python D:\anaconda\envs\motion_imitation_repro\python.exe
 ```
 
+### 训练入口（可选）
+
+```powershell
+# 课程训练：aggregate 步数按 MPI 进程 allreduce
+mpiexec -n 8 D:\anaconda\envs\motion_imitation_repro\python.exe -m src.train_ppo `
+    --motion dog_pace --variant baseline --seed 0 --total-timesteps 10000000 `
+    --output-dir outputs\train_1e7\run --run-id r20261117_single_arm_baseline_1e7
+
+# 固定难度诊断：回合上限锁定，不再按三次方课程抬升
+mpiexec -n 8 D:\anaconda\envs\motion_imitation_repro\python.exe -m src.train_ppo `
+    --motion dog_pace --variant baseline --seed 0 --total-timesteps 2000000 `
+    --init-model outputs\train_1e7\r20261117_single_arm_baseline_seg2\model.zip `
+    --fixed-episode-length 41 --output-dir outputs\train_1e7\plateau --run-id plateau41
+```
+
+`--resume-step-count` 只回填课程计数器；`--init-model` 只恢复网络权重，不恢复
+Adam 状态、迭代计数与 RNG，语义见 `docs/TRAINING_CONTINUATION.md`。
+
 ## 改动同步约定
 
 每一轮改动（代码、结果、文档）收尾都**直接提交并推送**到 `main`，不停在本地：
