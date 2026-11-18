@@ -166,6 +166,9 @@ def parse_args():
     ap.add_argument("--episode-mode", default="train",
                     choices=("train", "test"),
                     help="train = 20-to-600 curriculum; test = fixed 600-step episodes.")
+    ap.add_argument("--resume-step-count", type=int, default=0,
+                    help="Aggregate steps already trained; backfills the "
+                         "curriculum counter so the episode limit continues.")
     ap.add_argument("--dry-run", action="store_true")
     return ap.parse_args()
 
@@ -246,6 +249,8 @@ def build_manifest(args, motion_file, rank_seed, num_procs, task):
                 20 if args.episode_mode == "train" else 600),
             "curriculum_episode_length_end": 600,
             "curriculum_steps_global": 30000000,
+            "resume_step_count": int(args.resume_step_count),
+            "segment": ("continuation" if args.resume_step_count else "initial"),
         },
         "ppo": {
             "gamma": GAMMA,
@@ -299,6 +304,18 @@ def main():
     # private, seeded RandomState so both arms share the same randomization
     # schedule. Upstream never seeds this object.
     env_patch.pin_task_random(task, rank_seed)
+
+    if args.resume_step_count:
+        if args.episode_mode != "train":
+            raise SystemExit("--resume-step-count requires --episode-mode train")
+        per_env = int(round(args.resume_step_count / float(num_procs)))
+        env._total_step_count = per_env
+        env._update_time_limit()
+        if rank == 0:
+            print("RESUME_CURRICULUM aggregate={} per_env={} "
+                  "curriculum_steps={} episode_limit={}".format(
+                      args.resume_step_count, per_env,
+                      env._curriculum_steps, env._max_episode_steps))
 
     if args.dry_run:
         obs = env.reset()
@@ -372,6 +389,9 @@ def main():
                 "patch_flags": patch_flags(task),
                 "requested_aggregate_timesteps": int(args.total_timesteps),
                 "actual_aggregate_timesteps": steps,
+                "actual_aggregate_timesteps_total": (
+                    steps + int(args.resume_step_count)),
+                "resume_step_count": int(args.resume_step_count),
                 "mpi_processes": int(num_procs),
                 "base_seed": int(args.seed),
                 "wall_time_seconds": float(elapsed),
