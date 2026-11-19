@@ -55,6 +55,7 @@ import envs.env_builder as env_builder  # noqa: E402
 import learning.imitation_policies as imitation_policies  # noqa: E402
 import learning.ppo_imitation as ppo_imitation  # noqa: E402
 from src import env_patch  # noqa: E402
+from src import phase_sampling  # noqa: E402
 
 TIMESTEPS_PER_ACTORBATCH = 4096
 OPTIM_BATCHSIZE = 256
@@ -173,6 +174,19 @@ def parse_args():
                     help="Freeze the episode limit at this value and disable "
                          "the cubic curriculum schedule. Intended for "
                          "fixed-difficulty plateau diagnostics.")
+    ap.add_argument("--phase-sampling", default="off",
+                    choices=("off", "phasefocus"),
+                    help="Initial reference-phase sampler. phasefocus draws "
+                         "a configurable fraction of episodes from focus bands "
+                         "and the rest uniformly; rewards are unchanged.")
+    ap.add_argument("--phase-bands", default="0.11:0.14,0.41:0.50,0.95:0.98",
+                    help="Comma-separated lo:hi focus bands for phasefocus.")
+    ap.add_argument("--phase-focus-fraction", type=float, default=0.5,
+                    help="Fraction of non-warmup episodes drawn from the focus "
+                         "bands (equal probability per band).")
+    ap.add_argument("--phase-seed", type=int, default=20261118,
+                    help="Base seed for the phase sampler; rank seed = "
+                         "phase_seed + 97 * MPI_rank.")
     ap.add_argument("--dry-run", action="store_true")
     return ap.parse_args()
 
@@ -260,6 +274,18 @@ def build_manifest(args, motion_file, rank_seed, num_procs, task):
                 "fixed" if args.fixed_episode_length else "cubic"),
             "resume_step_count": int(args.resume_step_count),
             "segment": ("continuation" if args.resume_step_count else "initial"),
+            "phase_sampling": (
+                {
+                    "mode": args.phase_sampling,
+                    "bands": [list(b) for b in
+                              phase_sampling.parse_bands(args.phase_bands)],
+                    "focus_fraction": float(args.phase_focus_fraction),
+                    "band_probability": "equal per band, not width-weighted",
+                    "warmup_episodes": "upstream warmup behaviour preserved",
+                    "base_seed": int(args.phase_seed),
+                    "rank_seed_rule": "base_seed + 97 * MPI_rank",
+                }
+                if args.phase_sampling != "off" else None),
         },
         "ppo": {
             "gamma": GAMMA,
@@ -342,6 +368,16 @@ def main():
                       bool(env._enable_curriculum()),
                       env._total_step_count))
 
+    phase_bands = None
+    if args.phase_sampling != "off":
+        if args.episode_mode != "train":
+            raise SystemExit("--phase-sampling requires --episode-mode train")
+        if not args.fixed_episode_length:
+            raise SystemExit(
+                "--phase-sampling requires --fixed-episode-length so the "
+                "phase distribution is not confounded by the curriculum")
+        phase_bands = phase_sampling.parse_bands(args.phase_bands)
+
     if args.dry_run:
         obs = env.reset()
         if not np.all(np.isfinite(obs)):
@@ -361,6 +397,23 @@ def main():
         write_json(os.path.join(output_dir, "run_manifest.json"),
                    build_manifest(args, motion_file, rank_seed, num_procs, task))
     comm.Barrier()
+
+    phase_sampler = None
+    if args.phase_sampling != "off":
+        phase_sampler = phase_sampling.PhaseFocusSampler(
+            seed=int(args.phase_seed) + 97 * int(rank),
+            bands=phase_bands,
+            focus_fraction=float(args.phase_focus_fraction),
+            log_path=os.path.join(
+                output_dir, "phase_samples_rank{}.csv".format(rank)),
+            rank=int(rank))
+        phase_sampling.install_phase_sampler(task, phase_sampler)
+        if rank == 0:
+            print("PHASE_SAMPLING mode={} bands={} focus_fraction={} "
+                  "seed={}".format(
+                      args.phase_sampling, phase_bands,
+                      args.phase_focus_fraction,
+                      int(args.phase_seed) + 97 * int(rank)))
 
     env = EpisodeLogger(env, os.path.join(output_dir, "episodes.csv"),
                         is_root=(rank == 0))
@@ -405,6 +458,20 @@ def main():
                     callback=callback)
         comm.Barrier()
         elapsed = time.time() - t0
+        phase_stats = None
+        if phase_sampler is not None:
+            stat_keys = ("total", "warmup", "uniform", "band_0", "band_1",
+                         "band_2", "band_other", "in_focus_band")
+            local = np.asarray([phase_sampler.stats()[k] for k in stat_keys],
+                               dtype=float)
+            summed = comm.allreduce(local, op=MPI.SUM)
+            phase_stats = {
+                k: int(round(summed[i])) for i, k in enumerate(stat_keys)}
+            phase_stats["focus_fraction_requested"] = float(
+                args.phase_focus_fraction)
+            phase_stats["actual_in_focus_fraction"] = (
+                float(phase_stats["in_focus_band"]) / phase_stats["total"]
+                if phase_stats["total"] else None)
         if rank == 0:
             steps = int(getattr(model, "num_timesteps", 0))
             summary = {
@@ -428,6 +495,15 @@ def main():
                 "aggregate_steps_per_second": (
                     float(steps) / elapsed if elapsed > 0 else None),
                 "rank0_episodes": int(getattr(env, "_episode", 0)),
+                "phase_sampling": (
+                    {
+                        "mode": args.phase_sampling,
+                        "bands": [list(b) for b in phase_bands],
+                        "focus_fraction_requested": float(
+                            args.phase_focus_fraction),
+                        "stats": phase_stats,
+                    }
+                    if phase_sampler is not None else None),
                 "model_file": model_path,
                 "model_exists": os.path.isfile(model_path),
                 "finished_at_utc": utc_now(),
@@ -448,6 +524,8 @@ def main():
             })
         raise
     finally:
+        if phase_sampler is not None:
+            phase_sampler.close()
         try:
             env.close()
         except Exception:
